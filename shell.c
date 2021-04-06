@@ -1,4 +1,4 @@
-#include <stdlib.h>//pid_t chile_pd??
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
@@ -20,7 +20,7 @@ char **get_input(char *input) {
 	char *parsed;
 	int index = 0;
 
-	parsed = strtok(input, separator);//きっとsprit代替可能
+	parsed = strtok(input, separator);
 	while (parsed != NULL) {
 		command[index] = parsed;
 		index++;
@@ -34,26 +34,26 @@ char **get_input(char *input) {
 int	main() {
 	char **command;
 	char *input;
-	pid_t child_pid;//書き換える
+	pid_t child_pid;
 	int stat_loc;
 
 	while (1) {
-		input = readline("unixsh> ");//とりあえず文字列で保存
-		command = get_input(input);//いったんそっとしておく。
+		input = readline("unixsh> ");
+		command = get_input(input);
 		
 		if (strcmp(command[0], "cd") == 0) {
 			if (cd(command[1]) < 0) {
 				perror(command[1]);
 			}
 		}
-		child_pid = fork();//子プロセスがエラーおきたときに親が止まっちゃいけないからforkを作る
+		child_pid = fork();
 		if (child_pid < 0)
 		{
 			perror("Fork failed");
 			exit(1);
 		}
-		if (child_pid == 0) {//子がいない、つまり子/子がいる、つまり親
-			if (execvp(command[0], command) < 0)//こまんどを読んでくれている本体
+		if (child_pid == 0) {
+			if (execvp(command[0], command) < 0)
 			{
 				perror(command[0]);
 				exit(1);
@@ -61,7 +61,7 @@ int	main() {
 			
 			printf("no message if execvp success");
 		} else {
-			waitpid(child_pid, &stat_loc, WUNTRACED);//親プロセスに返す：親は子をもつ
+			waitpid(child_pid, &stat_loc, WUNTRACED);
 		}
 		free(input);
 		free(command);
