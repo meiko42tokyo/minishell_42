@@ -17,7 +17,7 @@ endif
 ifeq ($(PLATFORM), MACOS)
 endif
 
-SRCS = src/testShell.c\
+SRCS = shell.c
 
 CFLAGS = -g -Wall -Wextra -Werror
 

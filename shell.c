@@ -4,6 +4,7 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "libft/libft.h"
 
 int	cd(char *path) {
 	return chdir(path);
@@ -38,7 +39,8 @@ int	main() {
 	int stat_loc;
 
 	while (1) {
-		input = readline("unixsh> ");
+		ft_putstr_fd("> ", 0);
+		get_next_line(0, &input);
 		command = get_input(input);
 		
 		if (strcmp(command[0], "cd") == 0) {
