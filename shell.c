@@ -37,6 +37,7 @@ int	main() {
 	pid_t child_pid;
 	int stat_loc;
 
+	signal(SIGINT, SIG_IGN);
 	while (1) {
 		input = readline("unixsh> ");
 		command = get_input(input);
@@ -53,6 +54,7 @@ int	main() {
 			exit(1);
 		}
 		if (child_pid == 0) {
+			//signal(SIGINT, SIG_DFL);
 			if (execvp(command[0], command) < 0)
 			{
 				perror(command[0]);
