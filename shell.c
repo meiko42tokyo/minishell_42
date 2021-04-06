@@ -34,7 +34,7 @@ char **get_input(char *input) {
 int	main() {
 	char **command;
 	char *input;
-	pid_t child_pid;//書き換える
+	pid_t child_pid;
 	int stat_loc;
 
 	while (1) {
