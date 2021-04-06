@@ -7,7 +7,13 @@
 #include "libft/libft.h"
 
 int	cd(char *path) {
-	return chdir(path);//OK
+	int i;
+
+	i = 0;
+	printf("%s\n", path);
+	i = chdir(path);
+	printf("%d\n", i);
+	return (0);//OK
 	//相対パスは今後対応
 }
 
@@ -15,6 +21,7 @@ char **get_input(char *input) {
 	char **command = malloc(8 * sizeof(char *));
 	if (command == NULL)
 	{
+		printf("ddd\n");
 		perror("malloc failed");
 		exit(1);
 	}
@@ -54,12 +61,14 @@ int	main()
 		{
 			if (cd(command[1]) < 0)
 			{
+				printf("aaa\n");
 				perror(command[1]);//NG:strerrorかerroroに変える：最後に処理で良い
 			}
 		}
 		child_pid = fork();
 		if (child_pid < 0)
 		{
+			printf("bbb\n");
 			perror("Fork failed");
 			exit(1);
 		}
@@ -67,6 +76,7 @@ int	main()
 		{//folkに成功した場合
 			if (execvp(command[0], command) < 0)//NG:コマンド読んでくれる関数execveは使える
 			{
+				printf("ccc\n");
 				perror(command[0]);//NG
 				exit(1);
 			}
