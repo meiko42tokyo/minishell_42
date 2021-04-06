@@ -53,6 +53,7 @@ int	main() {
 			exit(1);
 		}
 		if (child_pid == 0) {
+			signal(SIGINT, SIG_DFL);
 			if (execvp(command[0], command) < 0)
 			{
 				perror(command[0]);
