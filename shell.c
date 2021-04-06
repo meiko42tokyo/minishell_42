@@ -1,4 +1,4 @@
-#include <stdlib.h>//pid_t chile_pd??
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
@@ -20,7 +20,7 @@ char **get_input(char *input) {
 	char *parsed;
 	int index = 0;
 
-	parsed = strtok(input, separator);//きっとsprit代替可能
+	parsed = strtok(input, separator);
 	while (parsed != NULL) {
 		command[index] = parsed;
 		index++;
@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 {
 	char **command;
 	char *input;
-	pid_t child_pid;//これ何か調べる
+	pid_t child_pid;
 	int stat_loc;
 
 	//if (argc != 1)
@@ -52,7 +52,7 @@ int	main(int argc, char **argv)
 				perror(command[1]);//NG:strerrorかerroroに変える：最後に処理で良い
 			}
 		}
-		child_pid = fork();//子プロセスがエラーおきたときに親が止まっちゃいけないからforkを作る
+		child_pid = fork();
 		if (child_pid < 0)
 		{
 			perror("Fork failed");
@@ -73,10 +73,6 @@ int	main(int argc, char **argv)
 			//WUNTRACED:終了だけでなく、他に停止した子プロセスについて報告。
 			//errnoここで使うかも
 			//https://www.ibm.com/docs/ja/zos/2.3.0?topic=functions-waitpid-wait-specific-child-process-end
-		}
-		free(input);
-		free(command);//多分、二次元配列分フリー必要？？
-	}
 	return (0);
 
 }
