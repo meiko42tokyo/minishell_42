@@ -32,16 +32,21 @@ char **get_input(char *input) {
 	return command;
 }
 
-int	main() {
+int	main(int argc, char **argv, char **envp) {
 	char **command;
 	char *input;
+	char *path;
 	pid_t child_pid;
 	int stat_loc;
 
+	//あとでなんとかする
+	argc = 1;
+	argv = NULL;
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input);
 		command = get_input(input);
+		path = ft_strjoin("/bin/", input);
 		
 		if (strcmp(command[0], "cd") == 0) {
 			if (cd(command[1]) < 0) {
@@ -55,12 +60,11 @@ int	main() {
 			exit(1);
 		}
 		if (child_pid == 0) {
-			if (execvp(command[0], command) < 0)
+			if (execve(path, command, envp) < 0)
 			{
 				perror(command[0]);
 				exit(1);
 			}
-			
 			printf("no message if execvp success");
 		} else {
 			waitpid(child_pid, &stat_loc, WUNTRACED);
