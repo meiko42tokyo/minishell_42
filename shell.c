@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft/libft.h"
+#include <errno.h>
+//No.定義：https://nxmnpg.lemoda.net/ja/2/errno
+//errno：https://linuxjm.osdn.jp/html/LDP_man-pages/man3/errno.3.html
 
 int	cd(char *path) {
 	return chdir(path);
@@ -14,7 +17,8 @@ char **get_input(char *input) {
 	char **command = malloc(8 * sizeof(char *));
 	if (command == NULL)
 	{
-		perror("malloc failed");
+		ft_putstr_fd("malloc fail", 2);
+		ft_putstr_fd("\n", 2);
 		exit(1);
 	}
 	char *separator = " ";
@@ -47,26 +51,33 @@ int	main(int argc, char **argv, char **envp) {
 		get_next_line(0, &input);
 		command = get_input(input);
 		path = ft_strjoin("/bin/", input);
-		
+		errno = 0;
 		if (strcmp(command[0], "cd") == 0) {
 			if (cd(command[1]) < 0) {
-				perror(command[1]);
+				ft_putstr_fd(strerror(errno), 2);
+				ft_putstr_fd("\n", 2);
 			}
+			continue ;
 		}
 		child_pid = fork();
 		if (child_pid < 0)
 		{
-			perror("Fork failed");
-			exit(1);
+			//エラーの書き方最後にチェック
+			ft_putstr_fd("fork error", 2);
+			ft_putstr_fd("\n", 2);
 		}
 		if (child_pid == 0) {
-			if (execve(path, command, envp) < 0)
-			{
-				perror(command[0]);
-				exit(1);
+			errno = 0;
+			//execve:https://linuxjm.osdn.jp/html/LDP_man-pages/man2/execve.2.html?
+			execve(path, command, envp);
+			if (errno){
+				ft_putstr_fd(strerror(errno), 2);
+				ft_putstr_fd("\n", 2);
+				exit(errno);
 			}
 			printf("no message if execvp success");
 		} else {
+			//エラー処理ここにも多分必要
 			waitpid(child_pid, &stat_loc, WUNTRACED);
 		}
 		free(input);
