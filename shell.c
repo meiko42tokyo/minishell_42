@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **envp) {
 
 	argc = 1;
 	argv = NULL;
+	signal(SIGINT, SIG_IGN);
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input);
@@ -63,6 +64,7 @@ int	main(int argc, char **argv, char **envp) {
 			ft_putstr_fd("\n", 2);
 		}
 		if (child_pid == 0) {
+			signal(SIGINT, SIG_DFL);
 			errno = 0;
 			execve(path, command, envp);
 			if (errno){
@@ -70,7 +72,6 @@ int	main(int argc, char **argv, char **envp) {
 				ft_putstr_fd("\n", 2);
 				exit(errno);
 			}
-			printf("no message if execvp success");
 		} else {
 			waitpid(child_pid, &stat_loc, WUNTRACED);
 		}
@@ -78,5 +79,4 @@ int	main(int argc, char **argv, char **envp) {
 		free(command);
 	}
 	return (0);
-
 }
