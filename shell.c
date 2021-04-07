@@ -6,8 +6,6 @@
 #include <sys/wait.h>
 #include "libft/libft.h"
 #include <errno.h>
-//No.定義：https://nxmnpg.lemoda.net/ja/2/errno
-//errno：https://linuxjm.osdn.jp/html/LDP_man-pages/man3/errno.3.html
 
 int	cd(char *path) {
 	return chdir(path);
@@ -43,7 +41,6 @@ int	main(int argc, char **argv, char **envp) {
 	pid_t child_pid;
 	int stat_loc;
 
-	//あとでなんとかする
 	argc = 1;
 	argv = NULL;
 	while (1) {
@@ -62,13 +59,11 @@ int	main(int argc, char **argv, char **envp) {
 		child_pid = fork();
 		if (child_pid < 0)
 		{
-			//エラーの書き方最後にチェック
 			ft_putstr_fd("fork error", 2);
 			ft_putstr_fd("\n", 2);
 		}
 		if (child_pid == 0) {
 			errno = 0;
-			//execve:https://linuxjm.osdn.jp/html/LDP_man-pages/man2/execve.2.html?
 			execve(path, command, envp);
 			if (errno){
 				ft_putstr_fd(strerror(errno), 2);
@@ -77,7 +72,6 @@ int	main(int argc, char **argv, char **envp) {
 			}
 			printf("no message if execvp success");
 		} else {
-			//エラー処理ここにも多分必要
 			waitpid(child_pid, &stat_loc, WUNTRACED);
 		}
 		free(input);
