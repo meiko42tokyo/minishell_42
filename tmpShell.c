@@ -16,6 +16,49 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
+pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
+{
+	pid_t	pid;
+	int	newpipe[2];
+	//int	stat_loc;
+
+	if (ispipe)
+		pipe(newpipe);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (haspipe)
+		{
+			close(lastpipe[1]);
+			dup2(lastpipe[0], 0);
+			close(lastpipe[0]);
+		}
+		if (ispipe)
+		{
+			close(newpipe[0]);
+			dup2(newpipe[1], 1);
+			close(newpipe[1]);
+		}
+		// execvp
+		// TODO: Should change into our own functions
+		printf("accepted command %s in pid %d!\n", c->content, getpid());
+	}
+	// ?
+	//waitpid(pid, &stat_loc, WUNTRACED);
+	if (haspipe)
+	{
+		close(lastpipe[0]);
+		close(lastpipe[1]);
+	}
+	if (ispipe)
+	{
+		lastpipe[0] = newpipe[0];
+		lastpipe[1] = newpipe[1];
+	}
+	return (pid);
+}
+
+
 t_cmd	*do_pipeline(t_cmd *c)
 {
 	int	haspipe;
@@ -26,7 +69,7 @@ t_cmd	*do_pipeline(t_cmd *c)
 	lastpipe[1] = -1;
 	while (c)
 	{
-		//c->pid = start_command(c, ispipe(c), haspipe, lastpipe);
+		c->pid = start_command(c, ispipe(c), haspipe, lastpipe);
 		haspipe = ispipe(c);
 		if (haspipe)
 			c = c->next;
