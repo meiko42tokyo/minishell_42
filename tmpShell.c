@@ -4,7 +4,7 @@ int	isbuiltin(t_cmd *c)
 {
 	// Temporary always return false.
 	// TODO: Should be judged by type of command
-	if (c->content)
+	if (c->argv)
 		return (0);
 	return (0);
 }
@@ -41,7 +41,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		}
 		// execvp
 		// TODO: Should change into our own functions
-		printf("accepted command %s in pid %d!\n", c->content, getpid());
+		printf("accepted command %s in pid %d!\n", *c->argv, getpid());
 	}
 	// ?
 	//waitpid(pid, &stat_loc, WUNTRACED);
@@ -92,22 +92,22 @@ void	run_list(t_cmd *c)
 		}
 		c = do_pipeline(c);
 		//waitpid(c->pid);
-		printf("node:%s, %c\n", c->content, c->op); 
+		printf("node:%s, %c\n", *c->argv, c->op); 
 		c = c->next;
 	}
 }
 
 int	main() {
 	// test data
-	char *content1 = "echo aaa";
-	char *content2 = "sleep 10";
-	char *content3 = "echo bbb";
+	char *argv1[] = {"echo", "aaa"};
+	char *argv2[] = {"sleep", "10"};
+	char *argv3[] = {"echo", "bbb"};
 	t_cmd *head;	
 	t_cmd *new1;
 	t_cmd *new2;
-	head = ft_cmdnew(content1, 124);
-	new1 = ft_cmdnew(content2, 124);
-	new2 = ft_cmdnew(content3, 0);
+	head = ft_cmdnew(argv1, 124);
+	new1 = ft_cmdnew(argv2, 124);
+	new2 = ft_cmdnew(argv3, 0);
 	ft_cmdadd_back(&head, new1);
 	ft_cmdadd_back(&head, new2);
 	
