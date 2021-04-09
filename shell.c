@@ -62,6 +62,7 @@ int	main(int argc, char **argv, char **envp) {
 		{
 			ft_putstr_fd("fork error", 2);
 			ft_putstr_fd("\n", 2);
+			exit(1);
 		}
 		if (child_pid == 0) {
 			signal(SIGINT, SIG_DFL);
