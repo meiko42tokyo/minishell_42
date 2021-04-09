@@ -1,6 +1,6 @@
 #include "shell.h"
 
-t_cmd	*ft_cmdnew(char *content, int op)
+t_cmd	*ft_cmdnew(char *argv[], int op)
 {
 	t_cmd	*node;
 
@@ -8,7 +8,7 @@ t_cmd	*ft_cmdnew(char *content, int op)
 	if (node == NULL)
 		return (NULL);
 	node->next = NULL;
-	node->content = content;
+	node->argv = argv;
 	node->pid = -1;
 	node->op = op;
 	return (node);

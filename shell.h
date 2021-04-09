@@ -11,10 +11,10 @@
 typedef struct	s_cmd
 {
 	struct s_cmd	*next;
-	char		*content;
+	char		**argv;
 	int		pid;
 	int		op;
 }		t_cmd;
 
-t_cmd	*ft_cmdnew(char *content, int op);
+t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
