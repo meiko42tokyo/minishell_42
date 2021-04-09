@@ -36,6 +36,13 @@ $(NAME) : $(OBJS) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
+tmp:
+	$(CC)  $(CFLAGS) -I. tmpShell.c lstUtils.c -o tmp 
+
+tmpc:
+	rm -f tmpShell.o lstUtils.o tmp
+	rm -rf tmp.dSYM
+
 sani:
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -o $(NAME)
 
