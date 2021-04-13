@@ -1,4 +1,4 @@
-#include "shell.c"
+#include "shell.h"
 
 int	ft_cd(char *path)
 {
