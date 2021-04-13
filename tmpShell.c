@@ -1,9 +1,4 @@
 #include "shell.h"
-#include "libft/libft.h"
-
-int	cd(char *path) {
-	return chdir(path);
-}
 
 int	isbuiltin(t_cmd *c)
 {
@@ -133,7 +128,8 @@ char **get_input(char *input) {
 	return command;
 }
 
-int	main(int argc, char **argv, char **envp) {
+int	main(int argc, char **argv, char **envp) 
+{
 	char **command;
 	char *input;
 	char *path;
@@ -151,13 +147,8 @@ int	main(int argc, char **argv, char **envp) {
 		path = ft_strjoin("/bin/", input); // not command?
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		errno = 0;
-		if (strcmp(command[0], "cd") == 0) {// should change strcmp?
-			if (cd(command[1]) < 0) {
-				ft_putstr_fd(strerror(errno), 2);
-				ft_putstr_fd("\n", 2);
-			}
+		if (is_buildin(command) == 0) // should change strcmp?
 			continue ;
-		}
 		child_pid = fork();
 		if (child_pid < 0)
 		{
@@ -180,20 +171,7 @@ int	main(int argc, char **argv, char **envp) {
 		free(command);
 	}
 	return (0);
-/*
-	char *argv1[] = {"echo", "aaa"};
-	char *argv2[] = {"sleep", "10"};
-	char *argv3[] = {"echo", "bbb"};
-	t_cmd *head;	
-	t_cmd *new1;
-	t_cmd *new2;
-	head = ft_cmdnew(argv1, 124);
-	new1 = ft_cmdnew(argv2, 124);
-	new2 = ft_cmdnew(argv3, 0);
-	ft_cmdadd_back(&head, new1);
-	ft_cmdadd_back(&head, new2);
-*/	
-	run_list(head);
+//	run_list(head);
 
 	// debug
 	/*
