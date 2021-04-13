@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libft/libft.h"
 
 int	cd(char *path) {
 	return chdir(path);
@@ -25,6 +26,10 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
 	int	newpipe[2];
+	char *path;
+	char *input;
+	int exec;
+	extern char **environ; 
 	//int	stat_loc;
 
 	if (ispipe)
@@ -44,7 +49,11 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
-		// execvp
+		input = *c->argv;
+		path = ft_strjoin("/bin/", input);
+		exec = execve(path, c->argv, environ);
+		printf("path:%s\n", path);
+		printf("exec:%d\n", exec);
 		// TODO: Should change into our own functions
 		printf("accepted command %s in pid %d!\n", *c->argv, getpid());
 	}

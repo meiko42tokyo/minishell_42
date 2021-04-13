@@ -36,8 +36,8 @@ $(NAME) : $(OBJS) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-tmp:
-	$(CC)  $(CFLAGS) -I. tmpShell.c lstUtils.c -o tmp 
+tmp: $(LIBFT)
+	$(CC)  $(CFLAGS) -I. -I$(LIBFT_DIR) tmpShell.c lstUtils.c $(LIBFT) -o tmp 
 
 tmpc:
 	rm -f tmpShell.o lstUtils.o tmp
