@@ -1,4 +1,5 @@
-// Temporary aim at checking structure and use tmpShell.c
+#ifndef SHELL_H
+# define SHELL_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,6 +8,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft/libft.h"
+#include <errno.h>
 
 typedef struct	s_cmd
 {
@@ -16,5 +18,19 @@ typedef struct	s_cmd
 	int		op;
 }		t_cmd;
 
-t_cmd	*ft_cmdnew(char *argv[], int op);
-void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
+/*
+**shell.c
+*/
+int	main(int argc, char **argv, char **envp);
+
+/*
+**buildin.c
+*/
+int	isbuildin();
+
+/*
+**ft_cd.c
+*/
+int	ft_cd(char *path);
+
+#endif
