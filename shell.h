@@ -40,4 +40,9 @@ int	is_buildin(char **command);
 */
 int	ft_cd(char *path);
 
+/*
+**ft_pwd.c
+*/
+int	ft_pwd();
+
 #endif

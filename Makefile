@@ -37,7 +37,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 tmp: $(LIBFT)
-	$(CC)  $(CFLAGS) -I. -I$(LIBFT_DIR) tmpShell.c lstUtils.c buildin.c ft_cd.c $(LIBFT) -o tmp 
+	$(CC)  $(CFLAGS) -I. -I$(LIBFT_DIR) tmpShell.c lstUtils.c buildin.c ft_cd.c ft_pwd.c $(LIBFT) -o tmp 
 
 tmpc:
 	rm -f tmpShell.o lstUtils.o tmp
