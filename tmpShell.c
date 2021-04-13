@@ -5,7 +5,6 @@ int	cd(char *path) {
 	return chdir(path);
 }
 
-
 int	isbuiltin(t_cmd *c)
 {
 	// Temporary always return false.
@@ -150,7 +149,7 @@ int	main(int argc, char **argv, char **envp) {
 		get_next_line(0, &input);
 		command = get_input(input);
 		path = ft_strjoin("/bin/", input); // not command?
-		head = ft_cmdnew(command, 124); // should be dynamic depend on op
+		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		errno = 0;
 		if (strcmp(command[0], "cd") == 0) {// should change strcmp?
 			if (cd(command[1]) < 0) {
