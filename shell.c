@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "libft/libft.h"
+#include "shell.h"
 #include <errno.h>
 
 int	cd(char *path) {

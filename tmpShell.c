@@ -1,6 +1,10 @@
 #include "shell.h"
 #include "libft/libft.h"
 
+int	cd(char *path) {
+	return chdir(path);
+}
+
 int	isbuiltin(t_cmd *c)
 {
 	// Temporary always return false.
@@ -106,8 +110,77 @@ void	run_list(t_cmd *c)
 	}
 }
 
-int	main() {
-	// test data
+char **get_input(char *input) {
+	char **command = malloc(8 * sizeof(char *));
+	if (command == NULL)
+	{
+		ft_putstr_fd("malloc fail", 2);
+		ft_putstr_fd("\n", 2);
+		exit(1);
+	}
+	char *separator = " ";
+	char *parsed;
+	int index = 0;
+
+	parsed = strtok(input, separator);
+	while (parsed != NULL) {
+		command[index] = parsed;
+		index++;
+		
+		parsed = strtok(NULL, separator);
+	}
+	command[index] = NULL;
+	return command;
+}
+
+int	main(int argc, char **argv, char **envp) {
+	char **command;
+	char *input;
+	char *path;
+	t_cmd	*head;
+	pid_t child_pid;
+	int stat_loc;
+
+	argc = 1;
+	argv = NULL;
+	signal(SIGINT, SIG_IGN);
+	while (1) {
+		ft_putstr_fd("> ", 0);
+		get_next_line(0, &input);
+		command = get_input(input);
+		path = ft_strjoin("/bin/", input); // not command?
+		head = ft_cmdnew(command, 0); // should be dynamic depend on op
+		errno = 0;
+		if (strcmp(command[0], "cd") == 0) {// should change strcmp?
+			if (cd(command[1]) < 0) {
+				ft_putstr_fd(strerror(errno), 2);
+				ft_putstr_fd("\n", 2);
+			}
+			continue ;
+		}
+		child_pid = fork();
+		if (child_pid < 0)
+		{
+			ft_putstr_fd("fork error", 2);
+			ft_putstr_fd("\n", 2);
+		}
+		if (child_pid == 0) {
+			signal(SIGINT, SIG_DFL);
+			errno = 0;
+			execve(path, command, envp);
+			if (errno){
+				ft_putstr_fd(strerror(errno), 2);
+				ft_putstr_fd("\n", 2);
+				exit(errno);
+			}
+		} else {
+			waitpid(child_pid, &stat_loc, WUNTRACED);
+		}
+		free(input);
+		free(command);
+	}
+	return (0);
+/*
 	char *argv1[] = {"echo", "aaa"};
 	char *argv2[] = {"sleep", "10"};
 	char *argv3[] = {"echo", "bbb"};
@@ -119,7 +192,7 @@ int	main() {
 	new2 = ft_cmdnew(argv3, 0);
 	ft_cmdadd_back(&head, new1);
 	ft_cmdadd_back(&head, new2);
-	
+*/	
 	run_list(head);
 
 	// debug

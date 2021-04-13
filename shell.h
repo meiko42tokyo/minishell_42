@@ -6,13 +6,14 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <errno.h>
 #include "libft/libft.h"
 
 typedef struct	s_cmd
 {
 	struct s_cmd	*next;
 	char		**argv;
-	int		pid;
+	pid_t		pid;
 	int		op;
 }		t_cmd;
 
