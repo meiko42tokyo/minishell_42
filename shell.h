@@ -1,3 +1,5 @@
+#ifndef SHELL_H
+# define SHELL_H
 // Temporary aim at checking structure and use tmpShell.c
 
 #include <stdlib.h>
@@ -17,5 +19,30 @@ typedef struct	s_cmd
 	int		op;
 }		t_cmd;
 
+/*
+**shell.c
+*/
+//int	main(int argc, char **argv, char **envp);
+
+/*
+**lstUtils.c
+*/
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
+
+/*
+**buildin.c
+*/
+int	is_buildin(char **command);
+
+/*
+**ft_cd.c
+*/
+int	ft_cd(char *path);
+
+/*
+**ft_pwd.c
+*/
+int	ft_pwd();
+
+#endif
