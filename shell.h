@@ -33,6 +33,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 /*
 **buildin.c
 */
+int	exec_buildin(char **command);
 int	is_buildin(char **command);
 
 /*

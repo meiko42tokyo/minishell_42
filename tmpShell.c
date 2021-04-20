@@ -1,14 +1,5 @@
 #include "shell.h"
 
-int	isbuiltin(t_cmd *c)
-{
-	// Temporary always return false.
-	// TODO: Should be judged by type of command
-	if (c->argv)
-		return (0);
-	return (0);
-}
-
 int	ispipe(t_cmd *c)
 {
 	if (c->op == 124)
@@ -92,9 +83,9 @@ void	run_list(t_cmd *c)
 {
 	while (c)
 	{
-		if (isbuiltin(c) && !ispipe(c))
+		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			//execve(c);
+			exec_buildin(c->argv);
 			c = c->next;
 			continue;
 		}
