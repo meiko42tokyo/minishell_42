@@ -157,15 +157,4 @@ int	main(int argc, char **argv)
 		free(command);
 	}
 	return (0);
-//	run_list(head);
-
-	// debug
-	/*
-	while (head)
-	{
-		if (head->next == NULL)
-			break;
-		head=head->next;
-	}
-	*/
 }
