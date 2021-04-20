@@ -138,8 +138,6 @@ int	main(int argc, char **argv)
 	char *input;
 	char *path;
 	t_cmd	*head;
-	//pid_t child_pid;
-	//int stat_loc;
 
 	argc = 1;
 	argv = NULL;
