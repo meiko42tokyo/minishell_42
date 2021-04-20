@@ -45,4 +45,9 @@ int	ft_cd(char *path);
 */
 int	ft_pwd();
 
+/*
+**ft_echo.c
+*/
+int	ft_echo(char **argv);
+
 #endif

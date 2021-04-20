@@ -7,8 +7,8 @@ int	is_buildin(char **command)
 	//strncmpにしなくていいかあとで確認
 	if (strcmp(command[0], "cd") == 0)
 		return (ft_cd(command[1]));
-	//else if (strcmp(command[0], "echo") == 0)
-	//	return (ft_echo(command[1]));
+	else if (strcmp(command[0], "echo") == 0)
+		return (ft_echo(command[1]));
 	else if (strcmp(command[0], "pwd") == 0)
 		return (ft_pwd());
 	//else if (strcmp(command[0], "export") == 0)
