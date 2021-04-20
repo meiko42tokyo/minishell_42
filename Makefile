@@ -17,7 +17,11 @@ endif
 ifeq ($(PLATFORM), MACOS)
 endif
 
-SRCS = shell.c
+SRCS = shell.c\
+	lstUtils.c\
+	buildin.c\
+	ft_cd.c\
+	ft_pwd.c\
 
 CFLAGS = -g -Wall -Wextra -Werror
 
@@ -35,13 +39,6 @@ $(NAME) : $(OBJS) $(LIBFT)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
-
-tmp: $(LIBFT)
-	$(CC)  $(CFLAGS) -I. -I$(LIBFT_DIR) tmpShell.c lstUtils.c buildin.c ft_cd.c ft_pwd.c $(LIBFT) -o tmp 
-
-tmpc:
-	rm -f tmpShell.o lstUtils.o tmp
-	rm -rf tmp.dSYM
 
 sani:
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -o $(NAME)
