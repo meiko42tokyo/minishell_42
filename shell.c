@@ -104,34 +104,6 @@ void	run_list(t_cmd *c)
 	}
 }
 
-char **get_input(char *input) {
-	char **command = malloc(8 * sizeof(char *));
-	if (command == NULL)
-	{
-		ft_putstr_fd("malloc fail", 2);
-		ft_putstr_fd("\n", 2);
-		exit(1);
-	}
-	char *separator = " ";
-	char *parsed;
-	int index = 0;
-
-	parsed = strtok(input, separator);
-	while (parsed != NULL) {
-		command[index] = parsed;
-		index++;
-		
-		parsed = strtok(NULL, separator);
-	}
-	command[index] = NULL;
-	return command;
-}
-
-// transform input->t_cmd
-// record until control as word and also record control. If in the quote, record until the quote end
-// <argv> split by the space. If in the quote, don't quote until the quote ends
-// call ft_cmdnew()
-
 int	main(int argc, char **argv) 
 {
 	char **command;

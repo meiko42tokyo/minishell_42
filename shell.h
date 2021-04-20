@@ -33,7 +33,8 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 /*
 **parse.c
 */
-t_cmd	*make_cmdlist(t_cmd **head, char *input);
+char	**get_input(char *input);
+t_cmd	*make_cmdlist(t_cmd *head, char *input);
 
 /*
 **buildin.c

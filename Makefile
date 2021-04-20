@@ -19,6 +19,7 @@ endif
 
 SRCS = shell.c\
 	lstUtils.c\
+	parse.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\
