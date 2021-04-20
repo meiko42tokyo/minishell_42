@@ -15,7 +15,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	char *input;
 	int exec;
 	extern char **environ; 
-	//int	stat_loc;
+	int	stat_loc;
 
 	if (ispipe)
 		pipe(newpipe);
@@ -37,13 +37,9 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		input = *c->argv;
 		path = ft_strjoin("/bin/", input);
 		exec = execve(path, c->argv, environ);
-		printf("path:%s\n", path);
-		printf("exec:%d\n", exec);
-		// TODO: Should change into our own functions
-		printf("accepted command %s in pid %d!\n", *c->argv, getpid());
+	} else {
+		waitpid(pid, &stat_loc, WUNTRACED);
 	}
-	// ?
-	//waitpid(pid, &stat_loc, WUNTRACED);
 	if (haspipe)
 	{
 		close(lastpipe[0]);
@@ -91,7 +87,7 @@ void	run_list(t_cmd *c)
 		}
 		c = do_pipeline(c);
 		//waitpid(c->pid);
-		printf("node:%s, %c\n", *c->argv, c->op); 
+		//printf("node:%s, %c\n", *c->argv, c->op); 
 		c = c->next;
 	}
 }
@@ -119,25 +115,32 @@ char **get_input(char *input) {
 	return command;
 }
 
-int	main(int argc, char **argv, char **envp) 
+// transform input->t_cmd
+// record until control as word and also record control. If in the quote, record until the quote end
+// <argv> split by the space. If in the quote, don't quote until the quote ends
+// call ft_cmdnew()
+
+int	main(int argc, char **argv) 
 {
 	char **command;
 	char *input;
 	char *path;
 	t_cmd	*head;
-	pid_t child_pid;
-	int stat_loc;
+	//pid_t child_pid;
+	//int stat_loc;
 
 	argc = 1;
 	argv = NULL;
 	signal(SIGINT, SIG_IGN);
 	while (1) {
 		ft_putstr_fd("> ", 0);
-		get_next_line(0, &input);
+		get_next_line(0, &input); // TODO: if fail in GNL
 		command = get_input(input);
 		path = ft_strjoin("/bin/", input); // not command?
+		//head = make_cmdlist(head);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		errno = 0;
+		/*
 		if (is_buildin(command) == 0) // should change strcmp?
 			continue ;
 		child_pid = fork();
