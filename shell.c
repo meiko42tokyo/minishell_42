@@ -145,9 +145,9 @@ int	main(int argc, char **argv)
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
-		command = get_input(input);
+		command = get_input(input); // should move to parse
 		path = ft_strjoin("/bin/", input); // not command?
-		//head = make_cmdlist(head);
+		//head = make_cmdlist(head, input);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
 		run_list(head);

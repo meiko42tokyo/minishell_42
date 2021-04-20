@@ -31,6 +31,11 @@ t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 
 /*
+**parse.c
+*/
+t_cmd	*make_cmdlist(t_cmd **head, char *input);
+
+/*
 **buildin.c
 */
 int	exec_buildin(char **command);
