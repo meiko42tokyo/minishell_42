@@ -20,8 +20,14 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	if (ispipe)
 		pipe(newpipe);
 	pid = fork();
+	if (pid < 0)
+	{
+		ft_putstr_fd("fork error", 2);
+		ft_putstr_fd("\n", 2);
+	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (haspipe)
 		{
 			close(lastpipe[1]);
@@ -36,7 +42,13 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		}
 		input = *c->argv;
 		path = ft_strjoin("/bin/", input);
+		errno = 0;
 		exec = execve(path, c->argv, environ);
+		if (errno){
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putstr_fd("\n", 2);
+			exit(errno);
+		}
 	} else {
 		waitpid(pid, &stat_loc, WUNTRACED);
 	}
@@ -139,30 +151,6 @@ int	main(int argc, char **argv)
 		path = ft_strjoin("/bin/", input); // not command?
 		//head = make_cmdlist(head);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
-		errno = 0;
-		/*
-		if (is_buildin(command) == 0) // should change strcmp?
-			continue ;
-		child_pid = fork();
-		if (child_pid < 0)
-		{
-			ft_putstr_fd("fork error", 2);
-			ft_putstr_fd("\n", 2);
-		}
-		if (child_pid == 0) {
-			signal(SIGINT, SIG_DFL);
-			errno = 0;
-			execve(path, command, envp);
-			if (errno){
-				ft_putstr_fd(strerror(errno), 2);
-				ft_putstr_fd("\n", 2);
-				exit(errno);
-			}
-		} else {
-			waitpid(child_pid, &stat_loc, WUNTRACED);
-		}
-		*/
-		
 		signal(SIGINT, SIG_DFL);
 		run_list(head);
 		free(input);
