@@ -161,6 +161,10 @@ int	main(int argc, char **argv)
 		} else {
 			waitpid(child_pid, &stat_loc, WUNTRACED);
 		}
+		*/
+		
+		signal(SIGINT, SIG_DFL);
+		run_list(head);
 		free(input);
 		free(command);
 	}
