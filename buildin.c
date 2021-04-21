@@ -17,8 +17,8 @@ int	exec_buildin(char **command)
 	//	return (ft_unset(command[1]));
 	//else if (ft_strncmp(command[0], "env", ft_strlen(command[0])) == 0)
 	//	return (ft_env(command[1]));
-	//else if (ft_strncmp(command[0], "exit", ft_strlen(command[0])) == 0)
-	//	return (ft_exit(command[1]));
+	else if (ft_strncmp(command[0], "exit", ft_strlen(command[0])) == 0)
+		return (ft_exit(command[1]));
 	return (1);
 }
 

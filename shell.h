@@ -37,19 +37,12 @@ int	exec_buildin(char **command);
 int	is_buildin(char **command);
 
 /*
-**ft_cd.c
+**buildin_command
 */
 int	ft_cd(char *path);
-
-/*
-**ft_pwd.c
-*/
 int	ft_pwd();
-
-/*
-**ft_echo.c
-*/
-int	ft_echo(char **comand);
+int	ft_echo(char **command);
+int	ft_exit(char **command);
 
 /*
 **errnor.c
