@@ -40,7 +40,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
-		input = *c->argv;
+		input = *c->argv; // TODO:input->c->argv[0]
 		path = ft_strjoin("/bin/", input);
 		errno = 0;
 		exec = execve(path, c->argv, environ);
@@ -108,7 +108,6 @@ int	main(int argc, char **argv)
 {
 	char **command;
 	char *input;
-	char *path;
 	t_cmd	*head;
 
 	argc = 1;
@@ -118,7 +117,6 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
 		command = get_input(input); // should move to parse
-		path = ft_strjoin("/bin/", input); // not command?
 		//head = make_cmdlist(head, input);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
