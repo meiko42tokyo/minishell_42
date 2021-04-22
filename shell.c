@@ -140,8 +140,8 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
 		command = get_argv(input); // should move to parse
-		//head = make_cmdlist(head, input);
-		head = ft_cmdnew(command, 0); // should be dynamic depend on op
+		head = make_cmdlist(input);
+		//head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
 		run_list(head);
 		free(input);
