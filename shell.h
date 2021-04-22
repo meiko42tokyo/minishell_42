@@ -48,5 +48,6 @@ int	ft_exit(char **command);
 **errnor.c
 */
 int	ft_errno(int num);
+int	ft_error_str(char *str);
 
 #endif
