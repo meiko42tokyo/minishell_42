@@ -7,6 +7,29 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
+char **get_input(char *input) {
+	char **command = malloc(8 * sizeof(char *));
+	if (command == NULL)
+	{
+		ft_putstr_fd("malloc fail", 2);
+		ft_putstr_fd("\n", 2);
+		exit(1);
+	}
+	char *separator = " ";
+	char *parsed;
+	int index = 0;
+
+	parsed = strtok(input, separator);
+	while (parsed != NULL) {
+		command[index] = parsed;
+		index++;
+
+		parsed = strtok(NULL, separator);
+	}
+	command[index] = NULL;
+	return command;
+}
+
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
@@ -116,7 +139,7 @@ int	main(int argc, char **argv)
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
-		command = get_input(input); // should move to parse
+		command = get_argv(input); // should move to parse
 		//head = make_cmdlist(head, input);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
