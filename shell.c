@@ -129,7 +129,6 @@ void	run_list(t_cmd *c)
 
 int	main(int argc, char **argv) 
 {
-	char **command;
 	char *input;
 	t_cmd	*head;
 
@@ -139,14 +138,11 @@ int	main(int argc, char **argv)
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
-		command = get_argv(input); // should move to parse
 		// save input to doubly linked list
 		head = make_cmdlist(input);
-		//head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
 		run_list(head);
 		free(input);
-		//free(command);
 	}
 	return (0);
 }
