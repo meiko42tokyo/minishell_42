@@ -23,7 +23,7 @@ char	**get_argv(char *input)
 // compare every strchr
 // return minimum number of distance
 // use the number for substr
-size_t	ft_min_strchr(char *input)
+char	*ft_min_strchr(char *input)
 {
 	size_t	min_dis;
 	size_t	tmp;
@@ -33,29 +33,22 @@ size_t	ft_min_strchr(char *input)
 	int	index;
 
 	index = 0;
-	printf("func ft_min_strchr:input - input_end: %ld\n", ft_strchr(input, 0) - input);
 	min_dis = ft_strchr(input, 0) - input;
-	printf("min_dis: %zu\n", min_dis);
 	while (ops[index])
 	{
-		printf("func min_strchr: ft_strchr%s\n", ft_strchr(input, ops[index]));
-		printf("func min_strchr: ops[index]%c\n", ops[index]);
 		if (ft_strchr(input, ops[index]) == NULL)
-{
-	index++;
-	continue ;
-}
-		tmp = ft_strchr(input, ops[index]) - input;	
-		printf("func min_strchr: tmp:%zu\n", tmp);
-		printf("func min_strchr: cand of mindis->%c\n", input[tmp]);
+		{
+			index++;
+			continue ;
+		}
+		tmp = ft_strchr(input, ops[index]) - input;
 		if (min_dis > tmp)
 			min_dis = tmp;
-		printf("current min :%c, %zu\n", input[min_dis], min_dis);	
 		index++;
 	}
 	if (ft_strlen(input) == min_dis)
-		return (0);
-	return (min_dis);
+		min_dis = 0;
+	return (input + min_dis);;
 }
 
 
@@ -63,21 +56,24 @@ size_t	ft_min_strchr(char *input)
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
-	size_t	dis;
-	//size_t	pipe_dis;
+	t_cmd	*cmd;
+	char	*word;
+	char	*new_pos;
 
 	head = NULL;
-	//pipe_dis = ft_strchr(input, '|') - input;
-	//printf("pipe_dis : %zu\n", pipe_dis);
-	// split input by certain char
-	while ((dis = ft_min_strchr(input) > 0))
+	new_pos = NULL;
+	while ((new_pos = ft_min_strchr(input)) > input)
 	{
-		printf("dis:%zu\n", dis);
-		//save before certain word
-		input += dis;
+		word = ft_strndup(input, new_pos - input);
+		// if redirect, check >>. and record somehow?
+		cmd = ft_cmdnew(get_argv(word), *new_pos);
+		free(word);
+		input = new_pos;
+		input++;
+		ft_cmdadd_back(&head, cmd);
 	}
-	// input->argv
-	// input->op
-	// call ft_cmdnew()
+	word = ft_strndup(input, ft_strlen(input));
+	cmd = ft_cmdnew(get_argv(word), 0);
+	ft_cmdadd_back(&head, cmd);	
 	return (head);
 }
