@@ -7,29 +7,6 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
-char **get_input(char *input) {
-	char **command = malloc(8 * sizeof(char *));
-	if (command == NULL)
-	{
-		ft_putstr_fd("malloc fail", 2);
-		ft_putstr_fd("\n", 2);
-		exit(1);
-	}
-	char *separator = " ";
-	char *parsed;
-	int index = 0;
-
-	parsed = strtok(input, separator);
-	while (parsed != NULL) {
-		command[index] = parsed;
-		index++;
-
-		parsed = strtok(NULL, separator);
-	}
-	command[index] = NULL;
-	return command;
-}
-
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
@@ -66,7 +43,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		input = *c->argv; // TODO:input->c->argv[0]
 		path = ft_strjoin("/bin/", input);
 		errno = 0;
-		exec = execve(path, c->argv, environ);
+		exec = execve(path, c->argv, environ); // exec needed?
 		if (errno){
 			ft_putstr_fd(strerror(errno), 2);
 			ft_putstr_fd("\n", 2);

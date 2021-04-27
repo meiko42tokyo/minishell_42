@@ -1,8 +1,5 @@
 #include "shell.h"
 
-// record until control as word and also record control. If in the quote, record until the quote end
-
-// <argv> split by the space. 
 // TODO: If in the quote, don't quote until the quote ends
 char	**get_argv(char *input)
 {
@@ -20,9 +17,6 @@ char	**get_argv(char *input)
 	return (argv);
 }
 
-// compare every strchr
-// return minimum number of distance
-// use the number for substr
 char	*ft_min_strchr(char *input)
 {
 	size_t	min_dis;
@@ -51,8 +45,6 @@ char	*ft_min_strchr(char *input)
 	return (input + min_dis);;
 }
 
-
-// transform input->t_cmd
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
