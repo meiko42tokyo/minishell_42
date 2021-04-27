@@ -39,10 +39,10 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2], char **e
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
-		input = *c->argv;
+		input = *c->argv; // TODO:input->c->argv[0]
 		path = ft_strjoin("/bin/", input);
 		errno = 0;
-		exec = execve(path, c->argv, environ);
+		exec = execve(path, c->argv, environ); // exec needed?
 		if (errno){
 			ft_putstr_fd(strerror(errno), 2);
 			ft_putstr_fd("\n", 2);
@@ -103,39 +103,9 @@ void	run_list(t_cmd *c, char **environ)
 	}
 }
 
-char **get_input(char *input) {
-	char **command = malloc(8 * sizeof(char *));
-	if (command == NULL)
-	{
-		ft_putstr_fd("malloc fail", 2);
-		ft_putstr_fd("\n", 2);
-		exit(1);
-	}
-	char *separator = " ";
-	char *parsed;
-	int index = 0;
-
-	parsed = strtok(input, separator);
-	while (parsed != NULL) {
-		command[index] = parsed;
-		index++;
-		
-		parsed = strtok(NULL, separator);
-	}
-	command[index] = NULL;
-	return command;
-}
-
-// transform input->t_cmd
-// record until control as word and also record control. If in the quote, record until the quote end
-// <argv> split by the space. If in the quote, don't quote until the quote ends
-// call ft_cmdnew()
-
 int	main(int argc, char **argv) 
 {
-	char **command;
 	char *input;
-	char *path;
 	t_cmd	*head;
 	extern char	**environ;
 
@@ -145,14 +115,11 @@ int	main(int argc, char **argv)
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
-		command = get_input(input);
-		path = ft_strjoin("/bin/", input); // not command?
-		//head = make_cmdlist(head);
-		head = ft_cmdnew(command, 0); // should be dynamic depend on op
+		// save input to doubly linked list
+		head = make_cmdlist(input);
 		signal(SIGINT, SIG_DFL);
 		run_list(head, environ);
 		free(input);
-		free(command);
 	}
 	return (0);
 }
