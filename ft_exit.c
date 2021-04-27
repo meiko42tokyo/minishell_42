@@ -24,7 +24,7 @@ int			ft_will_overflow(unsigned long n, int next_digit)
 
 static int			ft_exit_atoi(const char *str)
 {
-	unsigned long	ret;
+	size_t	ret;
 	int				i;
 	int				sign;
 
@@ -57,7 +57,7 @@ static int			ft_exit_atoi(const char *str)
 //256以上＝255とで割った数のあまり
 int	ft_exit(char **command)
 {
-	int	num;
+	size_t	num;
 
 	if (command[2])
 		return (ft_error_str("too many argment"));

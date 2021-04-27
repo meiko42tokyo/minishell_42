@@ -1,7 +1,7 @@
 #include "shell.h"
 #include "libft/libft.h"
 
-int	exec_buildin(char **command)
+int	exec_buildin(char **command, char **environ)
 {
 	//strncmpにしなくていいかあとで確認
 	//ft_strncmp->ft_ft_strncmp
@@ -11,12 +11,12 @@ int	exec_buildin(char **command)
 		return (ft_echo(command));
 	else if (ft_strncmp(command[0], "pwd", ft_strlen(command[0])) == 0)
 		return (ft_pwd());
-	//else if (ft_strncmp(command[0], "export", ft_strlen(command[0])) == 0)
-	//	return (ft_export(command[1]));
+	else if (ft_strncmp(command[0], "export", ft_strlen(command[0])) == 0)
+		return (ft_export(&command[1], environ));
 	//else if (ft_strncmp(command[0], "unset", ft_strlen(command[0])) == 0)
 	//	return (ft_unset(command[1]));
-	//else if (ft_strncmp(command[0], "env", ft_strlen(command[0])) == 0)
-	//	return (ft_env(command[1]));
+	else if (ft_strncmp(command[0], "env", ft_strlen(command[0])) == 0)
+		return (ft_env(environ));
 	else if (ft_strncmp(command[0], "exit", ft_strlen(command[0])) == 0)
 		return (ft_exit(command));
 	return (1);

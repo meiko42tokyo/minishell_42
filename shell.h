@@ -33,7 +33,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 /*
 **buildin.c
 */
-int	exec_buildin(char **command);
+int	exec_buildin(char **command, char **environ);
 int	is_buildin(char **command);
 
 /*
@@ -43,6 +43,8 @@ int	ft_cd(char *path);
 int	ft_pwd();
 int	ft_echo(char **command);
 int	ft_exit(char **command);
+int	ft_env(char **environ);
+int	ft_export(char **command, char **environ);
 
 /*
 **errnor.c

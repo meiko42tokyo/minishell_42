@@ -7,14 +7,13 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
-pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
+pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2], char **environ)
 {
 	pid_t	pid;
 	int	newpipe[2];
 	char *path;
 	char *input;
 	int exec;
-	extern char **environ; 
 	int	stat_loc;
 
 	if (ispipe)
@@ -66,7 +65,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 }
 
 
-t_cmd	*do_pipeline(t_cmd *c)
+t_cmd	*do_pipeline(t_cmd *c, char **environ)
 {
 	int	haspipe;
 	int	lastpipe[2];
@@ -76,7 +75,7 @@ t_cmd	*do_pipeline(t_cmd *c)
 	lastpipe[1] = -1;
 	while (c)
 	{
-		c->pid = start_command(c, ispipe(c), haspipe, lastpipe);
+		c->pid = start_command(c, ispipe(c), haspipe, lastpipe, environ);
 		haspipe = ispipe(c);
 		if (haspipe)
 			c = c->next;
@@ -87,17 +86,17 @@ t_cmd	*do_pipeline(t_cmd *c)
 }
 
 
-void	run_list(t_cmd *c)
+void	run_list(t_cmd *c, char **environ)
 {
 	while (c)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			exec_buildin(c->argv);
+			exec_buildin(c->argv, environ);
 			c = c->next;
 			continue;
 		}
-		c = do_pipeline(c);
+		c = do_pipeline(c, environ);
 		//waitpid(c->pid);
 		//printf("node:%s, %c\n", *c->argv, c->op); 
 		c = c->next;
@@ -138,6 +137,7 @@ int	main(int argc, char **argv)
 	char *input;
 	char *path;
 	t_cmd	*head;
+	extern char	**environ;
 
 	argc = 1;
 	argv = NULL;
@@ -150,7 +150,7 @@ int	main(int argc, char **argv)
 		//head = make_cmdlist(head);
 		head = ft_cmdnew(command, 0); // should be dynamic depend on op
 		signal(SIGINT, SIG_DFL);
-		run_list(head);
+		run_list(head, environ);
 		free(input);
 		free(command);
 	}
