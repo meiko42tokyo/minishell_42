@@ -35,7 +35,8 @@ SRCS	= ft_memset.c\
 		  ft_putendl_fd.c\
 		  ft_putnbr_fd.c\
 		  get_next_line.c\
-		  get_next_line_utils.c 
+		  get_next_line_utils.c\
+		ft_getchar_fd.c	 
 
 B_SRCS	= $(SRCS)\
 		  ft_lstnew.c\

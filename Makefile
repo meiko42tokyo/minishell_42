@@ -44,6 +44,15 @@ $(LIBFT):
 sani:
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -o $(NAME)
 
+term: $(LIBFT) 
+	$(CC) $(CFLAGS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
+
+termc:
+	rm -f doubly_lstUtils.o termcap.o
+	rm -rf termcap.dSYM
+	rm -f termcap 
+	$(MAKE) fclean -C $(LIBFT_DIR)
+
 clean:
 	rm -f $(OBJS)
 	$(MAKE) clean -C $(LIBFT_DIR)
