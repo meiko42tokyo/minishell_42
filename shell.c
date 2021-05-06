@@ -7,7 +7,7 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
-pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2], char **environ)
+pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
 	int	newpipe[2];
@@ -15,6 +15,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2], char **e
 	char *input;
 	int exec;
 	int	stat_loc;
+	extern char	**environ;
 
 	if (ispipe)
 		pipe(newpipe);
@@ -65,7 +66,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2], char **e
 }
 
 
-t_cmd	*do_pipeline(t_cmd *c, char **environ)
+t_cmd	*do_pipeline(t_cmd *c)
 {
 	int	haspipe;
 	int	lastpipe[2];
@@ -75,7 +76,7 @@ t_cmd	*do_pipeline(t_cmd *c, char **environ)
 	lastpipe[1] = -1;
 	while (c)
 	{
-		c->pid = start_command(c, ispipe(c), haspipe, lastpipe, environ);
+		c->pid = start_command(c, ispipe(c), haspipe, lastpipe);
 		haspipe = ispipe(c);
 		if (haspipe)
 			c = c->next;
@@ -86,17 +87,17 @@ t_cmd	*do_pipeline(t_cmd *c, char **environ)
 }
 
 
-void	run_list(t_cmd *c, char **environ)
+void	run_list(t_cmd *c, t_env *env)
 {
 	while (c)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			exec_buildin(c->argv, environ);
+			exec_buildin(c->argv, env);
 			c = c->next;
 			continue;
 		}
-		c = do_pipeline(c, environ);
+		c = do_pipeline(c);
 		//waitpid(c->pid);
 		//printf("node:%s, %c\n", *c->argv, c->op); 
 		c = c->next;
@@ -107,18 +108,20 @@ int	main(int argc, char **argv)
 {
 	char *input;
 	t_cmd	*head;
+	t_env	*env;
 	extern char	**environ;
 
 	argc = 1;
 	argv = NULL;
 	signal(SIGINT, SIG_IGN);
+	env = init_env();
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &input); // TODO: if fail in GNL
 		// save input to doubly linked list
 		head = make_cmdlist(input);
 		signal(SIGINT, SIG_DFL);
-		run_list(head, environ);
+		run_list(head, env);
 		free(input);
 	}
 	return (0);

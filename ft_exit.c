@@ -59,10 +59,10 @@ int	ft_exit(char **command)
 {
 	size_t	num;
 
-	if (command[2])
+	if (command[2])//なぜかexitでここはいる
 		return (ft_error_str("too many argment"));
 	if (command[1] == NULL)
-		exit(0);
+		exit (0);
 	num = ft_exit_atoi(command[1]);
 	if (num < 0)
 		return (ft_error_str("invalid argment"));
@@ -70,8 +70,8 @@ int	ft_exit(char **command)
 	{
 		if (num > 255)
 			num %= 256;
-		ft_putstr_fd("exit\n", 1);
-		exit(num);
+		ft_putstr_fd("exit\n", 2);
+		exit (num);
 	}
 	return (0);
 }

@@ -19,6 +19,13 @@ typedef struct	s_cmd
 	int		op;
 }		t_cmd;
 
+typedef struct	s_env
+{
+	struct s_env	*next;
+	char		*name;
+	char		*value;
+}		t_env;
+
 /*
 **shell.c
 */
@@ -39,7 +46,7 @@ t_cmd	*make_cmdlist(char *input);
 /*
 **buildin.c
 */
-int	exec_buildin(char **command, char **environ);
+int	exec_buildin(char **command, t_env *env);
 int	is_buildin(char **command);
 
 /*
@@ -49,8 +56,14 @@ int	ft_cd(char *path);
 int	ft_pwd();
 int	ft_echo(char **command);
 int	ft_exit(char **command);
-int	ft_env(char **environ);
-int	ft_export(char **command, char **environ);
+int	ft_env(t_env *env);
+int	ft_export(char **command, t_env *env);
+
+/*
+**env_utils.c
+*/
+void	ft_encadd_back(t_env **env, t_env *new);
+t_env	*init_env();
 
 /*
 **errnor.c

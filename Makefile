@@ -27,6 +27,7 @@ SRCS = shell.c\
 	ft_exit.c\
 	ft_env.c\
 	ft_export.c\
+	env_utils.c\
 	error.c\
 
 CFLAGS = -g -Wall -Wextra -Werror
