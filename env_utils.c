@@ -1,5 +1,12 @@
 #include "shell.h"
 
+void	env_free(t_env *env)
+{
+	free(env->name);
+	free(env->value);
+	free(env);
+}
+
 void	ft_envadd_back(t_env **env, t_env *new)
 {
 	t_env	*tmp;

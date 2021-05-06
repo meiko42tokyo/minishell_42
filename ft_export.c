@@ -1,6 +1,7 @@
 #include "shell.h"
 
-static void	ft_envadd_back(t_env **env, t_env *new)
+/*
+void	ft_envadd_back(t_env **env, t_env *new)
 {
 	t_env	*tmp;
 
@@ -16,6 +17,7 @@ static void	ft_envadd_back(t_env **env, t_env *new)
 	}
 	tmp->next = new;
 }
+*/
 
 int	ft_export(char **command, t_env *env)
 {

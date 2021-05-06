@@ -58,12 +58,14 @@ int	ft_echo(char **command);
 int	ft_exit(char **command);
 int	ft_env(t_env *env);
 int	ft_export(char **command, t_env *env);
+int	ft_unset(char **command, t_env *env);
 
 /*
 **env_utils.c
 */
-void	ft_encadd_back(t_env **env, t_env *new);
+void	ft_envadd_back(t_env **env, t_env *new);
 t_env	*init_env();
+void	env_free(t_env *env);
 
 /*
 **errnor.c
