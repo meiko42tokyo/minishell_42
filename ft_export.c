@@ -24,7 +24,9 @@ int	ft_export(char **command, t_env *env)
 	char		*cd_name;
 	int			sp;
 	t_env		*tmp;
+	t_env		*start;
 
+	start = env;
 	sp = ft_strchr(command[0], '=') - command[0];//=までの文字の長さをくっつける
 	cd_name = ft_strndup(command[0], sp);
 	while (env) 
@@ -39,7 +41,7 @@ int	ft_export(char **command, t_env *env)
 	tmp = (t_env*)malloc(sizeof(t_env));
 	tmp->name = ft_strndup(command[0], sp);
 	tmp->value = ft_strdup(&command[0][sp + 1]);
-	ft_envadd_back(&env, tmp);
+	ft_envadd_back(&start, tmp);
 	printf("add\nline[%s]\nvalue[%s]\n", tmp->name, tmp->value);
 	return (0);
 }
