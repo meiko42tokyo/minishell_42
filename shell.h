@@ -15,6 +15,10 @@
 #include <sys/ioctl.h>
 #include "libft/libft.h"
 
+#define EOF_KEY 4
+#define AR_U 4283163
+#define AR_D 4348699
+
 typedef struct	s_cmd
 {
 	struct s_cmd	*next;
