@@ -25,24 +25,53 @@ void	reset_termcap(struct termios *term)
 	tcsetattr(0, TCSANOW, term);
 }
 
-// get input of key
+// store data to doubly linked list
+char	*make_line(char *line, int c_int)
+{
+	char		*ret;
+	char		*tail;
+	char	c;
+
+	write(1, &c, 1);
+	c = (char)c_int;
+	tail = ft_strdup(&c);
+	tail[1] = '\0';
+	if (line == NULL)
+		return (tail);
+	ret = ft_strjoin(line, tail);
+	free(line);
+	line = NULL;
+	return (ret);	
+}
+
 int	main()
 {
 	struct termios	term;
 	int		c;
+	char		*line;
 
+	line = NULL;
 	set_termcap(&term);
 	// store standard input when enter key pressed
 	while (1) {
-		read(0, &c, sizeof(c));
-		if (c == AR_U)
-			printf("AR_U\n");
-		if (c == AR_D)
-			printf("AR_D\n");
-		if (c == EOF_KEY)
-			printf("EOF\n");
 		c = 0;
-			// store data to doubly linked list
+		read(0, &c, sizeof(c));
+		//printf("c:%d\n", c);
+		if (c == '\n')
+		{
+			printf("%s\n", line);
+			break ;
+		}
+		else if (c == AR_U)
+			printf("AR_U\n");
+		else if (c == AR_D)
+			printf("AR_D\n");
+		else if (c == EOF_KEY)
+			printf("EOF\n");
+		else if (ft_isprint(c))
+		{
+			line = make_line(line, c); // should store and print
+		}
 	}
 	write(1, "\n", 1);
 	reset_termcap(&term);
