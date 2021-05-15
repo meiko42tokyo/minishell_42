@@ -32,10 +32,9 @@ char	*make_line(char *line, int c_int)
 	char		*tail;
 	char	c;
 
-	write(1, &c, 1);
 	c = (char)c_int;
-	tail = ft_strdup(&c);
-	tail[1] = '\0';
+	write(1, &c, 1);
+	tail = ft_strndup(&c, 1);
 	if (line == NULL)
 		return (tail);
 	ret = ft_strjoin(line, tail);
@@ -44,22 +43,20 @@ char	*make_line(char *line, int c_int)
 	return (ret);	
 }
 
-int	main()
+int	*get_line(char **line)
 {
-	struct termios	term;
 	int		c;
-	char		*line;
-
-	line = NULL;
-	set_termcap(&term);
+	t_line		*head;
 	// store standard input when enter key pressed
+	head = NULL;
 	while (1) {
 		c = 0;
 		read(0, &c, sizeof(c));
-		//printf("c:%d\n", c);
+		//printf("c:%d, isprint:%d\n", c, ft_isprint(c));
 		if (c == '\n')
 		{
-			printf("%s\n", line);
+			//store in doubly linked list
+			ft_lineadd_back(&head, ft_linenew(*line));		
 			break ;
 		}
 		else if (c == AR_U)
@@ -70,10 +67,29 @@ int	main()
 			printf("EOF\n");
 		else if (ft_isprint(c))
 		{
-			line = make_line(line, c); // should store and print
+			*line = make_line(*line, c);
 		}
 	}
+	//free(*line);
+	printf("%s\n", head->data);
 	write(1, "\n", 1);
+	return (0);
+}
+
+int	main()
+{
+	struct termios	term;
+	char		*line;
+
+	set_termcap(&term);
+	line = NULL;
+	while (1)
+	{
+		if (line != NULL)
+			free(line);
+		line = NULL;
+		get_line(&line);
+	}
 	reset_termcap(&term);
 	return (0);
 }
