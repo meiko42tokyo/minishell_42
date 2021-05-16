@@ -53,7 +53,8 @@ int	get_line(char *line, t_line **head)
 		if (c == '\n')
 		{
 			if (line != NULL)
-				ft_lineadd_back(head, ft_linenew(line));
+				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
+					return (-1);
 			break ;
 		}
 		else if (c == AR_U)

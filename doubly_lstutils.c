@@ -13,15 +13,17 @@ t_line	*ft_linenew(char *data)
 	return (node);
 }
 
-void	ft_lineadd_back(t_line **head, t_line *new)
+int	ft_lineadd_back(t_line **head, t_line *new)
 {
 	t_line	*node;
 
 	if (*head == NULL)
 	{
 		*head = new;
-		return;
+		return (0);
 	}
+	if (new == NULL)
+		return (-1);
 	node = *head;
 	while (node)
 	{
@@ -33,7 +35,7 @@ void	ft_lineadd_back(t_line **head, t_line *new)
 		}
 		node = node->next;
 	}
-	return ;
+	return (0);
 }
 
 void	ft_free_linehead(t_line **head)

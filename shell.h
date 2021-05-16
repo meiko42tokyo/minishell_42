@@ -49,7 +49,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 **doubly_lstUtils.c
 */
 t_line	*ft_linenew(char *data);
-void	ft_lineadd_back(t_line **head, t_line *new);
+int	ft_lineadd_back(t_line **head, t_line *new);
 void	ft_free_linehead(t_line **head);
 
 /*
