@@ -31,7 +31,7 @@ typedef struct	s_line
 {
 	struct s_line	*next;
 	struct s_line	*prev;
-	char			*data;
+	char		*data;
 }		t_line;
 
 /*
@@ -50,6 +50,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 */
 t_line	*ft_linenew(char *data);
 void	ft_lineadd_back(t_line **head, t_line *new);
+void	ft_free_linehead(t_line **head);
 
 /*
 **parse.c

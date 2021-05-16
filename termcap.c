@@ -25,7 +25,6 @@ void	reset_termcap(struct termios *term)
 	tcsetattr(0, TCSANOW, term);
 }
 
-// store data to doubly linked list
 char	*make_line(char *line, int c_int)
 {
 	char		*ret;
@@ -39,24 +38,22 @@ char	*make_line(char *line, int c_int)
 		return (tail);
 	ret = ft_strjoin(line, tail);
 	free(line);
+	free(tail);
 	line = NULL;
+	tail = NULL;
 	return (ret);	
 }
 
-int	*get_line(char **line)
+int	get_line(char *line, t_line **head)
 {
 	int		c;
-	t_line		*head;
-	// store standard input when enter key pressed
-	head = NULL;
 	while (1) {
 		c = 0;
 		read(0, &c, sizeof(c));
-		//printf("c:%d, isprint:%d\n", c, ft_isprint(c));
 		if (c == '\n')
 		{
-			//store in doubly linked list
-			ft_lineadd_back(&head, ft_linenew(*line));		
+			if (line != NULL)
+				ft_lineadd_back(head, ft_linenew(line));
 			break ;
 		}
 		else if (c == AR_U)
@@ -64,32 +61,55 @@ int	*get_line(char **line)
 		else if (c == AR_D)
 			printf("AR_D\n");
 		else if (c == EOF_KEY)
+		{
 			printf("EOF\n");
+			return (1);
+		}
 		else if (ft_isprint(c))
 		{
-			*line = make_line(*line, c);
+			line = make_line(line, c);
 		}
 	}
-	//free(*line);
-	printf("%s\n", head->data);
+	free(line);
+	line = NULL;
 	write(1, "\n", 1);
 	return (0);
+}
+
+void	ft_print_linelist(t_line **head)
+{
+	t_line		*tmp;
+	int		i;
+	tmp = *head;
+	i = 0;
+	while (tmp)
+	{
+		printf("node[%d]:%s\n", i, tmp->data);
+		if (tmp->next == NULL)
+			break;
+		tmp = tmp->next;
+		i++;
+	}
+	return ;
 }
 
 int	main()
 {
 	struct termios	term;
 	char		*line;
+	t_line		*head;
+	int		ret;
 
+	head = NULL;
 	set_termcap(&term);
 	line = NULL;
 	while (1)
 	{
-		if (line != NULL)
-			free(line);
-		line = NULL;
-		get_line(&line);
+		ret = get_line(line, &head);
+		if (ret == 1)
+			break;
 	}
 	reset_termcap(&term);
+	ft_free_linehead(&head);
 	return (0);
 }

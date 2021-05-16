@@ -22,6 +22,5 @@ char	*ft_strdup(const char *s1)
 	if (ret == NULL)
 		return (NULL);
 	ret = (char*)ft_memcpy(ret, s1, slen + 1);
-	ret[slen] = '\0';
 	return (ret);
 }
