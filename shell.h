@@ -50,6 +50,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 */
 t_line	*ft_linenew(char *data);
 int	ft_lineadd_back(t_line **head, t_line *new);
+int	ft_get_lstsize(t_line **head);
 void	ft_free_linehead(t_line **head);
 
 /*

@@ -44,9 +44,45 @@ char	*make_line(char *line, int c_int)
 	return (ret);	
 }
 
+// only up first
+void	history_out(t_line **head, int *depth, int c)
+{
+	int	i;
+	int	his_size;
+	t_line	*node;
+
+	i = 0;
+	his_size = ft_get_lstsize(head);
+	if (c == AR_U)
+	{
+		if (*depth + 1 <= his_size)
+			(*depth)++;
+		else
+			return ;
+	}
+	else if (c == AR_D)
+	{
+		if (*depth - 1 >= 0)
+			(*depth)--;
+		else
+			return ;
+	}
+	//printf("depth:%d, size:%d\n", *depth, his_size);
+	node = *head;
+	while (i < his_size - *depth - 1)
+	{
+		node = node->next;
+		i++;
+	}
+	write(1, node->data, ft_strlen(node->data));
+}
+
 int	get_line(char *line, t_line **head)
 {
 	int		c;
+	int		his_depth;
+
+	his_depth = 0;
 	while (1) {
 		c = 0;
 		read(0, &c, sizeof(c));
@@ -57,10 +93,18 @@ int	get_line(char *line, t_line **head)
 					return (-1);
 			break ;
 		}
-		else if (c == AR_U)
-			printf("AR_U\n");
-		else if (c == AR_D)
-			printf("AR_D\n");
+		else if (c == AR_U || c == AR_D)
+		{
+			// save depth 0	
+			if (his_depth == 0 && c == AR_U)
+			{
+				if (line == NULL)
+					line = ft_strndup("", 1);
+				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
+					return (-1);
+			}
+			history_out(head, &his_depth, c);// assign ret to line?
+		}
 		else if (c == EOF_KEY)
 		{
 			printf("EOF\n");
@@ -73,6 +117,7 @@ int	get_line(char *line, t_line **head)
 	}
 	free(line);
 	line = NULL;
+	//printf("size:%d\n", ft_get_lstsize(head));
 	write(1, "\n", 1);
 	return (0);
 }
@@ -111,6 +156,7 @@ int	main()
 			break;
 	}
 	reset_termcap(&term);
+	ft_print_linelist(&head);
 	ft_free_linehead(&head);
 	return (0);
 }

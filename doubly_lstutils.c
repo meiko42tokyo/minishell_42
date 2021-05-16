@@ -38,6 +38,24 @@ int	ft_lineadd_back(t_line **head, t_line *new)
 	return (0);
 }
 
+int	ft_get_lstsize(t_line **head)
+{
+	int	size;
+	t_line	*node;
+
+	size = 0;
+	node = *head;
+	while (node)
+	{
+		size++;
+		if (node->next == NULL)
+			break ;
+		node = node->next;
+	}
+	return (size);	
+}
+
+
 void	ft_free_linehead(t_line **head)
 {
 	t_line *node;
