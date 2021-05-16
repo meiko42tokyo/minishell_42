@@ -55,6 +55,33 @@ int	ft_get_lstsize(t_line **head)
 	return (size);	
 }
 
+char	*ft_get_latestdata(t_line **head)
+{
+	t_line	*node;
+
+	node = *head;
+	while (node)
+	{
+		if (node->next == NULL)
+			break;
+		node = node->next;
+	}
+	return (node->data);
+}
+
+t_line	*ft_get_latestline(t_line **head)
+{
+	t_line	*node;
+
+	node = *head;
+	while (node)
+	{
+		if (node->next == NULL)
+			break;
+		node = node->next;
+	}
+	return (node);
+}
 
 void	ft_free_linehead(t_line **head)
 {

@@ -53,6 +53,7 @@ void	history_out(t_line **head, int *depth, int c)
 
 	i = 0;
 	his_size = ft_get_lstsize(head);
+	node = ft_get_latestline(head);
 	if (c == AR_U)
 	{
 		if (*depth + 1 <= his_size)
@@ -68,12 +69,12 @@ void	history_out(t_line **head, int *depth, int c)
 			return ;
 	}
 	//printf("depth:%d, size:%d\n", *depth, his_size);
-	node = *head;
-	while (i < his_size - *depth - 1)
+	
+	/*while (i < his_size - *depth - 1)
 	{
 		node = node->next;
 		i++;
-	}
+	}*/
 	write(1, node->data, ft_strlen(node->data));
 }
 
@@ -95,8 +96,12 @@ int	get_line(char *line, t_line **head)
 		}
 		else if (c == AR_U || c == AR_D)
 		{
-			// save depth 0	
-			if (his_depth == 0 && c == AR_U)
+			/*if (line != NULL)
+			{
+				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
+					return (-1);
+			}*/
+			if (his_depth == 0 && c == AR_U && ft_get_latestdata(head))
 			{
 				if (line == NULL)
 					line = ft_strndup("", 1);
