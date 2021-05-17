@@ -94,6 +94,8 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
+			tputs(tgetstr("cr", 0), 1, ft_putchar);
+			tputs(tgetstr("ce", 0), 1, ft_putchar);
 			history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
