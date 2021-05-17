@@ -94,15 +94,6 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
-			/*if (his_depth == 0 && c == AR_U && cur_node->data)
-			{
-				if (line == NULL)
-					line = ft_strndup("", 1);
-				cur_node = ft_linenew(line);
-				if (!cur_node)
-					return (-1);
-				ft_lineadd_back(head, cur_node);
-			}*/
 			history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
