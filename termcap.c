@@ -45,40 +45,29 @@ char	*make_line(char *line, int c_int)
 }
 
 // only up first
-void	history_out(t_line **head, int *depth, int c)
+void	history_out(t_line **cur_node, int c)
 {
-	int	i;
-	int	his_size;
 	t_line	*node;
 
-	i = 0;
-	his_size = ft_get_lstsize(head);
-	node = ft_get_latestline(head);
+	node = *cur_node;
 	if (c == AR_U)
 	{
-		if (*depth + 1 <= his_size)
-			(*depth)++;
+		if (node->prev != NULL)
+			*cur_node = (*cur_node)->prev;
 		else
 			return ;
 	}
 	else if (c == AR_D)
 	{
-		if (*depth - 1 >= 0)
-			(*depth)--;
+		if ((*cur_node)->next != NULL)
+			*cur_node = (*cur_node)->next;
 		else
 			return ;
 	}
-	//printf("depth:%d, size:%d\n", *depth, his_size);
-	
-	/*while (i < his_size - *depth - 1)
-	{
-		node = node->next;
-		i++;
-	}*/
-	write(1, node->data, ft_strlen(node->data));
+	write(1, (*cur_node)->data, ft_strlen((*cur_node)->data));
 }
 
-int	get_line(char *line, t_line **head)
+int	get_line(char *line, t_line **head, t_line **cur_node)
 {
 	int		c;
 	int		his_depth;
@@ -90,8 +79,12 @@ int	get_line(char *line, t_line **head)
 		if (c == '\n')
 		{
 			if (line != NULL)
-				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
+			{
+				*cur_node = ft_linenew(line);
+				if (!*cur_node)
 					return (-1);
+				ft_lineadd_back(head, *cur_node);
+			}
 			break ;
 		}
 		else if (c == AR_U || c == AR_D)
@@ -101,14 +94,16 @@ int	get_line(char *line, t_line **head)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
-			if (his_depth == 0 && c == AR_U && ft_get_latestdata(head))
+			/*if (his_depth == 0 && c == AR_U && cur_node->data)
 			{
 				if (line == NULL)
 					line = ft_strndup("", 1);
-				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
+				cur_node = ft_linenew(line);
+				if (!cur_node)
 					return (-1);
-			}
-			history_out(head, &his_depth, c);// assign ret to line?
+				ft_lineadd_back(head, cur_node);
+			}*/
+			history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
 		{
@@ -122,7 +117,6 @@ int	get_line(char *line, t_line **head)
 	}
 	free(line);
 	line = NULL;
-	//printf("size:%d\n", ft_get_lstsize(head));
 	write(1, "\n", 1);
 	return (0);
 }
@@ -149,6 +143,7 @@ int	main()
 	struct termios	term;
 	char		*line;
 	t_line		*head;
+	t_line		*cur_node;
 	int		ret;
 
 	head = NULL;
@@ -156,12 +151,12 @@ int	main()
 	line = NULL;
 	while (1)
 	{
-		ret = get_line(line, &head);
+		ret = get_line(line, &head, &cur_node);
 		if (ret == 1)
 			break;
 	}
 	reset_termcap(&term);
-	ft_print_linelist(&head);
+	//ft_print_linelist(&head);
 	ft_free_linehead(&head);
 	return (0);
 }
