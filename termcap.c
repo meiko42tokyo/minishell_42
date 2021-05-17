@@ -53,17 +53,19 @@ void	history_out(t_line **cur_node, int c)
 	if (c == AR_U)
 	{
 		if (node->prev != NULL)
-			*cur_node = (*cur_node)->prev;
+			(*cur_node) = node->prev;
 		else
 			return ;
 	}
 	else if (c == AR_D)
 	{
-		if ((*cur_node)->next != NULL)
-			*cur_node = (*cur_node)->next;
+		if (node->next != NULL)
+			(*cur_node) = node->next;
 		else
 			return ;
 	}
+	tputs(tgetstr("cr", 0), 1, ft_putchar);
+	tputs(tgetstr("ce", 0), 1, ft_putchar);
 	write(1, (*cur_node)->data, ft_strlen((*cur_node)->data));
 }
 
@@ -94,8 +96,6 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
-			tputs(tgetstr("cr", 0), 1, ft_putchar);
-			tputs(tgetstr("ce", 0), 1, ft_putchar);
 			history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
