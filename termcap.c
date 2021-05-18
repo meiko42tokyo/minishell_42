@@ -49,6 +49,8 @@ void	history_out(t_line **cur_node, int c)
 {
 	t_line	*node;
 
+	if (*cur_node == NULL)
+		return ; 
 	node = *cur_node;
 	if (c == AR_U)
 	{
@@ -96,7 +98,10 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
-			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0)
+			printf("if line null:%d\n", line == NULL);
+			if (*cur_node == NULL)
+				return (0);
+			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0 && line == NULL)
 			{
 				if (line == NULL)
 					line = ft_strndup("", 1);
