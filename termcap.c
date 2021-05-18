@@ -96,6 +96,16 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
+			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0)
+			{
+				if (line == NULL)
+					line = ft_strndup("", 1);
+				*cur_node = ft_linenew(line);
+				if (!(*cur_node))
+					return (-1);
+				ft_lineadd_back(head, *cur_node);
+			}
+			//printf("cur_node:%s\n", (*cur_node)->data);
 			history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
@@ -149,7 +159,7 @@ int	main()
 			break;
 	}
 	reset_termcap(&term);
-	//ft_print_linelist(&head);
+	ft_print_linelist(&head);
 	ft_free_linehead(&head);
 	return (0);
 }
