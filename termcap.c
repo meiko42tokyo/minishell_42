@@ -98,13 +98,15 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
 					return (-1);
 			}*/
-			printf("if line null:%d\n", line == NULL);
 			if (*cur_node == NULL)
+			{
+				free(line);
+				line = NULL;
 				return (0);
+			}
 			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0 && line == NULL)
 			{
-				if (line == NULL)
-					line = ft_strndup("", 1);
+				line = ft_strndup("", 1);
 				*cur_node = ft_linenew(line);
 				if (!(*cur_node))
 					return (-1);
@@ -133,6 +135,7 @@ void	ft_print_linelist(t_line **head)
 {
 	t_line		*tmp;
 	int		i;
+	
 	tmp = *head;
 	i = 0;
 	while (tmp)
@@ -157,6 +160,7 @@ int	main()
 	head = NULL;
 	set_termcap(&term);
 	line = NULL;
+	cur_node = NULL;
 	while (1)
 	{
 		ret = get_line(line, &head, &cur_node);
