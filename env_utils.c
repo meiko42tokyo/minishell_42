@@ -24,6 +24,7 @@ void	ft_envadd_back(t_env **env, t_env *new)
 //	printf("line=%s, name=%s, value=%s\n", tmp->line, tmp->name, tmp->value);
 }
 
+/*
 t_env	*dup_env(t_env *env)
 {
 	//if (env == NULL)
@@ -43,6 +44,7 @@ t_env	*dup_env(t_env *env)
 	}
 	return (tmp);
 }
+*/
 
 void	env_free(t_env *env)
 {

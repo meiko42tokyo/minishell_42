@@ -11,8 +11,8 @@ int	exec_buildin(char **command, t_env *env)
 		return (ft_echo(command));
 	else if (ft_strncmp(command[0], "pwd", ft_strlen(command[0])) == 0)
 		return (ft_pwd());
-//	else if (ft_strncmp(command[0], "export", ft_strlen(command[0])) == 0)
-//		return (ft_export(&command[1], env));
+	else if (ft_strncmp(command[0], "export", ft_strlen(command[0])) == 0)
+		return (ft_export(&command[1], env));
 	else if (ft_strncmp(command[0], "unset", ft_strlen(command[0])) == 0)
 		return (ft_unset(command, env));
 	else if (ft_strncmp(command[0], "env", ft_strlen(command[0])) == 0)

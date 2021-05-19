@@ -5,40 +5,44 @@ static void	print_env(t_env *env, char **cp_name)
 	t_env	*tmp;
 	int		i;
 
-	tmp = env;
+	tmp = (t_env*)malloc(sizeof(t_env));
 	i = 0;
 	while(cp_name[i])
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(cp_name[i], 1);
-		ft_putstr_fd("=\"", 1);
-		while (tmp->name)
+		tmp = env;
+		while (tmp)
 		{
-			if (ft_strcmp(cp_name[i], tmp) == 0)
+			if (ft_strncmp(cp_name[i], tmp->name, ft_strlen(tmp->name)) == 0)
 			{
-				ft_putstr_fd(tmp->value, 1);
+				ft_putstr_fd("declare -x ", 1);
+				ft_putstr_fd(tmp->name, 1);
+				if (tmp->value)
+				{
+					ft_putstr_fd("=\"", 1);
+					ft_putstr_fd(tmp->value, 1);
+					ft_putstr_fd("\"\n", 1);
+				}
 				break ;
 			}
 			tmp = tmp->next;
 		}
-		ft_putstr_fd("\"\n", 1);
 		i++;
 	}
 	return ;
 }
 
-static int sort_env(char **cp_env)
+static int sort_env(char **cp_name)
 {
+	printf("%s\n", cp_name[10]);
 	return (0);
 }
 
-static char	*dup_env(t_env *env)
+static int	dup_env(t_env *env, char **cp_name)
 {
-	char	**cp_name;
 	t_env	*tmp;
 	int		i;
 
-	cp_name = (char **)malloc((sizeof)(char *) * (20 + 1));//数字
+	tmp = (t_env*)malloc(sizeof(t_env));
 	tmp = env;
 	i = 0;
 	while (tmp)
@@ -47,14 +51,16 @@ static char	*dup_env(t_env *env)
 		tmp = tmp->next;
 		i++;
 	}
-	return (cp_name);
+	cp_name[i] = NULL;
+	return (0);
 }
 
 static int	export_env(t_env *env)
 {
-	char	**cp_name;;
+	char	*cp_name[100];
 
-	cp_env = dup_env(env);
+	//あとでマロックの仕方要検討
+	dup_env(env, cp_name);
 	sort_env(cp_name);
 	print_env(env, cp_name);
 	return (0);
