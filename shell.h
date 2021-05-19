@@ -66,6 +66,7 @@ int	ft_unset(char **command, t_env *env);
 void	ft_envadd_back(t_env **env, t_env *new);
 t_env	*init_env();
 void	env_free(t_env *env);
+t_env	*dup_env(t_env *env);
 
 /*
 **errnor.c

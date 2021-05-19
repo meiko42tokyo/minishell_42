@@ -1,12 +1,5 @@
 #include "shell.h"
 
-void	env_free(t_env *env)
-{
-	free(env->name);
-	free(env->value);
-	free(env);
-}
-
 void	ft_envadd_back(t_env **env, t_env *new)
 {
 	t_env	*tmp;
@@ -29,6 +22,35 @@ void	ft_envadd_back(t_env **env, t_env *new)
 		tmp = tmp->next;
 	}
 //	printf("line=%s, name=%s, value=%s\n", tmp->line, tmp->name, tmp->value);
+}
+
+t_env	*dup_env(t_env *env)
+{
+	//if (env == NULL)
+	t_env	*tmp;
+
+	while (env)
+	{
+		if (!(ft_strncmp(env->name, "-", 1) == 0 && env->name[1] != '\0'))
+		{
+			tmp = (t_env*)malloc(sizeof(t_env));
+			tmp->name = env->name;
+			if (env->value)
+				tmp->value = env->value;
+			ft_envadd_back(&tmp, tmp);
+		}
+		env = env->next;
+	}
+	return (tmp);
+}
+
+void	env_free(t_env *env)
+{
+	free(env->name);
+	env->name = NULL;
+	free(env->value);
+	env->value = NULL;
+	free(env);
 }
 
 t_env	*init_env()
