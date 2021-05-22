@@ -83,14 +83,6 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 	while (1) {
 		c = 0;
 		read(0, &c, sizeof(c));
-		// 改行の時の処理
-		//もしlineに中身があるのなら、cur_nodeに入れたい
-		//しかし、cur_nodeがnullの可能性もある
-		//なので問答無用で作成するようにしたい
-		//でも、たとえばもし一個前に空のcur_nodeがあるのならそこに代入したい
-		// cur_node == NULL -> とりあえず作る
-		// cur_node != NULL && cur_node->data == 0 -> 一個前に入れたい
-		// cur_node != NULL && cur_node->data != 0 -> 新しいnode作 
 		if (c == '\n')
 		{
 			if (line != NULL)
