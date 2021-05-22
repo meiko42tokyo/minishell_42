@@ -45,30 +45,33 @@ char	*make_line(char *line, int c_int)
 }
 
 // only up first
-void	history_out(t_line **cur_node, int c)
+char	*history_out(t_line **cur_node, int c)
 {
 	t_line	*node;
+	char	*line;	
 
 	if (*cur_node == NULL)
-		return ; 
+		return (NULL); 
 	node = *cur_node;
 	if (c == AR_U)
 	{
 		if (node->prev != NULL)
 			(*cur_node) = node->prev;
 		else
-			return ;
+			return (NULL);
 	}
 	else if (c == AR_D)
 	{
 		if (node->next != NULL)
 			(*cur_node) = node->next;
 		else
-			return ;
+			return (NULL);
 	}
 	tputs(tgetstr("cr", 0), 1, ft_putchar);
 	tputs(tgetstr("ce", 0), 1, ft_putchar);
 	write(1, (*cur_node)->data, ft_strlen((*cur_node)->data));
+	line = ft_strdup((*cur_node)->data);
+	return (line);
 }
 
 int	get_line(char *line, t_line **head, t_line **cur_node)
@@ -80,14 +83,44 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 	while (1) {
 		c = 0;
 		read(0, &c, sizeof(c));
+		// 改行の時の処理
+		//もしlineに中身があるのなら、cur_nodeに入れたい
+		//しかし、cur_nodeがnullの可能性もある
+		//なので問答無用で作成するようにしたい
+		//でも、たとえばもし一個前に空のcur_nodeがあるのならそこに代入したい
+		// cur_node == NULL -> とりあえず作る
+		// cur_node != NULL && cur_node->data == 0 -> 一個前に入れたい
+		// cur_node != NULL && cur_node->data != 0 -> 新しいnode作 
 		if (c == '\n')
 		{
 			if (line != NULL)
 			{
-				*cur_node = ft_linenew(line);
-				if (!*cur_node)
-					return (-1);
-				ft_lineadd_back(head, *cur_node);
+				if (*cur_node == NULL)
+				{
+					*cur_node = ft_linenew(line);
+					if (!*cur_node)
+						return (-1);
+					ft_lineadd_back(head, *cur_node);
+					break ;
+				}
+				if (ft_strlen(ft_get_latestdata(head)) != 0)
+				{
+					*cur_node = ft_linenew(line);
+					if (!*cur_node)
+						return (-1);
+					ft_lineadd_back(head, *cur_node);
+				}
+				else if (ft_strlen(ft_get_latestdata(head)) == 0)
+				{
+					ft_change_latestline(head, line);
+				}
+				else
+				{
+					free(line);
+					line = NULL;
+					return (0);
+				}
+				//printf("cur_node:%s\n", (*cur_node)->data);
 			}
 			break ;
 		}
@@ -113,7 +146,12 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 				ft_lineadd_back(head, *cur_node);
 			}
 			//printf("cur_node:%s\n", (*cur_node)->data);
-			history_out(cur_node, c);// assign ret to line?
+			if (line != NULL)
+			{
+				free(line);
+				line = NULL;
+			}
+			line = history_out(cur_node, c);// assign ret to line?
 		}
 		else if (c == EOF_KEY)
 		{

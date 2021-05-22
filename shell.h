@@ -52,7 +52,7 @@ t_line	*ft_linenew(char *data);
 int	ft_lineadd_back(t_line **head, t_line *new);
 int	ft_get_lstsize(t_line **head);
 char	*ft_get_latestdata(t_line **head);
-t_line	*ft_get_latestline(t_line **head);
+void	ft_change_latestline(t_line **head, char *line);
 void	ft_free_linehead(t_line **head);
 
 /*
