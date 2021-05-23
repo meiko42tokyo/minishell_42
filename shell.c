@@ -120,19 +120,25 @@ int	main(int argc, char **argv)
 	head = NULL;
 	line_head = NULL;
 	cur_node = NULL;
-	ret = 0;
 	set_termcap(&term);
 	signal(SIGINT, SIG_IGN);
 	while (1) {
+		ret = 0;
 		ft_putstr_fd("> ", 0);
-		ret = get_line(line, &line_head, &cur_node);
+		while (ret == 0)
+		{
+			ret = get_line(line, &line_head, &cur_node);
+		}
 		if (ret == 1)
 			break;
 		//get_next_line(0, &input); // TODO: if fail in GNL
 		// save input to doubly linked list
-		head = make_cmdlist(line);
+		head = make_cmdlist(cur_node->data);
+		free(line);
+		line = NULL;
 		signal(SIGINT, SIG_DFL);
-		run_list(head);
+		if (head != NULL)
+			run_list(head);
 	}
 	reset_termcap(&term);
 	ft_free_linehead(&line_head);

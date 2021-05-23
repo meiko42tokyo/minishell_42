@@ -19,8 +19,6 @@ endif
 
 SRCS = shell.c\
 	lstUtils.c\
-	doubly_lstutils.c\
-	termcap.c\
 	parse.c\
 	buildin.c\
 	ft_cd.c\
@@ -46,8 +44,8 @@ $(LIBFT):
 sani:
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
 
-term: $(LIBFT) 
-	$(CC) $(CFLAGS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
+term: $(OBJS) $(LIBFT) 
+	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
 
 termc:
 	rm -f doubly_lstUtils.o termcap.o

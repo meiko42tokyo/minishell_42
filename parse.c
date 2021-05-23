@@ -54,6 +54,8 @@ t_cmd	*make_cmdlist(char *input)
 
 	head = NULL;
 	new_pos = NULL;
+	if (input == NULL)
+		return (NULL);
 	while ((new_pos = ft_min_strchr(input)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
