@@ -33,4 +33,5 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 		}
 		node=node->next;
 	}
+	return ;
 }

@@ -25,5 +25,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	ft_strlcpy(ret, s1, strlen1 + 1);
 	ft_strlcat(ret, s2, strlen1 + strlen2 + 1);
+	ret[strlen1 + strlen2] = '\0';
 	return (ret);
 }

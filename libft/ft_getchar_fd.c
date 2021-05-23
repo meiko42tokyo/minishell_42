@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_getchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/25 12:53:19 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/13 22:02:42 by ykarasaw         ###   ########.fr       */
+/*   Created: 2020/07/18 23:25:55 by ykarasaw          #+#    #+#             */
+/*   Updated: 2020/07/18 23:31:53 by ykarasaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_getchar_fd(int fd)
 {
-	size_t	i;
+	static char	buf[1024];
+	static char	*bufp;
+	static int	i;
 
-	if (s == NULL)
-		return (0);
+	bufp = buf;
 	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	if (i == 0)
+	{
+		i = read(fd, buf, 1);
+		bufp = buf;
+	}
+	if (--i >= 0)
+	{
+		return (*bufp++);
+	}
+	return (-1);
 }
