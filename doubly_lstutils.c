@@ -4,11 +4,11 @@ t_line	*ft_linenew(char *data)
 {
 	t_line	*node;
 
-	node = (t_line*)malloc(sizeof(t_line));
+	node = (t_line *)malloc(sizeof(t_line));
 	if (node == NULL)
 		return (NULL);
 	node->next = NULL;
-	node->prev = NULL;	
+	node->prev = NULL;
 	node->data = ft_strdup(data);
 	return (node);
 }
@@ -31,7 +31,7 @@ int	ft_lineadd_back(t_line **head, t_line *new)
 		{
 			new->prev = node;
 			node->next = new;
-			break;
+			break ;
 		}
 		node = node->next;
 	}
@@ -52,7 +52,7 @@ int	ft_get_lstsize(t_line **head)
 			break ;
 		node = node->next;
 	}
-	return (size);	
+	return (size);
 }
 
 char	*ft_get_latestdata(t_line **head)
@@ -63,7 +63,7 @@ char	*ft_get_latestdata(t_line **head)
 	while (node)
 	{
 		if (node->next == NULL)
-			break;
+			break ;
 		node = node->next;
 	}
 	return (node->data);
@@ -77,7 +77,7 @@ void	ft_change_latestline(t_line **head, char *line)
 	while (node)
 	{
 		if (node->next == NULL)
-			break;
+			break ;
 		node = node->next;
 	}
 	node->data = ft_strdup(line);
@@ -86,7 +86,7 @@ void	ft_change_latestline(t_line **head, char *line)
 
 void	ft_free_linehead(t_line **head)
 {
-	t_line *node;
+	t_line	*node;
 
 	if (*head == NULL)
 		return ;
@@ -95,7 +95,7 @@ void	ft_free_linehead(t_line **head)
 	{
 		free(node->data);
 		if (node->next == NULL)
-			break;
+			break ;
 		node = node->next;
 		free(node->prev);
 	}

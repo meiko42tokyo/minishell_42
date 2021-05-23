@@ -36,16 +36,16 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 sani:
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
 
-term: $(LIBFT) 
-	$(CC) $(CFLAGS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
+term: $(OBJS) $(LIBFT) 
+	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
 
 termc:
 	rm -f doubly_lstUtils.o termcap.o

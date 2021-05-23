@@ -146,10 +146,10 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 		else if (ft_isprint(c))
 			line = make_line(line, c);
 	}
+	write(1, "\n", 1);
 	free(line);
 	line = NULL;
-	write(1, "\n", 1);
-	return (0);
+	return (42);
 }
 
 void	ft_print_linelist(t_line **head)
@@ -169,7 +169,7 @@ void	ft_print_linelist(t_line **head)
 	}
 	return ;
 }
-
+/*
 int	main()
 {
 	struct termios	term;
@@ -192,4 +192,4 @@ int	main()
 	ft_print_linelist(&head);
 	ft_free_linehead(&head);
 	return (0);
-}
+}*/
