@@ -8,7 +8,7 @@ static int	count_n(char **command)
 	i = 1;
 	t = 2;
 	//todo -n -nが何回繰り返されているか
-	while (ft_strncmp(command[i], "-n", 2) == 0)
+	while (ft_strcmp(command[i], "-n") == 0)
 	{
 		//-nnnnが何回繰り返されているか
 		while (command[i][t])
