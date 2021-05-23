@@ -1,25 +1,25 @@
 #ifndef SHELL_H
 # define SHELL_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <readline/readline.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <termcap.h>
-#include <termios.h>
-#include <term.h>
-#include <curses.h>
-#include <sys/ioctl.h>
-#include "libft/libft.h"
+# include <stdlib.h>
+# include <stdio.h>
+# include <string.h>
+# include <readline/readline.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <termcap.h>
+# include <termios.h>
+# include <term.h>
+# include <curses.h>
+# include <sys/ioctl.h>
+# include "libft/libft.h"
 
-#define EOF_KEY 4
-#define AR_U 4283163
-#define AR_D 4348699
+# define EOF_KEY 4
+# define AR_U 4283163
+# define AR_D 4348699
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
 	struct s_cmd	*next;
 	char		**argv;
@@ -27,7 +27,7 @@ typedef struct	s_cmd
 	int		op;
 }		t_cmd;
 
-typedef struct	s_line
+typedef struct s_line
 {
 	struct s_line	*next;
 	struct s_line	*prev;
@@ -75,6 +75,6 @@ int	ft_cd(char *path);
 /*
 **ft_pwd.c
 */
-int	ft_pwd();
+int	ft_pwd(void);
 
 #endif
