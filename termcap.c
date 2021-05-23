@@ -135,8 +135,6 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 			{	
 				free(line);
 				line = NULL;
-				/*if (update_and_make_newnode(head, cur_node, line) != 0)
-					return (-1);*/
 			}
 			line = history_out(cur_node, c);
 		}
