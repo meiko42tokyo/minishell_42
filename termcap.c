@@ -74,6 +74,35 @@ char	*history_out(t_line **cur_node, int c)
 	return (line);
 }
 
+int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line)
+{
+	*cur_node = ft_linenew(line);
+	if (!*cur_node)
+		return (-1);
+	ft_lineadd_back(head, *cur_node);
+	return (0);
+}
+
+int	new_line(char *line, t_line **head, t_line **cur_node)
+{
+	if (line == NULL)
+		return (0);
+	if (*cur_node == NULL || ft_strlen(ft_get_latestdata(head)) != 0)
+	{
+		if (update_and_make_newnode(head, cur_node, line) != 0)
+			return (-1);
+	}
+	else if (ft_strlen(ft_get_latestdata(head)) == 0)
+		ft_change_latestline(head, line);
+	else
+	{
+		free(line);
+		line = NULL;
+		return (-1);
+	}
+	return (0);	
+}
+
 int	get_line(char *line, t_line **head, t_line **cur_node)
 {
 	int		c;
@@ -85,44 +114,12 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 		read(0, &c, sizeof(c));
 		if (c == '\n')
 		{
-			if (line != NULL)
-			{
-				if (*cur_node == NULL)
-				{
-					*cur_node = ft_linenew(line);
-					if (!*cur_node)
-						return (-1);
-					ft_lineadd_back(head, *cur_node);
-					break ;
-				}
-				if (ft_strlen(ft_get_latestdata(head)) != 0)
-				{
-					*cur_node = ft_linenew(line);
-					if (!*cur_node)
-						return (-1);
-					ft_lineadd_back(head, *cur_node);
-				}
-				else if (ft_strlen(ft_get_latestdata(head)) == 0)
-				{
-					ft_change_latestline(head, line);
-				}
-				else
-				{
-					free(line);
-					line = NULL;
-					return (0);
-				}
-				//printf("cur_node:%s\n", (*cur_node)->data);
-			}
+			if (new_line(line, head, cur_node) != 0)
+				return (-1);
 			break ;
 		}
-		else if (c == AR_U || c == AR_D)
+		if (c == AR_U || c == AR_D)
 		{
-			/*if (line != NULL)
-			{
-				if (ft_lineadd_back(head, ft_linenew(line)) == -1)
-					return (-1);
-			}*/
 			if (*cur_node == NULL)
 			{
 				free(line);
@@ -131,19 +128,17 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 			}
 			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0 && line == NULL)
 			{
-				line = ft_strndup("", 1);
-				*cur_node = ft_linenew(line);
-				if (!(*cur_node))
+				if (update_and_make_newnode(head, cur_node, "") != 0)
 					return (-1);
-				ft_lineadd_back(head, *cur_node);
 			}
-			//printf("cur_node:%s\n", (*cur_node)->data);
 			if (line != NULL)
-			{
+			{	
 				free(line);
 				line = NULL;
+				/*if (update_and_make_newnode(head, cur_node, line) != 0)
+					return (-1);*/
 			}
-			line = history_out(cur_node, c);// assign ret to line?
+			line = history_out(cur_node, c);
 		}
 		else if (c == EOF_KEY)
 		{
@@ -151,9 +146,7 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 			return (1);
 		}
 		else if (ft_isprint(c))
-		{
 			line = make_line(line, c);
-		}
 	}
 	free(line);
 	line = NULL;
