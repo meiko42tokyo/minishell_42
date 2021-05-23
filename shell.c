@@ -106,20 +106,35 @@ void	run_list(t_cmd *c)
 
 int	main(int argc, char **argv) 
 {
-	char *input;
-	t_cmd	*head;
+	struct termios	term;
+	char		*line;
+	t_cmd		*head;
+	t_line		*line_head;
+	t_line		*cur_node;
+	int		ret;
+	
 
 	argc = 1;
 	argv = NULL;
+	line = NULL;
+	head = NULL;
+	line_head = NULL;
+	cur_node = NULL;
+	ret = 0;
+	set_termcap(&term);
 	signal(SIGINT, SIG_IGN);
 	while (1) {
 		ft_putstr_fd("> ", 0);
-		get_next_line(0, &input); // TODO: if fail in GNL
+		ret = get_line(line, &line_head, &cur_node);
+		if (ret == 1)
+			break;
+		//get_next_line(0, &input); // TODO: if fail in GNL
 		// save input to doubly linked list
-		head = make_cmdlist(input);
+		head = make_cmdlist(line);
 		signal(SIGINT, SIG_DFL);
 		run_list(head);
-		free(input);
 	}
+	reset_termcap(&term);
+	ft_free_linehead(&line_head);
 	return (0);
 }

@@ -169,7 +169,7 @@ void	ft_print_linelist(t_line **head)
 	}
 	return ;
 }
-
+/*
 int	main()
 {
 	struct termios	term;
@@ -192,4 +192,4 @@ int	main()
 	ft_print_linelist(&head);
 	ft_free_linehead(&head);
 	return (0);
-}
+}*/
