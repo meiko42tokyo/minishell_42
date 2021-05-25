@@ -28,14 +28,16 @@ char	*ft_min_strchr(char *input)
 
 	index = 0;
 	min_dis = ft_strchr(input, 0) - input;
+	/*if (ft_strnstr(input, ">>", 2) != NULL)
+	{
+		tmp = ft_strchr(input, ops[index]) - input;
+		if (min_dis > tmp)
+			min_dis = tmp;
+	}*/
 	while (ops[index])
 	{
-		if (ft_strchr(input, ops[index]) == NULL)
-		{
-			index++;
-			continue ;
-		}
-		tmp = ft_strchr(input, ops[index]) - input;
+		if (ft_strchr(input, ops[index]) != NULL)
+			tmp = ft_strchr(input, ops[index]) - input;
 		if (min_dis > tmp)
 			min_dis = tmp;
 		index++;

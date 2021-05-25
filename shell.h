@@ -40,6 +40,14 @@ typedef struct s_line
 //int	main(int argc, char **argv, char **envp);
 
 /*
+**exec.c
+*/
+void	run_list(t_cmd *c);
+t_cmd	*do_pipeline(t_cmd *c);
+pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
+int 	ispipe(t_cmd *c);
+
+/*
 **lstUtils.c
 */
 t_cmd	*ft_cmdnew(char *argv[], int op);
