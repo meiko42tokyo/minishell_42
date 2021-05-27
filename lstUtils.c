@@ -35,3 +35,41 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 	}
 	return ;
 }
+
+void	ft_print_cmdlist(t_cmd **head)
+{
+	t_cmd	*node;
+	int	index;
+	int	arg_order;
+	char	op;
+
+	index = 0;
+	if (*head == NULL)
+	{
+		printf("cmd head null\n");
+		return ;
+	}
+	node = *head;
+	while (node)
+	{
+		if (node->next == NULL)
+		{
+			break ;
+		}
+		printf("cmd[%d]:\n", index++);
+		arg_order = 0;
+		while (node->argv[arg_order])
+		{
+			printf("  argv[%d]:%s\n", arg_order, node->argv[arg_order]);	
+			arg_order++;
+		}
+		if (node->op == OP_SEP)
+			op = ';';
+		if (node->op == OP_PIPE)
+			op = '|';
+		if (node->op == OP_OTHER)
+			op = 'O';
+		printf("  op:%c\n", op);
+		node = node->next;
+	}
+}	

@@ -17,7 +17,7 @@ endif
 ifeq ($(PLATFORM), MACOS)
 endif
 
-SRCS = shell.c\
+SRCS = exec.c\
 	lstUtils.c\
 	parse.c\
 	buildin.c\
@@ -36,7 +36,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -45,16 +45,17 @@ sani:
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
 
 term: $(OBJS) $(LIBFT) 
-	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
+	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c termmain.c $(LIBFT)  -ltermcap -o termcap
 
 termc:
-	rm -f doubly_lstUtils.o termcap.o
+	rm -f doubly_lstUtils.o termcap.o termmain.o
 	rm -rf termcap.dSYM
 	rm -f termcap 
 	$(MAKE) fclean -C $(LIBFT_DIR)
 
 clean:
 	rm -f $(OBJS)
+	rm -f shell.o
 	$(MAKE) clean -C $(LIBFT_DIR)
 
 fclean: clean
