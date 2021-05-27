@@ -139,7 +139,7 @@ int	main(int argc, char **argv)
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
 		if (head != NULL)
-			run_list(head, env);
+		run_list(head, env);
 	}
 	reset_termcap(&term);
 	ft_free_linehead(&line_head);
