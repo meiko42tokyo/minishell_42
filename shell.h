@@ -19,6 +19,10 @@
 # define AR_U 4283163
 # define AR_D 4348699
 
+# define OP_SEP 1
+# define OP_PIPE 2
+# define OP_OTHER -1
+
 typedef struct s_cmd
 {
 	struct s_cmd	*next;

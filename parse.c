@@ -28,12 +28,12 @@ char	*ft_min_strchr(char *input)
 
 	index = 0;
 	min_dis = ft_strchr(input, 0) - input;
-	/*if (ft_strnstr(input, ">>", 2) != NULL)
+	if (ft_strnstr(input, ">>", 2) != NULL)
 	{
 		tmp = ft_strchr(input, ops[index]) - input;
 		if (min_dis > tmp)
 			min_dis = tmp;
-	}*/
+	}
 	while (ops[index])
 	{
 		if (ft_strchr(input, ops[index]) != NULL)
@@ -45,6 +45,15 @@ char	*ft_min_strchr(char *input)
 	if (ft_strlen(input) == min_dis)
 		min_dis = 0;
 	return (input + min_dis);;
+}
+
+int	get_op(char op)
+{
+	if (op == '|')
+		return (OP_PIPE);
+	if (op == ';')
+		return (OP_SEP);
+	return (OP_OTHER);
 }
 
 t_cmd	*make_cmdlist(char *input)
@@ -62,7 +71,7 @@ t_cmd	*make_cmdlist(char *input)
 	{
 		word = ft_strndup(input, new_pos - input);
 		// if redirect, check >>. and record somehow?
-		cmd = ft_cmdnew(get_argv(word), *new_pos);
+		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
 		free(word);
 		input = new_pos;
 		input++;
