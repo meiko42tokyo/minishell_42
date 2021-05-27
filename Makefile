@@ -21,6 +21,7 @@ SRCS = shell.c\
 	lstUtils.c\
 	parse.c\
 	buildin.c\
+	doubly_lstutils.c\
 	ft_cd.c\
 	ft_pwd.c\
 	ft_echo.c\
@@ -30,6 +31,7 @@ SRCS = shell.c\
 	ft_unset.c\
 	env_utils.c\
 	error.c\
+	termcap.c
 
 CFLAGS = -g -Wall -Wextra -Werror
 
@@ -43,13 +45,22 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 sani:
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
+
+term: $(OBJS) $(LIBFT) 
+	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c $(LIBFT)  -ltermcap -o termcap
+
+termc:
+	rm -f doubly_lstUtils.o termcap.o
+	rm -rf termcap.dSYM
+	rm -f termcap 
+	$(MAKE) fclean -C $(LIBFT_DIR)
 
 clean:
 	rm -f $(OBJS)
