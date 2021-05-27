@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
 		signal(SIGINT, SIG_DFL);
 		if (head != NULL)
 			run_list(head);
+		ft_print_cmdlist(&head);
 	}
 	return (0);
 }

@@ -52,6 +52,7 @@ int 	ispipe(t_cmd *c);
 */
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
+void	ft_print_cmdlist(t_cmd **head);
 
 /*
 **doubly_lstUtils.c
