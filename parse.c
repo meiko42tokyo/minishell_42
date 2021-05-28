@@ -56,6 +56,15 @@ int	get_op(char op)
 	return (OP_OTHER);
 }
 
+int	is_op(char c)
+{
+	if (c == '|')
+		return (OP_PIPE);
+	if (c == ';')
+		return (OP_SEP);
+	return (OP_OTHER);
+}
+
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
@@ -70,12 +79,21 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		// if redirect, check >>. and record somehow?
+		/*if (is_redirect(*new_pos))
+		{
+			append_arg(word);
+		}
+		else
+		{
+			cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
+			ft_cmdadd_back(&head, cmd);
+		}*/
 		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
+		ft_cmdadd_back(&head, cmd);
+		// if redirect->append_arg, not redirect->cmd_new;
 		free(word);
 		input = new_pos;
 		input++;
-		ft_cmdadd_back(&head, cmd);
 	}
 	word = ft_strndup(input, ft_strlen(input));
 	cmd = ft_cmdnew(get_argv(word), 0);
