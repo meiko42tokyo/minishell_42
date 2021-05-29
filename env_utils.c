@@ -74,7 +74,7 @@ t_env	*init_env()
 		tmp->name = ft_strndup(environ[i], start);
 		tmp->value = ft_strdup(&environ[i][start + 1]);
 		tmp->next = NULL;
-		//printf("i=%d, line=%s, name=%s, value=%s\n", i, tmp->line, tmp->name, tmp->value);
+		//printf("i=%d, name=%s, value=%s\n", i, tmp->name, tmp->value);
 		ft_envadd_back(&env, tmp);
 		//env_free(tmp);
 		i++;

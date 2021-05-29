@@ -19,6 +19,10 @@
 # define AR_U 4283163
 # define AR_D 4348699
 
+# define OP_SEP 1
+# define OP_PIPE 2
+# define OP_OTHER -1
+
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
@@ -47,10 +51,19 @@ typedef struct s_line
 //int	main(int argc, char **argv, char **envp);
 
 /*
+**exec.c
+*/
+void	run_list(t_cmd *c, t_env *env);
+t_cmd	*do_pipeline(t_cmd *c);
+pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
+int 	ispipe(t_cmd *c);
+
+/*
 **lstUtils.c
 */
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
+void	ft_print_cmdlist(t_cmd **head);
 
 /*
 **doubly_lstUtils.c

@@ -14,8 +14,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	char *path;
 	char *input;
 	int exec;
+	extern char **environ; 
 	int	stat_loc;
-	extern char	**environ;
 
 	if (ispipe)
 		pipe(newpipe);
@@ -86,15 +86,13 @@ t_cmd	*do_pipeline(t_cmd *c)
 	return (c);
 }
 
-
-static void	run_list(t_cmd *c)
+void	run_list(t_cmd *c, t_env *env)
 {
 	while (c)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
 			exec_buildin(c->argv, env);
-			printf("%s, %s\n", env->name, env->value);
 			c = c->next;
 			continue;
 		}
@@ -103,31 +101,4 @@ static void	run_list(t_cmd *c)
 		//printf("node:%s, %c\n", *c->argv, c->op); 
 		c = c->next;
 	}
-}
-
-int	main(int argc, char **argv) 
-{
-	char		*line;
-	t_cmd		*head;
-	t_env	*env;
-	
-	argc = 1;
-	argv = NULL;
-	line = NULL;
-	head = NULL;
-	signal(SIGINT, SIG_IGN);
-	env = init_env();
-	exit (0);
-	while (1) {
-		ft_putstr_fd("> ", 0);
-		get_next_line(0, &line);
-		head = make_cmdlist(line);
-		free(line);
-		line = NULL;
-		signal(SIGINT, SIG_DFL);
-		if (head != NULL)
-		run_list(head, env);
-		ft_print_cmdlist(&head);
-	}
-	return (0);
 }
