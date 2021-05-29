@@ -139,10 +139,8 @@ t_cmd	*make_cmdlist(char *input)
 			input++;
 	}	
 	word = ft_strndup(input, ft_strlen(input));
-	printf("last word:%s\n", word);
 	cmd = ft_cmdnew(get_argv(word), OTHER);
 	ft_cmdadd_back(&head, cmd);
-	printf("cmd->argv[1]:%s\n", cmd->argv[1]);
 	free(word);
 	ft_print_cmdlist(&head);
 	return (head);

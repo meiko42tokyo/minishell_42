@@ -52,10 +52,6 @@ void	ft_print_cmdlist(t_cmd **head)
 	node = *head;
 	while (node)
 	{
-		if (node->next == NULL)
-		{
-			break ;
-		}
 		printf("cmd[%d]:\n", index++);
 		arg_order = 0;
 		while (node->argv[arg_order])
@@ -70,6 +66,10 @@ void	ft_print_cmdlist(t_cmd **head)
 		if (node->op == OTHER)
 			op = 'O';
 		printf("  op:%c\n", op);
+		if (node->next == NULL)
+		{
+			break ;
+		}
 		node = node->next;
 	}
 }	
