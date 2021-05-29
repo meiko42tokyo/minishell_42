@@ -67,7 +67,7 @@ void	ft_print_cmdlist(t_cmd **head)
 			op = ';';
 		if (node->op == OP_PIPE)
 			op = '|';
-		if (node->op == OP_OTHER)
+		if (node->op == OTHER)
 			op = 'O';
 		printf("  op:%c\n", op);
 		node = node->next;

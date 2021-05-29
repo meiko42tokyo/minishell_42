@@ -19,10 +19,13 @@
 # define AR_U 4283163
 # define AR_D 4348699
 
-# define REDIRECT 1
-# define OP_SEP 2
-# define OP_PIPE 3
-# define OP_OTHER -1
+# define OP_SEP 0
+# define OP_PIPE 1
+# define RD_LESSER 2
+# define RD_GREATER 3
+# define RD_EXTRACT 4
+# define OTHER -1
+# define OPS_SIZE 6
 
 typedef struct s_cmd
 {

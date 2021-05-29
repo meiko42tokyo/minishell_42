@@ -17,33 +17,64 @@ char	**get_argv(char *input)
 	return (argv);
 }
 
-char	*ft_min_strchr(char *input)
+void	get_token(char *new_pos, int *token)
+{
+	if (*new_pos == '|')
+		*token = OP_PIPE;
+	if (*new_pos == ';')
+		*token = OP_SEP;
+	else
+		*token = OTHER;
+}
+
+char	**set_ops(void)
+{
+	char	**ops;
+
+	ops = (char **)malloc(sizeof (char *) * OPS_SIZE);
+	ops[OP_SEP] = ";";
+	ops[OP_PIPE] = "|";
+	ops[RD_LESSER] = "<";
+	ops[RD_GREATER] = ">";
+	ops[RD_EXTRACT] = ">>";
+	ops[OPS_SIZE - 1] = 0;
+	return (ops);
+}
+
+char	*ft_min_strchr(char *input, int *token)
 {
 	size_t	min_dis;
 	size_t	tmp;
-	char 	ops[] = {
-		'|', ';', '<', '>', 0
-	};
+	char 	**ops; 
 	int	index;
 
 	index = 0;
+	ops = set_ops();
 	min_dis = ft_strchr(input, 0) - input;
 	if (ft_strnstr(input, ">>", 2) != NULL)
 	{
-		tmp = ft_strchr(input, ops[index]) - input;
+		tmp = ft_strnstr(input, ">>", 2) - input;
 		if (min_dis > tmp)
+		{
 			min_dis = tmp;
+			*token = RD_EXTRACT;
+		}
 	}
 	while (ops[index])
 	{
-		if (ft_strchr(input, ops[index]) != NULL)
-			tmp = ft_strchr(input, ops[index]) - input;
-		if (min_dis > tmp)
-			min_dis = tmp;
+		if (ft_strchr(input, *ops[index]) != NULL)
+		{
+			tmp = ft_strchr(input, *ops[index]) - input;
+			if (min_dis > tmp)
+				min_dis = tmp;
+		}
 		index++;
 	}
 	if (ft_strlen(input) == min_dis)
 		min_dis = 0;
+	if (min_dis)
+		get_token(input + min_dis, token);
+	free(ops);
 	return (input + min_dis);;
 }
 
@@ -53,16 +84,23 @@ int	get_op(char op)
 		return (OP_PIPE);
 	if (op == ';')
 		return (OP_SEP);
-	return (OP_OTHER);
+	return (OTHER);
 }
 
-int	is_op(char c)
+int	is_op(int *token)
 {
-	if (c == '|')
-		return (OP_PIPE);
-	if (c == ';')
-		return (OP_SEP);
-	return (OP_OTHER);
+	if (*token == OP_PIPE || *token == OP_SEP)
+		return (1);
+	else
+		return (0);
+}
+
+int	is_two_char(int *token)
+{
+	if (*token == RD_EXTRACT)
+		return (1);
+	else
+		return (0);
 }
 
 t_cmd	*make_cmdlist(char *input)
@@ -71,32 +109,41 @@ t_cmd	*make_cmdlist(char *input)
 	t_cmd	*cmd;
 	char	*word;
 	char	*new_pos;
+	int	token;
 
 	head = NULL;
 	new_pos = NULL;
 	if (input == NULL)
 		return (NULL);
-	while ((new_pos = ft_min_strchr(input)) > input)
+	token = OTHER;
+	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		/*if (is_redirect(*new_pos))
-		{
-			append_arg(word);
-		}
-		else
+		if (is_op(&token))
 		{
 			cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
 			ft_cmdadd_back(&head, cmd);
-		}*/
+		}
+		else
+		{
+			//append_arg(word);
+		}
 		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
 		ft_cmdadd_back(&head, cmd);
 		// if redirect->append_arg, not redirect->cmd_new;
 		free(word);
 		input = new_pos;
-		input++;
-	}
+		if (is_two_char(&token))
+			input += 2;
+		else
+			input++;
+	}	
 	word = ft_strndup(input, ft_strlen(input));
-	cmd = ft_cmdnew(get_argv(word), 0);
-	ft_cmdadd_back(&head, cmd);	
+	printf("last word:%s\n", word);
+	cmd = ft_cmdnew(get_argv(word), OTHER);
+	ft_cmdadd_back(&head, cmd);
+	printf("cmd->argv[1]:%s\n", cmd->argv[1]);
+	free(word);
+	ft_print_cmdlist(&head);
 	return (head);
 }
