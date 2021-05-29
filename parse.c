@@ -19,10 +19,10 @@ char	**get_argv(char *input)
 
 void	get_token(char *new_pos, int *token)
 {
-	if (*new_pos == '|')
-		*token = OP_PIPE;
 	if (*new_pos == ';')
 		*token = OP_SEP;
+	if (*new_pos == '|')
+		*token = OP_PIPE;
 	else
 		*token = OTHER;
 }
@@ -128,9 +128,6 @@ t_cmd	*make_cmdlist(char *input)
 		{
 			//append_arg(word);
 		}
-		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
-		ft_cmdadd_back(&head, cmd);
-		// if redirect->append_arg, not redirect->cmd_new;
 		free(word);
 		input = new_pos;
 		if (is_two_char(&token))
