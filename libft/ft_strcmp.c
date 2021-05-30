@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "libft.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -19,7 +20,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 		if ((casted_s1[i] - casted_s2[i]) != 0)
 			return (casted_s1[i] - casted_s2[i]);
 		i++;
-		if ((!(casted_s1[i]) && !(casted_s2[i])) || i == len)
+		if (i == len)
 			break ;
 	}
 	return (0);
