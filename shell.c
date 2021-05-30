@@ -20,8 +20,7 @@ int	main(int argc, char **argv)
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
 		if (head != NULL)
-		run_list(head, env);
-		ft_print_cmdlist(&head);
+			run_list(head, env);
 	}
 	return (0);
 }
