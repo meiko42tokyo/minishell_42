@@ -86,13 +86,13 @@ t_cmd	*do_pipeline(t_cmd *c)
 	return (c);
 }
 
-void	run_list(t_cmd *c)
+void	run_list(t_cmd *c, t_env *env)
 {
 	while (c)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			exec_buildin(c->argv);
+			exec_buildin(c->argv, env);
 			c = c->next;
 			continue;
 		}

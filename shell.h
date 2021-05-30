@@ -31,6 +31,13 @@ typedef struct s_cmd
 	int		op;
 }		t_cmd;
 
+typedef struct	s_env
+{
+	struct s_env	*next;
+	char		*name;
+	char		*value;
+}		t_env;
+
 typedef struct s_line
 {
 	struct s_line	*next;
@@ -46,7 +53,7 @@ typedef struct s_line
 /*
 **exec.c
 */
-void	run_list(t_cmd *c);
+void	run_list(t_cmd *c, t_env *env);
 t_cmd	*do_pipeline(t_cmd *c);
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
 int 	ispipe(t_cmd *c);
@@ -84,17 +91,31 @@ t_cmd	*make_cmdlist(char *input);
 /*
 **buildin.c
 */
-int	exec_buildin(char **command);
+int	exec_buildin(char **command, t_env *env);
 int	is_buildin(char **command);
 
 /*
-**ft_cd.c
+**buildin_command
 */
 int	ft_cd(char *path);
+int	ft_pwd();
+int	ft_echo(char **command);
+int	ft_exit(char **command);
+int	ft_env(t_env *env);
+int	ft_export(char **command, t_env *env);
+int	ft_unset(char **command, t_env *env);
 
 /*
-**ft_pwd.c
+**env_utils.c
 */
-int	ft_pwd(void);
+void	ft_envadd_back(t_env **env, t_env *new);
+t_env	*init_env();
+void	env_free(t_env *env);
+
+/*
+**errnor.c
+*/
+int	ft_errno(int num);
+int	ft_error_str(char *str);
 
 #endif

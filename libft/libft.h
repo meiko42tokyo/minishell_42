@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 22:22:23 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/11/26 16:14:46 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2021/05/23 12:01:41 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *hs, const char *n, size_t len);
+int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
