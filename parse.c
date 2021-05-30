@@ -23,6 +23,10 @@ void	get_token(char *new_pos, int *token)
 		*token = OP_SEP;
 	if (*new_pos == '|')
 		*token = OP_PIPE;
+	if (*new_pos == '<')
+		*token = RD_LESSER;
+	if (*new_pos == '>')
+		*token = RD_GREATER;
 	else
 		*token = OTHER;
 }
