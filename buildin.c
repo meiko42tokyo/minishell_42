@@ -24,8 +24,10 @@ int	exec_buildin(char **command, t_env *env)
 
 int	is_buildin(char **command)
 {
+	if (!command || !command[0])
+		return (0);
 	//どれかに引っかかる場合は１を返す
-	if (ft_strcmp(command[0], "cd") == 0)
+	else if (ft_strcmp(command[0], "cd") == 0)
 		return (1);
 	else if (ft_strcmp(command[0], "echo") == 0)
 		return (1);
