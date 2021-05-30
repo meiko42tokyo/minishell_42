@@ -8,6 +8,7 @@ int	main(int argc, char **argv)
 	t_line		*line_head;
 	t_line		*cur_node;
 	int		ret;
+	t_env		*env;
 	
 
 	argc = 1;
@@ -18,6 +19,8 @@ int	main(int argc, char **argv)
 	cur_node = NULL;
 	set_termcap(&term);
 	signal(SIGINT, SIG_IGN);
+	env = init_env();
+	//printf("%s, %s\n", env->name, env->value);
 	while (1) {
 		ret = 0;
 		ft_putstr_fd("> ", 0);
@@ -34,7 +37,7 @@ int	main(int argc, char **argv)
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
 		if (head != NULL)
-			run_list(head);
+			run_list(head, env);
 	}
 	reset_termcap(&term);
 	ft_free_linehead(&line_head);

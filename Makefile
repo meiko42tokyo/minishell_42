@@ -23,6 +23,13 @@ SRCS = exec.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\
+	ft_echo.c\
+	ft_exit.c\
+	ft_export.c\
+	ft_env.c\
+	ft_unset.c\
+	env_utils.c\
+	error.c
 
 CFLAGS = -g -Wall -Wextra -Werror
 
@@ -36,7 +43,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
