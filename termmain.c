@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	//printf("%s, %s\n", env->name, env->value);
 	while (1) {
 		ret = 0;
-		ft_putstr_fd("> ", 0);
+		ft_putstr_fd("> ", 1);
 		while (ret == 0)
 		{
 			ret = get_line(line, &line_head, &cur_node);
