@@ -24,7 +24,41 @@ static int	count_n(char **command)
 	return (i);
 }
 
-int	ft_echo(char **command)
+static int echo_env(char *str, t_env *env)
+{
+	int	sp;
+	char	*tmp;
+	char	*print;
+
+	sp = ft_strchr(str, '$') - str;
+	if (sp > 0)
+	{
+		tmp = ft_strndup(str, sp);
+		ft_putstr_fd(tmp, 1);
+		free(tmp);
+		tmp = NULL;
+	}
+	tmp = ft_strdup(&str[sp + 1]);
+	sp = ft_strchr(tmp, '$') - tmp;
+	if (sp > 0)
+		print = ft_strndup(tmp, sp);
+	else
+		print = ft_strdup(tmp);
+	while (env)
+	{
+		if (ft_strcmp(print, env->name) == 0)
+		{
+			ft_putstr_fd(env->value, 1);
+			break ;
+		}
+		env = env->next;
+	}
+	if (sp > 0)
+		echo_env(&tmp[sp], env);
+	return (0);
+}
+
+int	ft_echo(char **command, t_env *env)
 {
 	int	count;
 	int	i;
@@ -36,6 +70,9 @@ int	ft_echo(char **command)
 		{
 			if (i > count)
 				ft_putstr_fd(" ", 1);
+			if (ft_strchr(command[i], '$'))
+				echo_env(command[i], env);
+			else
 			ft_putstr_fd(command[i++], 1);
 		}
 	}
@@ -46,7 +83,11 @@ int	ft_echo(char **command)
 		{
 			if (i > 1)
 				ft_putstr_fd(" ", 1);
-			ft_putstr_fd(command[i++], 1);
+			if (ft_strchr(command[i], '$'))
+				echo_env(command[i], env);
+			else
+				ft_putstr_fd(command[i], 1);
+			i++;
 		}
 		ft_putstr_fd("\n", 1);
 	}
