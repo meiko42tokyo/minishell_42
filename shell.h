@@ -97,7 +97,7 @@ int	is_buildin(char **command);
 /*
 **buildin_command
 */
-int	ft_cd(char *path);
+int	ft_cd(char *path, t_env *env);
 int	ft_pwd();
 int	ft_echo(char **command, t_env *env);
 int	ft_exit(char **command);
