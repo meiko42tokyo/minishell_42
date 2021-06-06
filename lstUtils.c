@@ -26,6 +26,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 	node = *head;
 	while (node)
 	{
+		printf("node:%s\n", node->argv[0]);
 		if (node->next == NULL)
 		{
 			node->next = new;
@@ -33,8 +34,27 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 		}
 		node = node->next;
 	}
-	node->next = NULL; 
+	node->next->next = NULL; 
 	return ;
+}
+
+int	ft_print_cmdsize(t_cmd **head)
+{
+	t_cmd	*node;
+	int	index;
+
+	node = *head;
+	index = 0;
+	while (node)
+	{
+		index++;
+		if (node->next == NULL)
+		{
+			break;
+		}
+		node = node->next;
+	}
+	return (index);
 }
 
 void	ft_print_cmdlist(t_cmd **head)

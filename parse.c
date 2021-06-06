@@ -123,15 +123,9 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		if (is_op(&token))
-		{
-			cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
-			ft_cmdadd_back(&head, cmd);
-		}
-		else
-		{
-			//append_arg(word);
-		}
+		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
+		ft_cmdadd_back(&head, cmd);
+		//append_arg(word);
 		free(word);
 		input = new_pos;
 		if (is_two_char(&token))
@@ -143,6 +137,7 @@ t_cmd	*make_cmdlist(char *input)
 	cmd = ft_cmdnew(get_argv(word), OTHER);
 	ft_cmdadd_back(&head, cmd);
 	free(word);
+	printf("size:%d\n", ft_print_cmdsize(&head));
 	ft_print_cmdlist(&head);
 	return (head);
 }
