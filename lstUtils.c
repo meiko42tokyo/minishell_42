@@ -26,7 +26,6 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 	node = *head;
 	while (node)
 	{
-		printf("node:%s\n", node->argv[0]);
 		if (node->next == NULL)
 		{
 			node->next = new;
@@ -62,7 +61,7 @@ void	ft_print_cmdlist(t_cmd **head)
 	t_cmd	*node;
 	int	index;
 	int	arg_order;
-	char	op;
+	char	*op;
 
 	index = 0;
 	if (*head == NULL)
@@ -81,12 +80,18 @@ void	ft_print_cmdlist(t_cmd **head)
 			arg_order++;
 		}
 		if (node->op == OP_SEP)
-			op = ';';
+			op = ";";
 		if (node->op == OP_PIPE)
-			op = '|';
+			op = "|";
+		if (node->op == RD_LESSER)
+			op = "<";
+		if (node->op == RD_GREATER)
+			op = ">";
+		if (node->op == RD_EXTRACT)
+			op = ">>";
 		if (node->op == OTHER)
-			op = 'O';
-		printf("  op:%c\n", op);
+			op = "O";
+		printf("  op:%s\n", op);
 		if (node->next == NULL)
 		{
 			break ;

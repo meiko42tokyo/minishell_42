@@ -26,7 +26,12 @@ void	get_token(char *new_pos, int *token)
 	if (*new_pos == '<')
 		*token = RD_LESSER;
 	if (*new_pos == '>')
-		*token = RD_GREATER;
+	{
+		if (*(new_pos + 1) == '>')
+			*token = RD_EXTRACT;
+		else
+			*token = RD_GREATER;
+	}
 	else
 		*token = OTHER;
 }
@@ -82,12 +87,18 @@ char	*ft_min_strchr(char *input, int *token)
 	return (input + min_dis);;
 }
 
-int	get_op(char op)
+int	get_op(char *op)
 {
-	if (op == '|')
-		return (OP_PIPE);
-	if (op == ';')
+	if (ft_strncmp(op, ";", 1) == 0)
 		return (OP_SEP);
+	if (ft_strncmp(op, "|", 1) == 0)
+		return (OP_PIPE);
+	if (ft_strncmp(op, "<", 1) == 0)
+		return (RD_LESSER);
+	if (ft_strncmp(op, ">", 1) == 0)
+		return (RD_GREATER);
+	if (ft_strncmp(op, ">>", 2) == 0)
+		return (RD_EXTRACT);
 	return (OTHER);
 }
 
@@ -97,6 +108,14 @@ int	is_op(int *token)
 		return (1);
 	else
 		return (0);
+}
+
+int	is_redirect(int *token)
+{
+	if (*token == RD_LESSER || *token == RD_GREATER || *token == RD_EXTRACT)
+		return (1);
+	else
+		return (0); 
 }
 
 int	is_two_char(int *token)
@@ -116,6 +135,7 @@ t_cmd	*make_cmdlist(char *input)
 	int	token;
 
 	head = NULL;
+	cmd = NULL;
 	new_pos = NULL;
 	if (input == NULL)
 		return (NULL);
@@ -123,9 +143,16 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		cmd = ft_cmdnew(get_argv(word), get_op(*new_pos));
-		ft_cmdadd_back(&head, cmd);
-		//append_arg(word);
+		if (cmd && is_redirect(&cmd->op))
+		{
+			//append_arg(word);
+			
+		}
+		else
+		{
+			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
+			ft_cmdadd_back(&head, cmd);
+		}
 		free(word);
 		input = new_pos;
 		if (is_two_char(&token))
@@ -137,7 +164,6 @@ t_cmd	*make_cmdlist(char *input)
 	cmd = ft_cmdnew(get_argv(word), OTHER);
 	ft_cmdadd_back(&head, cmd);
 	free(word);
-	printf("size:%d\n", ft_print_cmdsize(&head));
 	ft_print_cmdlist(&head);
 	return (head);
 }
