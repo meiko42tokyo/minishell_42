@@ -110,9 +110,9 @@ int	is_op(int *token)
 		return (0);
 }
 
-int	is_redirect(int *token)
+int	is_redirect(int token)
 {
-	if (*token == RD_LESSER || *token == RD_GREATER || *token == RD_EXTRACT)
+	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT)
 		return (1);
 	else
 		return (0); 
@@ -125,6 +125,79 @@ int	is_two_char(int *token)
 	else
 		return (0);
 }
+
+size_t	ft_strplen(char *argv[])
+{
+	size_t	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
+char	*put_rd(int token)
+{
+	if (token == RD_LESSER)
+		return ("<");
+	if (token == RD_GREATER)
+		return (">");
+	if (token == RD_EXTRACT)
+		return (">>");
+	return (NULL);
+}
+
+char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
+{
+	char	**new_argv;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	new_argv = (char**)ft_calloc(len + 1 + 1, sizeof (char *));
+	if (new_argv == NULL)
+		return (NULL);
+	while (old_argv[i])
+	{
+		new_argv[i] = ft_strdup(old_argv[i]);
+		i++;
+	}
+	new_argv[i] = ft_strdup(put_rd(token));
+	i++;
+	while (argv[j])
+	{
+		new_argv[i] = ft_strdup(argv[j]);
+		i++;
+		j++;
+	}
+	new_argv[i] = NULL;
+	return (new_argv);
+}
+
+int	append_arg(char *argv[], t_cmd **head)
+{
+	t_cmd	*node;
+	size_t	old_len;
+	size_t	new_len;
+	char	**old_argv;
+
+	node = *head;
+	while (node)
+	{
+		if (node->next == NULL)
+			break;
+		node = node->next;
+	}
+	old_argv = node->argv;
+	old_len = ft_strplen(node->argv);
+	new_len = ft_strplen(argv);
+	node->argv = copy_argvs(argv, old_argv, old_len + new_len, node->op);
+	if (node->argv == NULL)
+		return (1);
+	ft_print_cmdlist(head);
+	return (0);
+}	
 
 t_cmd	*make_cmdlist(char *input)
 {
@@ -143,10 +216,13 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		if (cmd && is_redirect(&cmd->op))
+		if (cmd != NULL)
 		{
-			//append_arg(word);
-			
+			if (is_redirect(cmd->op))
+			{
+				if (append_arg(get_argv(word), &head) == 0)
+					return (NULL);
+			}
 		}
 		else
 		{
@@ -159,10 +235,19 @@ t_cmd	*make_cmdlist(char *input)
 			input += 2;
 		else
 			input++;
-	}	
+	}
 	word = ft_strndup(input, ft_strlen(input));
-	cmd = ft_cmdnew(get_argv(word), OTHER);
-	ft_cmdadd_back(&head, cmd);
+	if (cmd)
+	{
+		if (is_redirect(cmd->op))
+			if (append_arg(get_argv(word), &head) == 0)
+				return (NULL);
+	}
+	else
+	{
+		cmd = ft_cmdnew(get_argv(word), OTHER);
+		ft_cmdadd_back(&head, cmd);
+	}
 	free(word);
 	ft_print_cmdlist(&head);
 	return (head);
