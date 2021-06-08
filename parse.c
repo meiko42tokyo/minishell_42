@@ -95,10 +95,10 @@ int	get_op(char *op)
 		return (OP_PIPE);
 	if (ft_strncmp(op, "<", 1) == 0)
 		return (RD_LESSER);
-	if (ft_strncmp(op, ">", 1) == 0)
-		return (RD_GREATER);
 	if (ft_strncmp(op, ">>", 2) == 0)
 		return (RD_EXTRACT);
+	if (ft_strncmp(op, ">", 1) == 0)
+		return (RD_GREATER);
 	return (OTHER);
 }
 
@@ -164,7 +164,10 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		i++;
 	}
 	new_argv[i] = ft_strdup(put_rd(token));
-	i++;
+	if (is_two_char(&token))
+		i += 2;
+	else
+		i++;
 	while (argv[j])
 	{
 		new_argv[i] = ft_strdup(argv[j]);
