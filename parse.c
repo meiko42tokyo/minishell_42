@@ -195,7 +195,6 @@ int	append_arg(char *argv[], t_cmd **head)
 	node->argv = copy_argvs(argv, old_argv, old_len + new_len, node->op);
 	if (node->argv == NULL)
 		return (1);
-	ft_print_cmdlist(head);
 	return (0);
 }	
 
@@ -220,8 +219,9 @@ t_cmd	*make_cmdlist(char *input)
 		{
 			if (is_redirect(cmd->op))
 			{
-				if (append_arg(get_argv(word), &head) == 0)
+				if (append_arg(get_argv(word), &head) != 0)
 					return (NULL);
+				cmd->op = get_op(new_pos);
 			}
 		}
 		else
@@ -240,8 +240,11 @@ t_cmd	*make_cmdlist(char *input)
 	if (cmd)
 	{
 		if (is_redirect(cmd->op))
-			if (append_arg(get_argv(word), &head) == 0)
+		{
+			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
+			cmd->op = get_op(new_pos);
+		}
 	}
 	else
 	{
