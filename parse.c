@@ -223,6 +223,11 @@ t_cmd	*make_cmdlist(char *input)
 					return (NULL);
 				cmd->op = get_op(new_pos);
 			}
+			else
+			{
+				cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
+				ft_cmdadd_back(&head, cmd);
+			}
 		}
 		else
 		{
@@ -244,6 +249,11 @@ t_cmd	*make_cmdlist(char *input)
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
+		}
+		else
+		{
+			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
+			ft_cmdadd_back(&head, cmd);
 		}
 	}
 	else
