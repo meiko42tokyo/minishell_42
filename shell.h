@@ -19,9 +19,13 @@
 # define AR_U 4283163
 # define AR_D 4348699
 
-# define OP_SEP 1
-# define OP_PIPE 2
-# define OP_OTHER -1
+# define OP_SEP 0
+# define OP_PIPE 1
+# define RD_LESSER 2
+# define RD_GREATER 3
+# define RD_EXTRACT 4
+# define OTHER -1
+# define OPS_SIZE 6
 
 typedef struct s_cmd
 {
@@ -63,6 +67,7 @@ int 	ispipe(t_cmd *c);
 */
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
+int	ft_print_cmdsize(t_cmd **head);
 void	ft_print_cmdlist(t_cmd **head);
 
 /*

@@ -49,7 +49,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 sani:
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
 term: $(OBJS) $(LIBFT) 
 	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c termmain.c $(LIBFT)  -ltermcap -o termcap
