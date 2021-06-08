@@ -252,6 +252,5 @@ t_cmd	*make_cmdlist(char *input)
 		ft_cmdadd_back(&head, cmd);
 	}
 	free(word);
-	ft_print_cmdlist(&head);
 	return (head);
 }
