@@ -215,19 +215,11 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		if (cmd != NULL)
+		if (cmd && is_redirect(cmd->op))
 		{
-			if (is_redirect(cmd->op))
-			{
-				if (append_arg(get_argv(word), &head) != 0)
-					return (NULL);
-				cmd->op = get_op(new_pos);
-			}
-			else
-			{
-				cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
-				ft_cmdadd_back(&head, cmd);
-			}
+			if (append_arg(get_argv(word), &head) != 0)
+				return (NULL);
+			cmd->op = get_op(new_pos);
 		}
 		else
 		{
@@ -242,18 +234,13 @@ t_cmd	*make_cmdlist(char *input)
 			input++;
 	}
 	word = ft_strndup(input, ft_strlen(input));
-	if (cmd)
+	if (cmd && is_redirect(cmd->op))
 	{
 		if (is_redirect(cmd->op))
 		{
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
-		}
-		else
-		{
-			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
-			ft_cmdadd_back(&head, cmd);
 		}
 	}
 	else
