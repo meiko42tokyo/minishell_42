@@ -21,17 +21,19 @@ void	get_token(char *new_pos, int *token)
 {
 	if (*new_pos == ';')
 		*token = OP_SEP;
-	if (*new_pos == '|')
+	else if (*new_pos == '|')
 		*token = OP_PIPE;
-	if (*new_pos == '<')
+	else if (*new_pos == '<')
 		*token = RD_LESSER;
-	if (*new_pos == '>')
+	else if (*new_pos == '>')
 	{
 		if (*(new_pos + 1) == '>')
 			*token = RD_EXTRACT;
 		else
 			*token = RD_GREATER;
 	}
+	else if (*new_pos == '\"')
+		*token = BR_DOUBLE;
 	else
 		*token = OTHER;
 }
@@ -46,6 +48,7 @@ char	**set_ops(void)
 	ops[RD_LESSER] = "<";
 	ops[RD_GREATER] = ">";
 	ops[RD_EXTRACT] = ">>";
+	ops[BR_DOUBLE] = "\"";
 	ops[OPS_SIZE - 1] = 0;
 	return (ops);
 }
@@ -99,6 +102,8 @@ int	get_op(char *op)
 		return (RD_EXTRACT);
 	if (ft_strncmp(op, ">", 1) == 0)
 		return (RD_GREATER);
+	if (ft_strncmp(op, "\"", 1) == 0)
+		return (BR_DOUBLE);
 	return (OTHER);
 }
 
@@ -155,7 +160,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 
 	i = 0;
 	j = 0;
-	new_argv = (char**)ft_calloc(len + 1 + 1, sizeof (char *));
+	new_argv = (char**)ft_calloc(len + is_redirect(token) + 1, sizeof (char *));
 	if (new_argv == NULL)
 		return (NULL);
 	while (old_argv[i])
@@ -163,11 +168,11 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		new_argv[i] = ft_strdup(old_argv[i]);
 		i++;
 	}
-	new_argv[i] = ft_strdup(put_rd(token));
-	if (is_two_char(&token))
-		i += 2;
-	else
+	if (is_redirect(token))
+	{
+		new_argv[i] = ft_strdup(put_rd(token));
 		i++;
+	}
 	while (argv[j])
 	{
 		new_argv[i] = ft_strdup(argv[j]);
@@ -201,6 +206,28 @@ int	append_arg(char *argv[], t_cmd **head)
 	return (0);
 }	
 
+char	**get_latestargv(t_cmd **head)
+{
+	int	index;
+	t_cmd	*node;
+
+	index = 0;
+	node = *head;
+	while(node)
+	{
+		if (node->next == NULL)
+		{
+			while (node->argv[index])
+			{
+				index++;
+			}
+			break ;
+		}
+		node = node->next;
+	}
+	return (&node->argv[index]);
+}
+
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
@@ -208,6 +235,7 @@ t_cmd	*make_cmdlist(char *input)
 	char	*word;
 	char	*new_pos;
 	int	token;
+	int	state;
 
 	head = NULL;
 	cmd = NULL;
@@ -215,19 +243,43 @@ t_cmd	*make_cmdlist(char *input)
 	if (input == NULL)
 		return (NULL);
 	token = OTHER;
+	state = NOT_Q;
 	while ((new_pos = ft_min_strchr(input, &token)) > input)
 	{
 		word = ft_strndup(input, new_pos - input);
-		if (cmd && is_redirect(cmd->op))
+		printf("<< word:%s, token:%d. state:%d >> \n", word, token, state);
+		if (state != NOT_Q && token != BR_DOUBLE)
+		{
+			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+		}
+		else if (cmd && is_redirect(cmd->op))
 		{
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
 		}
+		else if (cmd && cmd->op == BR_DOUBLE && state == NOT_Q)
+		{
+			printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
+			if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)// TODO:need check if arg increased
+				return (NULL);
+		}
 		else
 		{
 			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
 			ft_cmdadd_back(&head, cmd);
+		}
+		if (token == BR_DOUBLE)
+		{
+			if (state == NOT_Q)
+				state = DOUBLE_Q;
+			else
+			{
+				printf("token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+				state = NOT_Q;
+			}
 		}
 		free(word);
 		input = new_pos;
@@ -235,6 +287,7 @@ t_cmd	*make_cmdlist(char *input)
 			input += 2;
 		else
 			input++;
+
 	}
 	word = ft_strndup(input, ft_strlen(input));
 	if (cmd && is_redirect(cmd->op))
@@ -252,5 +305,6 @@ t_cmd	*make_cmdlist(char *input)
 		ft_cmdadd_back(&head, cmd);
 	}
 	free(word);
+	ft_print_cmdlist(&head);
 	return (head);
 }
