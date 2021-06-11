@@ -267,6 +267,13 @@ t_cmd	*make_cmdlist(char *input)
 				return (NULL);
 			cmd->op = get_op(new_pos);
 		}
+		else if (cmd && token == BR_DOUBLE && state == DOUBLE_Q)
+		{
+			printf("cmd && token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
+			state = NOT_Q;
+		}
 		else
 		{
 			printf("else:%s\n", word);
@@ -277,18 +284,8 @@ t_cmd	*make_cmdlist(char *input)
 				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
 				if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
 					return (NULL);
-			}
-		}
-		if (token == BR_DOUBLE)
-		{
-			if (state == NOT_Q)
+				printf("NOT_Q->DOUBLE_Q\n");
 				state = DOUBLE_Q;
-			else
-			{
-				printf("token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
-				state = NOT_Q;
 			}
 		}
 		free(word);
