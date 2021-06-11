@@ -261,7 +261,7 @@ t_cmd	*make_cmdlist(char *input)
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 		}
-		else if (cmd && is_redirect(cmd->op))
+		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q)))
 		{
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
