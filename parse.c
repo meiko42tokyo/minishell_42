@@ -263,6 +263,7 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q)))
 		{
+			printf("append_arg\n");
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
@@ -297,6 +298,7 @@ t_cmd	*make_cmdlist(char *input)
 
 	}
 	word = ft_strndup(input, ft_strlen(input));
+	printf("after while :%s\n", word);
 	if (cmd && is_redirect(cmd->op))
 	{
 		if (is_redirect(cmd->op))
