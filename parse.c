@@ -141,14 +141,20 @@ size_t	ft_strplen(char *argv[])
 	return (i);
 }
 
-char	*put_rd(int token)
+char	*put_token(int token)
 {
+	if (token == OP_SEP)
+		return (";");
+	if (token == OP_PIPE)
+		return ("|");
 	if (token == RD_LESSER)
 		return ("<");
 	if (token == RD_GREATER)
 		return (">");
 	if (token == RD_EXTRACT)
 		return (">>");
+	if (token == BR_DOUBLE)
+		return ("\"");
 	return (NULL);
 }
 
@@ -170,7 +176,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 	}
 	if (is_redirect(token))
 	{
-		new_argv[i] = ft_strdup(put_rd(token));
+		new_argv[i] = ft_strdup(put_token(token));
 		i++;
 	}
 	while (argv[j])
@@ -225,7 +231,7 @@ char	**get_latestargv(t_cmd **head)
 		}
 		node = node->next;
 	}
-	return (&node->argv[index]);
+	return (&node->argv[index - 1]);
 }
 
 t_cmd	*make_cmdlist(char *input)
@@ -251,7 +257,9 @@ t_cmd	*make_cmdlist(char *input)
 		if (state != NOT_Q && token != BR_DOUBLE)
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
+			printf("latest argv:%s\n", *get_latestargv(&head));
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 		}
 		else if (cmd && is_redirect(cmd->op))
 		{
@@ -259,16 +267,17 @@ t_cmd	*make_cmdlist(char *input)
 				return (NULL);
 			cmd->op = get_op(new_pos);
 		}
-		else if (cmd && cmd->op == BR_DOUBLE && state == NOT_Q)
-		{
-			printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
-			if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)// TODO:need check if arg increased
-				return (NULL);
-		}
 		else
 		{
+			printf("else:%s\n", word);
 			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
 			ft_cmdadd_back(&head, cmd);
+			if (cmd->op == BR_DOUBLE && state == NOT_Q)
+			{
+				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
+				if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
+					return (NULL);
+			}
 		}
 		if (token == BR_DOUBLE)
 		{
@@ -278,6 +287,7 @@ t_cmd	*make_cmdlist(char *input)
 			{
 				printf("token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 				state = NOT_Q;
 			}
 		}
