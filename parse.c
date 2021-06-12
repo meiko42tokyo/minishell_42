@@ -82,11 +82,11 @@ char	*ft_min_strchr(char *input, int *token)
 		}
 		index++;
 	}
-	if (ft_strlen(input) == min_dis)
-		min_dis = 0;
-	if (min_dis)
-		get_token(input + min_dis, token);
+	//if (ft_strlen(input) == min_dis)
+	//	min_dis = 0;
 	free(ops);
+	//if (min_dis)
+	get_token(input + min_dis, token);
 	return (input + min_dis);;
 }
 
@@ -250,10 +250,10 @@ t_cmd	*make_cmdlist(char *input)
 		return (NULL);
 	token = OTHER;
 	state = NOT_Q;
-	while ((new_pos = ft_min_strchr(input, &token)) > input)
+	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
-		word = ft_strndup(input, new_pos - input);
-		printf("<< word:%s, token:%d. state:%d >> \n", word, token, state);
+		word = ft_strndup(input, new_pos - input + (new_pos == input));
+		printf("<< word:%s, token:%d, state:%d, input:%s, new_pos:%s >> \n", word, token, state, input, new_pos);
 		if (state != NOT_Q && token != BR_DOUBLE)
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
@@ -272,7 +272,8 @@ t_cmd	*make_cmdlist(char *input)
 		{
 			printf("cmd && token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
+			if (new_pos != input)
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 			state = NOT_Q;
 		}
 		else
@@ -291,12 +292,19 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		free(word);
 		input = new_pos;
-		if (is_two_char(&token))
-			input += 2;
-		else
-			input++;
+		if (input != NULL)
+		{
+			if (is_two_char(&token))
+				input += 2;
+			else
+				input++;
 
+		}
+		if (ft_strlen(input) == 0)
+			break;
+		
 	}
+	/*printf("input:%s, new_pos:%s\n", input, new_pos);
 	word = ft_strndup(input, ft_strlen(input));
 	printf("after while :%s\n", word);
 	if (cmd && is_redirect(cmd->op))
@@ -313,7 +321,7 @@ t_cmd	*make_cmdlist(char *input)
 		cmd = ft_cmdnew(get_argv(word), OTHER);
 		ft_cmdadd_back(&head, cmd);
 	}
-	free(word);
+	free(word);*/
 	ft_print_cmdlist(&head);
 	return (head);
 }
