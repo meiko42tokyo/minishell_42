@@ -234,6 +234,16 @@ char	**get_latestargv(t_cmd **head)
 	return (&node->argv[index - 1]);
 }
 
+int	is_allspace(char *s)
+{
+	while (s++)
+	{
+		if (!ft_isspace(*s))
+			return (0);
+	}
+	return (1);
+}
+
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
@@ -262,16 +272,28 @@ t_cmd	*make_cmdlist(char *input)
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 		}
-		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q)))
+		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q )))
 		{
-			printf("append_arg\n");
+			printf("append_arg:%s\n", word);
 			if (ft_isspace(word[0]))
 			{
-				if (append_arg(get_argv(word), &head) != 0)
-					return (NULL);
+				if (token == BR_DOUBLE /*&& is_allspace(word)*/)
+				{
+					printf("appned_token:%s\n", put_token(token));
+					if (append_arg(get_argv(put_token(token)), &head) != 0)
+						return (NULL);
+				}
+				else
+				{
+					printf("append_word:%s\n", word);
+					if (append_arg(get_argv(word), &head) != 0)
+						return (NULL);
+					state = DOUBLE_Q;
+				}
 			}
 			else
 			{
+				printf("strjoin_word:%s\n", word);
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			}
 			cmd->op = get_op(new_pos);
