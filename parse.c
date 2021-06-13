@@ -281,22 +281,16 @@ t_cmd	*make_cmdlist(char *input)
 			printf("append_arg:%s, is_allspace:%d\n", word, is_allspace(word));
 			if (ft_isspace(word[0]))
 			{
-				if (token == BR_DOUBLE && is_allspace(word))
+				printf("append_word:%s\n", word);
+				if (!(token == BR_DOUBLE && is_allspace(word)))
 				{
-					printf("appned_token:%s\n", put_token(token));
-					if (append_arg(get_argv(put_token(token)), &head) != 0)
-						return (NULL);
-					state = DOUBLE_Q;
-				}
-				else
-				{
-					printf("append_word:%s\n", word);
 					if (append_arg(get_argv(word), &head) != 0)
 						return (NULL);
-					if (append_arg(get_argv(put_token(token)), &head) != 0)
-						return (NULL);
-					state = DOUBLE_Q;
 				}
+				printf("appned_token:%s\n", put_token(token));
+				if (append_arg(get_argv(put_token(token)), &head) != 0)
+					return (NULL);
+				state = DOUBLE_Q;
 			}
 			else
 			{
