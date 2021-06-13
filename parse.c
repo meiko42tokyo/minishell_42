@@ -236,10 +236,14 @@ char	**get_latestargv(t_cmd **head)
 
 int	is_allspace(char *s)
 {
-	while (s++)
+	int	i;
+
+	i = 0;
+	while (s[i])
 	{
-		if (!ft_isspace(*s))
+		if (ft_isspace(s[i]) != 1)
 			return (0);
+		i++;
 	}
 	return (1);
 }
@@ -268,25 +272,28 @@ t_cmd	*make_cmdlist(char *input)
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
 			printf("latest argv:%s\n", *get_latestargv(&head));
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 		}
 		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q )))
 		{
-			printf("append_arg:%s\n", word);
+			printf("append_arg:%s, is_allspace:%d\n", word, is_allspace(word));
 			if (ft_isspace(word[0]))
 			{
-				if (token == BR_DOUBLE /*&& is_allspace(word)*/)
+				if (token == BR_DOUBLE && is_allspace(word))
 				{
 					printf("appned_token:%s\n", put_token(token));
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
+					state = DOUBLE_Q;
 				}
 				else
 				{
 					printf("append_word:%s\n", word);
 					if (append_arg(get_argv(word), &head) != 0)
+						return (NULL);
+					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
 					state = DOUBLE_Q;
 				}
@@ -301,7 +308,7 @@ t_cmd	*make_cmdlist(char *input)
 		else if (cmd && token == BR_DOUBLE && state == DOUBLE_Q)
 		{
 			printf("cmd && token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 			state = NOT_Q;
