@@ -259,13 +259,21 @@ t_cmd	*make_cmdlist(char *input)
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
 			printf("latest argv:%s\n", *get_latestargv(&head));
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);// TODO:implement get_latestargv
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
+			if (new_pos != input)
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
 		}
 		else if (cmd && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q)))
 		{
 			printf("append_arg\n");
-			if (append_arg(get_argv(word), &head) != 0)
-				return (NULL);
+			if (ft_isspace(word[0]))
+			{
+				if (append_arg(get_argv(word), &head) != 0)
+					return (NULL);
+			}
+			else
+			{
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+			}
 			cmd->op = get_op(new_pos);
 		}
 		else if (cmd && token == BR_DOUBLE && state == DOUBLE_Q)
@@ -283,9 +291,19 @@ t_cmd	*make_cmdlist(char *input)
 			ft_cmdadd_back(&head, cmd);
 			if (cmd->op == BR_DOUBLE && state == NOT_Q)
 			{
-				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
-				if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
-					return (NULL);
+				printf("cmd && cmd$->op == BR_DOUBLE:%s\n", word);
+				// check if word has space in back
+				// have->append_arg
+				// not have->strjoin
+				if (ft_isspace(word[ft_strlen(word) - 1]))
+				{
+					if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
+						return (NULL);
+				}
+				else
+				{
+					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), ft_strdup(put_token(token)));
+				}
 				printf("NOT_Q->DOUBLE_Q\n");
 				state = DOUBLE_Q;
 			}
