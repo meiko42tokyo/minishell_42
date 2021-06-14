@@ -292,9 +292,9 @@ t_cmd	*make_cmdlist(char *input)
 					state = DOUBLE_Q;
 				}
 			}
-			else
+			else if (ft_strncmp(word, put_token(token), ft_strlen(word)))
 			{
-				printf("strjoin_word:%s\n", word);
+				printf("strjoin_word:%s, ft_strncmp:%d\n", word, ft_strncmp(word, put_token(token), ft_strlen(word)));
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			}
 			cmd->op = get_op(new_pos);
