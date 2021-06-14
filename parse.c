@@ -314,7 +314,7 @@ t_cmd	*make_cmdlist(char *input)
 			ft_cmdadd_back(&head, cmd);
 			if (cmd->op == BR_DOUBLE && state == NOT_Q)
 			{
-				printf("cmd && cmd$->op == BR_DOUBLE:%s\n", word);
+				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
 					if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
