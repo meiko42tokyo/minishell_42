@@ -2,7 +2,7 @@
 
 int	ispipe(t_cmd *c)
 {
-	if (c->op == 124)
+	if (c->op == OP_PIPE)
 		return (1);
 	return (0);
 }
