@@ -342,6 +342,10 @@ t_cmd	*make_cmdlist(char *input)
 			break;
 		
 	}
+	if (state != NOT_Q)
+	{
+		ft_error_str("quote not closed\n");
+	}
 	ft_print_cmdlist(&head);
 	return (head);
 }
