@@ -82,10 +82,7 @@ char	*ft_min_strchr(char *input, int *token)
 		}
 		index++;
 	}
-	//if (ft_strlen(input) == min_dis)
-	//	min_dis = 0;
 	free(ops);
-	//if (min_dis)
 	get_token(input + min_dis, token);
 	return (input + min_dis);;
 }
@@ -267,7 +264,7 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		printf("<< word:%s, token:%d, state:%d, input:%s, new_pos:%s >> \n", word, token, state, input, new_pos);
+		printf("** word:%s, token:%d, state:%d, input:%s, new_pos:%s ** \n", word, token, state, input, new_pos);
 		if (state != NOT_Q && token != BR_DOUBLE)
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
@@ -302,10 +299,6 @@ t_cmd	*make_cmdlist(char *input)
 			}
 			cmd->op = get_op(new_pos);
 		}
-		//else if (cmd && is_op(&token) && is_allspace(word) && (cmd->op == BR_DOUBLE && state == NOT_Q))
-		//{
-		//	cmd->op = get_op(new_pos);
-		//}
 		else if (cmd && token == BR_DOUBLE && state == DOUBLE_Q)
 		{
 			printf("cmd && token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
@@ -322,9 +315,6 @@ t_cmd	*make_cmdlist(char *input)
 			if (cmd->op == BR_DOUBLE && state == NOT_Q)
 			{
 				printf("cmd && cmd$->op == BR_DOUBLE:%s\n", word);
-				// check if word has space in back
-				// have->append_arg
-				// not have->strjoin
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
 					if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
@@ -352,24 +342,6 @@ t_cmd	*make_cmdlist(char *input)
 			break;
 		
 	}
-	/*printf("input:%s, new_pos:%s\n", input, new_pos);
-	word = ft_strndup(input, ft_strlen(input));
-	printf("after while :%s\n", word);
-	if (cmd && is_redirect(cmd->op))
-	{
-		if (is_redirect(cmd->op))
-		{
-			if (append_arg(get_argv(word), &head) != 0)
-				return (NULL);
-			cmd->op = get_op(new_pos);
-		}
-	}
-	else
-	{
-		cmd = ft_cmdnew(get_argv(word), OTHER);
-		ft_cmdadd_back(&head, cmd);
-	}
-	free(word);*/
 	ft_print_cmdlist(&head);
 	return (head);
 }
