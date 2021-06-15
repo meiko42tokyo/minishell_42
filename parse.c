@@ -24,7 +24,12 @@ void	get_token(char *new_pos, int *token)
 	else if (*new_pos == '|')
 		*token = OP_PIPE;
 	else if (*new_pos == '<')
-		*token = RD_LESSER;
+	{
+		if (*(new_pos + 1) == '<')
+			*token = RD_INSERT;
+		else
+			*token = RD_LESSER;
+	}
 	else if (*new_pos == '>')
 	{
 		if (*(new_pos + 1) == '>')
@@ -42,15 +47,24 @@ char	**set_ops(void)
 {
 	char	**ops;
 
-	ops = (char **)malloc(sizeof (char *) * OPS_SIZE);
+	ops = (char **)malloc(sizeof (char *) * OPS_SIZE + 1);
 	ops[OP_SEP] = ";";
 	ops[OP_PIPE] = "|";
 	ops[RD_LESSER] = "<";
 	ops[RD_GREATER] = ">";
 	ops[RD_EXTRACT] = ">>";
+	ops[RD_INSERT] = "<<";
 	ops[BR_DOUBLE] = "\"";
-	ops[OPS_SIZE - 1] = 0;
+	ops[OPS_SIZE] = 0;
 	return (ops);
+}
+
+size_t	op_size(int index)
+{
+	if (index == RD_EXTRACT || index == RD_INSERT)
+		return (2);
+	else
+		return (1);
 }
 
 char	*ft_min_strchr(char *input, int *token)
@@ -63,20 +77,14 @@ char	*ft_min_strchr(char *input, int *token)
 	index = 0;
 	ops = set_ops();
 	min_dis = ft_strchr(input, 0) - input;
-	if (ft_strnstr(input, ">>", 2) != NULL)
-	{
-		tmp = ft_strnstr(input, ">>", 2) - input;
-		if (min_dis > tmp)
-		{
-			min_dis = tmp;
-			*token = RD_EXTRACT;
-		}
-	}
 	while (ops[index])
 	{
-		if (ft_strchr(input, *ops[index]) != NULL)
+		printf("{input:%s\n", input);
+		printf("{op[%d]:%s\n", index, ops[index]);
+		printf("{ input:%s, ops[%d]:%s, op_size:%zu\n", input, index, ops[index], op_size(index));
+		if (ft_strnstr(input, ops[index], op_size(index)) != NULL)
 		{
-			tmp = ft_strchr(input, *ops[index]) - input;
+			tmp = ft_strnstr(input, ops[index], op_size(index)) - input;
 			if (min_dis > tmp)
 				min_dis = tmp;
 		}
@@ -93,6 +101,8 @@ int	get_op(char *op)
 		return (OP_SEP);
 	if (ft_strncmp(op, "|", 1) == 0)
 		return (OP_PIPE);
+	if (ft_strncmp(op, "<<", 2) == 0)
+		return (RD_INSERT);
 	if (ft_strncmp(op, "<", 1) == 0)
 		return (RD_LESSER);
 	if (ft_strncmp(op, ">>", 2) == 0)
@@ -114,7 +124,7 @@ int	is_op(int *token)
 
 int	is_redirect(int token)
 {
-	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT)
+	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT || token == RD_INSERT)
 		return (1);
 	else
 		return (0); 
@@ -122,7 +132,7 @@ int	is_redirect(int token)
 
 int	is_two_char(int *token)
 {
-	if (*token == RD_EXTRACT)
+	if (*token == RD_EXTRACT || *token == RD_INSERT)
 		return (1);
 	else
 		return (0);
@@ -150,6 +160,8 @@ char	*put_token(int token)
 		return (">");
 	if (token == RD_EXTRACT)
 		return (">>");
+	if (token == RD_INSERT)
+		return ("<<");
 	if (token == BR_DOUBLE)
 		return ("\"");
 	return (NULL);
@@ -344,7 +356,7 @@ t_cmd	*make_cmdlist(char *input)
 	}
 	if (state != NOT_Q)
 	{
-		ft_error_str("quote not closed\n");
+		ft_error_str("quote not closed\n"); // need to think about better error
 	}
 	ft_print_cmdlist(&head);
 	return (head);

@@ -24,7 +24,8 @@
 # define RD_LESSER 2
 # define RD_GREATER 3
 # define RD_EXTRACT 4
-# define BR_DOUBLE 5
+# define RD_INSERT 5
+# define BR_DOUBLE 6
 # define OTHER -1
 # define OPS_SIZE 7
 
