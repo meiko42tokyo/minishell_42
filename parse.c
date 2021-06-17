@@ -77,16 +77,19 @@ char	*ft_min_strchr(char *input, int *token)
 	index = 0;
 	ops = set_ops();
 	min_dis = ft_strchr(input, 0) - input;
+	printf("min_dis:%zu\n", min_dis);
 	while (ops[index])
 	{
-		printf("{input:%s\n", input);
-		printf("{op[%d]:%s\n", index, ops[index]);
+		//printf("{input:%s\n", input);
+		//printf("{op[%d]:%s\n", index, ops[index]);
 		printf("{ input:%s, ops[%d]:%s, op_size:%zu\n", input, index, ops[index], op_size(index));
-		if (ft_strnstr(input, ops[index], op_size(index)) != NULL)
+		if (ft_strnstr(input, ops[index], ft_strlen(input)) != NULL)
 		{
-			tmp = ft_strnstr(input, ops[index], op_size(index)) - input;
+			tmp = ft_strnstr(input, ops[index], ft_strlen(input)) - input;
 			if (min_dis > tmp)
 				min_dis = tmp;
+
+			printf("min_dis:%zu\n", min_dis);
 		}
 		index++;
 	}
@@ -277,15 +280,16 @@ t_cmd	*make_cmdlist(char *input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
 		printf("** word:%s, token:%d, state:%d, input:%s, new_pos:%s ** \n", word, token, state, input, new_pos);
-		if (state != NOT_Q && token != BR_DOUBLE)
+		if ((state != NOT_Q && token != BR_DOUBLE) || (cmd && token == BR_DOUBLE && state == DOUBLE_Q))
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
-			printf("latest argv:%s\n", *get_latestargv(&head));
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
+			if (token == BR_DOUBLE)
+				state = NOT_Q;
 		}
-		else if (cmd  && (is_redirect(cmd->op) || (cmd->op == BR_DOUBLE && state == NOT_Q )))
+		else if (cmd && cmd->op == BR_DOUBLE && state == NOT_Q )
 		{
 			printf("append_arg:%s, is_allspace:%d\n", word, is_allspace(word));
 			if (ft_isspace(word[0]))
@@ -311,13 +315,12 @@ t_cmd	*make_cmdlist(char *input)
 			}
 			cmd->op = get_op(new_pos);
 		}
-		else if (cmd && token == BR_DOUBLE && state == DOUBLE_Q)
+		else if (cmd && (is_redirect(cmd->op)))
 		{
-			printf("cmd && token == BR_DOUBLE, state == BR_DOUBLE:%s\n", word);
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-			if (new_pos != input)
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
-			state = NOT_Q;
+			printf("append_arg(redirect)\n");
+			if (append_arg(get_argv(put_token(token)), &head) != 0)
+				return (NULL);
+			cmd->op = get_op(new_pos);
 		}
 		else
 		{
