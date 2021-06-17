@@ -305,18 +305,21 @@ t_cmd	*make_cmdlist(char *input)
 					state = DOUBLE_Q;
 				}
 			}
-			else if (ft_strncmp(word, put_token(token), ft_strlen(word)))
+			else if (ft_strncmp(word, put_token(token), ft_strlen(put_token(token))))
 			{
-				printf("strjoin_word:%s, ft_strncmp:%d\n", word, ft_strncmp(word, put_token(token), ft_strlen(word)));
+				printf("strjoin_word:%s, ft_strncmp:\n", word );
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+				if (new_pos != input)
+					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
 				if (token == BR_DOUBLE)
 					state = NOT_Q;
 			}
-			else if (token == BR_DOUBLE)
+			else
 			{
-				printf("strjoin_br:%s\n", word);
+				printf("strjoin:%s\n", word);
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-				state = DOUBLE_Q;
+				if (state == BR_DOUBLE)
+					state = DOUBLE_Q;
 			}
 			cmd->op = get_op(new_pos);
 		}
