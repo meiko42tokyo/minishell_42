@@ -82,7 +82,7 @@ char	*ft_min_strchr(char *input, int *token)
 	{
 		//printf("{input:%s\n", input);
 		//printf("{op[%d]:%s\n", index, ops[index]);
-		printf("{ input:%s, ops[%d]:%s, op_size:%zu\n", input, index, ops[index], op_size(index));
+		//printf("{ input:%s, ops[%d]:%s, op_size:%zu\n", input, index, ops[index], op_size(index));
 		if (ft_strnstr(input, ops[index], ft_strlen(input)) != NULL)
 		{
 			tmp = ft_strnstr(input, ops[index], ft_strlen(input)) - input;
@@ -317,8 +317,8 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		else if (cmd && (is_redirect(cmd->op)))
 		{
-			printf("append_arg(redirect)\n");
-			if (append_arg(get_argv(put_token(token)), &head) != 0)
+			printf("append_arg(redirect):%s\n", word);
+			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
 		}
