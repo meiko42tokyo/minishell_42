@@ -77,7 +77,6 @@ char	*ft_min_strchr(char *input, int *token)
 	index = 0;
 	ops = set_ops();
 	min_dis = ft_strchr(input, 0) - input;
-	printf("min_dis:%zu\n", min_dis);
 	while (ops[index])
 	{
 		//printf("{input:%s\n", input);
@@ -88,8 +87,6 @@ char	*ft_min_strchr(char *input, int *token)
 			tmp = ft_strnstr(input, ops[index], ft_strlen(input)) - input;
 			if (min_dis > tmp)
 				min_dis = tmp;
-
-			printf("min_dis:%zu\n", min_dis);
 		}
 		index++;
 	}
@@ -279,10 +276,10 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		printf("** word:%s, token:%d, state:%d, input:%s, new_pos:%s ** \n", word, token, state, input, new_pos);
+		printf("** word:, token:%d, state:%d, input:%s, new_pos:%s ** \n", token, state, input, new_pos);
 		if ((state != NOT_Q && token != BR_DOUBLE) || (cmd && token == BR_DOUBLE && state == DOUBLE_Q))
 		{
-			printf("state != NOT_Q && token != BR_DOUBLE:%s\n", word);
+			printf("state != NOT_Q && token != BR_DOUBLE || cmd && token == BR_DOUBLE && state == DOUBLE_Q:%s\n", word);
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
@@ -312,6 +309,14 @@ t_cmd	*make_cmdlist(char *input)
 			{
 				printf("strjoin_word:%s, ft_strncmp:%d\n", word, ft_strncmp(word, put_token(token), ft_strlen(word)));
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+				if (token == BR_DOUBLE)
+					state = NOT_Q;
+			}
+			else if (token == BR_DOUBLE)
+			{
+				printf("strjoin_br:%s\n", word);
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+				state = DOUBLE_Q;
 			}
 			cmd->op = get_op(new_pos);
 		}
