@@ -276,7 +276,7 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		printf("** word:, token:%d, state:%d, input:%s, new_pos:%s ** \n", token, state, input, new_pos);
+		//printf("** word:, token:%d, state:%d, input:%s, new_pos: ** \n", token, state, input);
 		if ((state != NOT_Q && token != BR_DOUBLE) || (cmd && token == BR_DOUBLE && state == DOUBLE_Q))
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE || cmd && token == BR_DOUBLE && state == DOUBLE_Q:%s\n", word);
@@ -337,7 +337,7 @@ t_cmd	*make_cmdlist(char *input)
 				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
-					if (append_arg(get_argv(ft_strdup("\"")), &head) != 0)
+					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
 				}
 				else
@@ -358,6 +358,7 @@ t_cmd	*make_cmdlist(char *input)
 				input++;
 
 		}
+		printf("ft_strlen:%zu\n", ft_strlen(input));
 		if (ft_strlen(input) == 0)
 			break;
 		
