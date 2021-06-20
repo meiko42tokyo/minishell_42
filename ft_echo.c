@@ -29,6 +29,7 @@ static int echo_env(char *str, t_env *env)
 	int	sp;
 	char	*tmp;
 	char	*print;
+//	char	*status;
 
 	sp = ft_strchr(str, '$') - str;
 	if (sp > 0)
@@ -44,6 +45,14 @@ static int echo_env(char *str, t_env *env)
 		print = ft_strndup(tmp, sp);
 	else
 		print = ft_strdup(tmp);
+/*
+	if (print[1] == '?')
+	{
+		status = ft_itoa($PIPESTATUS[0]);
+		ft_putstr_fd(status, 1);
+	//あとで後の文字も印字できるようにする
+	}
+*/
 	while (env)
 	{
 		if (ft_strcmp(print, env->name) == 0)
@@ -73,7 +82,7 @@ int	ft_echo(char **command, t_env *env)
 			if (ft_strchr(command[i], '$'))
 				echo_env(command[i], env);
 			else
-			ft_putstr_fd(command[i++], 1);
+				ft_putstr_fd(command[i++], 1);
 		}
 	}
 	else

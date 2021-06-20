@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 23:46:57 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/12/26 15:51:19 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2021/06/20 23:44:36 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	check_spaces(const char *str, int i)
 
 int			ft_will_overflow(unsigned long n, int next_digit)
 {
-	if (n > (INT_MAX) / 10)
+	if (n > (LONG_MAX) / 10)
 		return (1);
-	if (n == (INT_MAX / 10) && next_digit > (INT_MAX % 10))
+	if (n == (LONG_MAX / 10) && next_digit > (LONG_MAX % 10))
 		return (1);
 	return (0);
 }
@@ -56,7 +56,7 @@ int			ft_atoi(const char *str)
 		if (!ft_isdigit(str[i]))
 			break ;
 		if (ft_will_overflow(ret, str[i] - '0'))
-			return (sign == 1 ? INT_MAX : INT_MIN);
+			return (sign == 1 ? LONG_MAX : LONG_MIN);
 		ret = ret * 10 + str[i] - '0';
 		i++;
 	}
