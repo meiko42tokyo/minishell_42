@@ -312,7 +312,7 @@ t_cmd	*make_cmdlist(char *input)
 				if (new_pos != input)
 					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
 				if (token == BR_DOUBLE)
-					state = NOT_Q;
+					state = DOUBLE_Q;
 			}
 			else
 			{
@@ -366,6 +366,7 @@ t_cmd	*make_cmdlist(char *input)
 			break;
 		
 	}
+	printf("state:%d\n", state);
 	if (state != NOT_Q)
 	{
 		ft_error_str("quote not closed\n"); // need to think about better error
