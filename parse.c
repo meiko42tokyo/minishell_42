@@ -1,6 +1,5 @@
 #include "shell.h"
 
-// TODO: If in the quote, don't quote until the quote ends
 char	**get_argv(char *input)
 {
 	char	**argv;
@@ -82,9 +81,6 @@ char	*ft_min_strchr(char *input, int *token)
 	min_dis = ft_strchr(input, 0) - input;
 	while (ops[index])
 	{
-		//printf("{input:%s\n", input);
-		//printf("{op[%d]:%s\n", index, ops[index]);
-		//printf("{ input:%s, ops[%d]:%s, op_size:%zu\n", input, index, ops[index], op_size(index));
 		if (ft_strnstr(input, ops[index], ft_strlen(input)) != NULL)
 		{
 			tmp = ft_strnstr(input, ops[index], ft_strlen(input)) - input;
@@ -299,10 +295,8 @@ t_cmd	*make_cmdlist(char *input)
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		//printf("** word:, token:%d, state:%d, input:%s, new_pos: ** \n", token, state, input);
 		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
 		{
-			printf("state != NOT_Q && token != BR_DOUBLE || cmd && token == BR_DOUBLE && state == DOUBLE_Q:%s\n", word);
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
@@ -311,16 +305,13 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
 		{
-			printf("append_arg:%s, is_allspace:%d\n", word, is_allspace(word));
 			if (ft_isspace(word[0]))
 			{
-				printf("append_word:%s\n", word);
 				if (!is_allspace(word))
 				{
 					if (append_arg(get_argv(word), &head) != 0)
 						return (NULL);
 				}
-				printf("appned_token:%s\n", put_token(token));
 				if (is_token_br(token))
 				{
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
@@ -333,7 +324,6 @@ t_cmd	*make_cmdlist(char *input)
 			}
 			else if (ft_strncmp(word, put_token(token), ft_strlen(put_token(token))))
 			{
-				printf("strjoin_word:%s, ft_strncmp:\n", word );
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 				if (new_pos != input)
 					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
@@ -344,7 +334,6 @@ t_cmd	*make_cmdlist(char *input)
 			}
 			else
 			{
-				printf("strjoin:%s\n", word);
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 				if (state == BR_DOUBLE)
 					state = DOUBLE_Q;
@@ -355,22 +344,18 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		else if (cmd && (is_redirect(cmd->op)))
 		{
-			printf("append_arg(redirect):%s\n", word);
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
 			cmd->op = get_op(new_pos);
 		}
 		else
 		{
-			printf("else:%s\n", word);
 			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
 			ft_cmdadd_back(&head, cmd);
 			if (is_token_br(cmd->op) && state == NOT_Q)
 			{
-				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
-					printf("put_token%s, token:%d\n", put_token(token), token);
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
 				}
@@ -378,7 +363,6 @@ t_cmd	*make_cmdlist(char *input)
 				{
 					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
 				}
-				printf("NOT_Q->DOUBLE_Q\n");
 				if (token == BR_DOUBLE)
 					state = DOUBLE_Q;
 				else if (token == BR_SINGLE)
@@ -393,14 +377,11 @@ t_cmd	*make_cmdlist(char *input)
 				input += 2;
 			else
 				input++;
-
 		}
-		printf("ft_strlen:%zu\n", ft_strlen(input));
 		if (ft_strlen(input) == 0)
 			break;
 		
 	}
-	printf("state:%d\n", state);
 	if (state != NOT_Q)
 	{
 		ft_error_str("quote not closed\n"); // need to think about better error
