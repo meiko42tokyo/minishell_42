@@ -39,6 +39,8 @@ void	get_token(char *new_pos, int *token)
 	}
 	else if (*new_pos == '\"')
 		*token = BR_DOUBLE;
+	else if (*new_pos == '\'')
+		*token = BR_SINGLE;
 	else
 		*token = OTHER;
 }
@@ -141,6 +143,22 @@ int	is_two_char(int *token)
 		return (0);
 }
 
+int	is_token_br(int token)
+{
+	if (token == BR_DOUBLE || token == BR_SINGLE)
+		return (1);
+	else
+		return (0);
+}
+
+int	is_in_quoto(int state)
+{
+	if (state == SINGLE_Q || state == DOUBLE_Q)
+		return (1);
+	else
+		return (0);
+}
+
 size_t	ft_strplen(char *argv[])
 {
 	size_t	i;
@@ -167,6 +185,8 @@ char	*put_token(int token)
 		return ("<<");
 	if (token == BR_DOUBLE)
 		return ("\"");
+	if (token == BR_SINGLE)
+		return ("\'");
 	return (NULL);
 }
 
@@ -280,16 +300,16 @@ t_cmd	*make_cmdlist(char *input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
 		//printf("** word:, token:%d, state:%d, input:%s, new_pos: ** \n", token, state, input);
-		if ((state != NOT_Q && token != BR_DOUBLE) || (cmd && token == BR_DOUBLE && state == DOUBLE_Q))
+		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
 		{
 			printf("state != NOT_Q && token != BR_DOUBLE || cmd && token == BR_DOUBLE && state == DOUBLE_Q:%s\n", word);
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
-			if (token == BR_DOUBLE)
+			if (is_token_br(token))
 				state = NOT_Q;
 		}
-		else if (cmd && cmd->op == BR_DOUBLE && state == NOT_Q )
+		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
 		{
 			printf("append_arg:%s, is_allspace:%d\n", word, is_allspace(word));
 			if (ft_isspace(word[0]))
@@ -301,11 +321,14 @@ t_cmd	*make_cmdlist(char *input)
 						return (NULL);
 				}
 				printf("appned_token:%s\n", put_token(token));
-				if (token == BR_DOUBLE)
+				if (is_token_br(token))
 				{
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
-					state = DOUBLE_Q;
+					if (token == BR_DOUBLE)
+						state = DOUBLE_Q;
+					else if (token == BR_SINGLE)
+						state = SINGLE_Q;
 				}
 			}
 			else if (ft_strncmp(word, put_token(token), ft_strlen(put_token(token))))
@@ -316,6 +339,8 @@ t_cmd	*make_cmdlist(char *input)
 					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
 				if (token == BR_DOUBLE)
 					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
 			}
 			else
 			{
@@ -323,6 +348,8 @@ t_cmd	*make_cmdlist(char *input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 				if (state == BR_DOUBLE)
 					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
 			}
 			cmd->op = get_op(new_pos);
 		}
@@ -338,11 +365,12 @@ t_cmd	*make_cmdlist(char *input)
 			printf("else:%s\n", word);
 			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
 			ft_cmdadd_back(&head, cmd);
-			if (cmd->op == BR_DOUBLE && state == NOT_Q)
+			if (is_token_br(cmd->op) && state == NOT_Q)
 			{
 				printf("cmd && cmd->op == BR_DOUBLE:%s\n", word);
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
+					printf("put_token%s, token:%d\n", put_token(token), token);
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
 				}
@@ -351,7 +379,10 @@ t_cmd	*make_cmdlist(char *input)
 					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
 				}
 				printf("NOT_Q->DOUBLE_Q\n");
-				state = DOUBLE_Q;
+				if (token == BR_DOUBLE)
+					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
 			}
 		}
 		free(word);
