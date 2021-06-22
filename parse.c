@@ -1,6 +1,5 @@
 #include "shell.h"
 
-// TODO: If in the quote, don't quote until the quote ends
 char	**get_argv(char *input)
 {
 	char	**argv;
@@ -21,17 +20,26 @@ void	get_token(char *new_pos, int *token)
 {
 	if (*new_pos == ';')
 		*token = OP_SEP;
-	if (*new_pos == '|')
+	else if (*new_pos == '|')
 		*token = OP_PIPE;
-	if (*new_pos == '<')
-		*token = RD_LESSER;
-	if (*new_pos == '>')
+	else if (*new_pos == '<')
+	{
+		if (*(new_pos + 1) == '<')
+			*token = RD_INSERT;
+		else
+			*token = RD_LESSER;
+	}
+	else if (*new_pos == '>')
 	{
 		if (*(new_pos + 1) == '>')
 			*token = RD_EXTRACT;
 		else
 			*token = RD_GREATER;
 	}
+	else if (*new_pos == '\"')
+		*token = BR_DOUBLE;
+	else if (*new_pos == '\'')
+		*token = BR_SINGLE;
 	else
 		*token = OTHER;
 }
@@ -40,14 +48,25 @@ char	**set_ops(void)
 {
 	char	**ops;
 
-	ops = (char **)malloc(sizeof (char *) * OPS_SIZE);
+	ops = (char **)malloc(sizeof (char *) * OPS_SIZE + 1);
 	ops[OP_SEP] = ";";
 	ops[OP_PIPE] = "|";
 	ops[RD_LESSER] = "<";
 	ops[RD_GREATER] = ">";
 	ops[RD_EXTRACT] = ">>";
-	ops[OPS_SIZE - 1] = 0;
+	ops[RD_INSERT] = "<<";
+	ops[BR_DOUBLE] = "\"";
+	ops[BR_SINGLE] = "\'";
+	ops[OPS_SIZE] = 0;
 	return (ops);
+}
+
+size_t	op_size(int index)
+{
+	if (index == RD_EXTRACT || index == RD_INSERT)
+		return (2);
+	else
+		return (1);
 }
 
 char	*ft_min_strchr(char *input, int *token)
@@ -60,30 +79,18 @@ char	*ft_min_strchr(char *input, int *token)
 	index = 0;
 	ops = set_ops();
 	min_dis = ft_strchr(input, 0) - input;
-	if (ft_strnstr(input, ">>", 2) != NULL)
-	{
-		tmp = ft_strnstr(input, ">>", 2) - input;
-		if (min_dis > tmp)
-		{
-			min_dis = tmp;
-			*token = RD_EXTRACT;
-		}
-	}
 	while (ops[index])
 	{
-		if (ft_strchr(input, *ops[index]) != NULL)
+		if (ft_strnstr(input, ops[index], ft_strlen(input)) != NULL)
 		{
-			tmp = ft_strchr(input, *ops[index]) - input;
+			tmp = ft_strnstr(input, ops[index], ft_strlen(input)) - input;
 			if (min_dis > tmp)
 				min_dis = tmp;
 		}
 		index++;
 	}
-	if (ft_strlen(input) == min_dis)
-		min_dis = 0;
-	if (min_dis)
-		get_token(input + min_dis, token);
 	free(ops);
+	get_token(input + min_dis, token);
 	return (input + min_dis);;
 }
 
@@ -93,12 +100,18 @@ int	get_op(char *op)
 		return (OP_SEP);
 	if (ft_strncmp(op, "|", 1) == 0)
 		return (OP_PIPE);
+	if (ft_strncmp(op, "<<", 2) == 0)
+		return (RD_INSERT);
 	if (ft_strncmp(op, "<", 1) == 0)
 		return (RD_LESSER);
 	if (ft_strncmp(op, ">>", 2) == 0)
 		return (RD_EXTRACT);
 	if (ft_strncmp(op, ">", 1) == 0)
 		return (RD_GREATER);
+	if (ft_strncmp(op, "\"", 1) == 0)
+		return (BR_DOUBLE);
+	if (ft_strncmp(op, "\'", 1) == 0)
+		return (BR_SINGLE);
 	return (OTHER);
 }
 
@@ -112,7 +125,7 @@ int	is_op(int *token)
 
 int	is_redirect(int token)
 {
-	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT)
+	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT || token == RD_INSERT)
 		return (1);
 	else
 		return (0); 
@@ -120,7 +133,23 @@ int	is_redirect(int token)
 
 int	is_two_char(int *token)
 {
-	if (*token == RD_EXTRACT)
+	if (*token == RD_EXTRACT || *token == RD_INSERT)
+		return (1);
+	else
+		return (0);
+}
+
+int	is_token_br(int token)
+{
+	if (token == BR_DOUBLE || token == BR_SINGLE)
+		return (1);
+	else
+		return (0);
+}
+
+int	is_in_quoto(int state)
+{
+	if (state == SINGLE_Q || state == DOUBLE_Q)
 		return (1);
 	else
 		return (0);
@@ -136,14 +165,24 @@ size_t	ft_strplen(char *argv[])
 	return (i);
 }
 
-char	*put_rd(int token)
+char	*put_token(int token)
 {
+	if (token == OP_SEP)
+		return (";");
+	if (token == OP_PIPE)
+		return ("|");
 	if (token == RD_LESSER)
 		return ("<");
 	if (token == RD_GREATER)
 		return (">");
 	if (token == RD_EXTRACT)
 		return (">>");
+	if (token == RD_INSERT)
+		return ("<<");
+	if (token == BR_DOUBLE)
+		return ("\"");
+	if (token == BR_SINGLE)
+		return ("\'");
 	return (NULL);
 }
 
@@ -155,7 +194,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 
 	i = 0;
 	j = 0;
-	new_argv = (char**)ft_calloc(len + 1 + 1, sizeof (char *));
+	new_argv = (char**)ft_calloc(len + is_redirect(token) + 1, sizeof (char *));
 	if (new_argv == NULL)
 		return (NULL);
 	while (old_argv[i])
@@ -163,11 +202,11 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		new_argv[i] = ft_strdup(old_argv[i]);
 		i++;
 	}
-	new_argv[i] = ft_strdup(put_rd(token));
-	if (is_two_char(&token))
-		i += 2;
-	else
+	if (is_redirect(token))
+	{
+		new_argv[i] = ft_strdup(put_token(token));
 		i++;
+	}
 	while (argv[j])
 	{
 		new_argv[i] = ft_strdup(argv[j]);
@@ -178,7 +217,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 	return (new_argv);
 }
 
-int	append_arg(char *argv[], t_cmd **head)
+int		append_arg(char *argv[], t_cmd **head)
 {
 	t_cmd	*node;
 	size_t	old_len;
@@ -201,6 +240,42 @@ int	append_arg(char *argv[], t_cmd **head)
 	return (0);
 }	
 
+char	**get_latestargv(t_cmd **head)
+{
+	int	index;
+	t_cmd	*node;
+
+	index = 0;
+	node = *head;
+	while(node)
+	{
+		if (node->next == NULL)
+		{
+			while (node->argv[index])
+			{
+				index++;
+			}
+			break ;
+		}
+		node = node->next;
+	}
+	return (&node->argv[index - 1]);
+}
+
+int	is_allspace(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (ft_isspace(s[i]) != 1)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 t_cmd	*make_cmdlist(char *input)
 {
 	t_cmd	*head;
@@ -208,6 +283,7 @@ t_cmd	*make_cmdlist(char *input)
 	char	*word;
 	char	*new_pos;
 	int	token;
+	int	state;
 
 	head = NULL;
 	cmd = NULL;
@@ -215,10 +291,58 @@ t_cmd	*make_cmdlist(char *input)
 	if (input == NULL)
 		return (NULL);
 	token = OTHER;
-	while ((new_pos = ft_min_strchr(input, &token)) > input)
+	state = NOT_Q;
+	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
-		word = ft_strndup(input, new_pos - input);
-		if (cmd && is_redirect(cmd->op))
+		word = ft_strndup(input, new_pos - input + (new_pos == input));
+		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
+		{
+			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+			if (new_pos != input)
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
+			if (is_token_br(token))
+				state = NOT_Q;
+		}
+		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
+		{
+			if (ft_isspace(word[0]))
+			{
+				if (!is_allspace(word))
+				{
+					if (append_arg(get_argv(word), &head) != 0)
+						return (NULL);
+				}
+				if (is_token_br(token))
+				{
+					if (append_arg(get_argv(put_token(token)), &head) != 0)
+						return (NULL);
+					if (token == BR_DOUBLE)
+						state = DOUBLE_Q;
+					else if (token == BR_SINGLE)
+						state = SINGLE_Q;
+				}
+			}
+			else if (ft_strncmp(word, put_token(token), ft_strlen(put_token(token))))
+			{
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+				if (new_pos != input)
+					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
+				if (token == BR_DOUBLE)
+					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
+			}
+			else
+			{
+				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
+				if (state == BR_DOUBLE)
+					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
+			}
+			cmd->op = get_op(new_pos);
+		}
+		else if (cmd && (is_redirect(cmd->op)))
 		{
 			if (append_arg(get_argv(word), &head) != 0)
 				return (NULL);
@@ -228,29 +352,40 @@ t_cmd	*make_cmdlist(char *input)
 		{
 			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
 			ft_cmdadd_back(&head, cmd);
+			if (is_token_br(cmd->op) && state == NOT_Q)
+			{
+				if (ft_isspace(word[ft_strlen(word) - 1]))
+				{
+					if (append_arg(get_argv(put_token(token)), &head) != 0)
+						return (NULL);
+				}
+				else
+				{
+					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
+				}
+				if (token == BR_DOUBLE)
+					state = DOUBLE_Q;
+				else if (token == BR_SINGLE)
+					state = SINGLE_Q;
+			}
 		}
 		free(word);
 		input = new_pos;
-		if (is_two_char(&token))
-			input += 2;
-		else
-			input++;
-	}
-	word = ft_strndup(input, ft_strlen(input));
-	if (cmd && is_redirect(cmd->op))
-	{
-		if (is_redirect(cmd->op))
+		if (input != NULL)
 		{
-			if (append_arg(get_argv(word), &head) != 0)
-				return (NULL);
-			cmd->op = get_op(new_pos);
+			if (is_two_char(&token))
+				input += 2;
+			else
+				input++;
 		}
+		if (ft_strlen(input) == 0)
+			break;
+		
 	}
-	else
+	if (state != NOT_Q)
 	{
-		cmd = ft_cmdnew(get_argv(word), OTHER);
-		ft_cmdadd_back(&head, cmd);
+		ft_error_str("quote not closed\n"); // need to think about better error
 	}
-	free(word);
+	//ft_print_cmdlist(&head);
 	return (head);
 }

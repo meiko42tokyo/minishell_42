@@ -91,6 +91,10 @@ void	ft_print_cmdlist(t_cmd **head)
 			op = ">>";
 		if (node->op == OTHER)
 			op = "O";
+		if (node->op == BR_DOUBLE)
+			op = "\"";
+		if (node->op == BR_SINGLE)
+			op = "\'";
 		printf("  op:%s\n", op);
 		if (node->next == NULL)
 		{
