@@ -26,12 +26,14 @@
 # define RD_EXTRACT 4
 # define RD_INSERT 5
 # define BR_DOUBLE 6
+# define BR_SINGLE 7
 # define OTHER -1
-# define OPS_SIZE 7
+# define OPS_SIZE 8
 
 # define NOT_Q 0
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
+
 typedef struct s_cmd
 {
 	struct s_cmd	*next;

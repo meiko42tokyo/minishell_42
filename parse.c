@@ -55,6 +55,7 @@ char	**set_ops(void)
 	ops[RD_EXTRACT] = ">>";
 	ops[RD_INSERT] = "<<";
 	ops[BR_DOUBLE] = "\"";
+	ops[BR_SINGLE] = "\'";
 	ops[OPS_SIZE] = 0;
 	return (ops);
 }
@@ -111,6 +112,8 @@ int	get_op(char *op)
 		return (RD_GREATER);
 	if (ft_strncmp(op, "\"", 1) == 0)
 		return (BR_DOUBLE);
+	if (ft_strncmp(op, "\'", 1) == 0)
+		return (BR_SINGLE);
 	return (OTHER);
 }
 
@@ -198,7 +201,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 	return (new_argv);
 }
 
-int	append_arg(char *argv[], t_cmd **head)
+int		append_arg(char *argv[], t_cmd **head)
 {
 	t_cmd	*node;
 	size_t	old_len;
