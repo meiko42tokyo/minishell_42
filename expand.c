@@ -19,16 +19,18 @@ int	is_escape(char c)
 
 void	br(int *state, char *word)
 {
-	if (*word == '\'')
+	if (*word == '\"')
 	{
 		if (*state == DOUBLE_Q)
 			*state = NOT_Q;
-		else if (state == NOT_Q)
+		else if (*state == NOT_Q)
 			*state = DOUBLE_Q;
 		if (*state != SINGLE_Q)
 			strshift(word);
+		else
+			word++;
 	}
-	else if (*word == '\"')
+	else if (*word == '\'')
 	{
 		if (*state == SINGLE_Q)
 			*state = NOT_Q;
@@ -36,6 +38,8 @@ void	br(int *state, char *word)
 			*state = SINGLE_Q;
 		if (*state != DOUBLE_Q)
 			strshift(word);
+		else
+			word++;
 	}
 }
 
@@ -48,28 +52,12 @@ void	check_word(char *word)
 	state = NOT_Q;
 	while (word)
 	{
+		printf("word:%s, state:%d\n", word, state);
 		if (*word == '\'' || *word == '\"')
 			br(&state, word);
-		/*if (*word == '\"')
-		{
-			if (state == DOUBLE_Q)
-				state = NOT_Q;
-			else if (state == NOT_Q)
-				state = DOUBLE_Q;
-			if (state != SINGLE_Q)
-				strshift(word);
-		}
-		else if (*word == '\'')
-		{
-			if (state == SINGLE_Q)
-				state = NOT_Q;
-			else if (state == NOT_Q)
-				state = SINGLE_Q;
-			if (state != DOUBLE_Q)
-				strshift(word);
-		}*/
 		else if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
+			printf("test\n");
 			*word = *(word + 1);
 			word++;
 			strshift(word);
@@ -79,10 +67,12 @@ void	check_word(char *word)
 			//check env val exist
 			//
 		}
-		if (*word == '\0')
-			break ;
-		word++;
-		printf("word:%s\n", word);
+		else
+		{
+			if (*word == '\0')
+				break;
+			word++;
+		}
 	}
 }
 
