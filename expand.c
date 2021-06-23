@@ -17,6 +17,28 @@ int	is_escape(char c)
 		return (0);
 }
 
+void	br(int *state, char *word)
+{
+	if (*word == '\'')
+	{
+		if (*state == DOUBLE_Q)
+			*state = NOT_Q;
+		else if (state == NOT_Q)
+			*state = DOUBLE_Q;
+		if (*state != SINGLE_Q)
+			strshift(word);
+	}
+	else if (*word == '\"')
+	{
+		if (*state == SINGLE_Q)
+			*state = NOT_Q;
+		else if (*state == NOT_Q)
+			*state = SINGLE_Q;
+		if (*state != DOUBLE_Q)
+			strshift(word);
+	}
+}
+
 void	check_word(char *word)
 {
 	int	state;
@@ -26,7 +48,9 @@ void	check_word(char *word)
 	state = NOT_Q;
 	while (word)
 	{
-		if (*word == '\"')
+		if (*word == '\'' || *word == '\"')
+			br(&state, word);
+		/*if (*word == '\"')
 		{
 			if (state == DOUBLE_Q)
 				state = NOT_Q;
@@ -35,7 +59,7 @@ void	check_word(char *word)
 			if (state != SINGLE_Q)
 				strshift(word);
 		}
-		if (*word == '\'')
+		else if (*word == '\'')
 		{
 			if (state == SINGLE_Q)
 				state = NOT_Q;
@@ -43,19 +67,21 @@ void	check_word(char *word)
 				state = SINGLE_Q;
 			if (state != DOUBLE_Q)
 				strshift(word);
-		}
-		if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
+		}*/
+		else if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
 			*word = *(word + 1);
 			word++;
 			strshift(word);
 		}
-		else
+		else if (*word == '$' && state != SINGLE_Q)
 		{
-			if (*word == '\0')
-				break ;
-			word++;
+			//check env val exist
+			//
 		}
+		if (*word == '\0')
+			break ;
+		word++;
 		printf("word:%s\n", word);
 	}
 }
