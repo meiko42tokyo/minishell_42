@@ -101,6 +101,11 @@ char	**get_argv(char *input);
 t_cmd	*make_cmdlist(char *input);
 
 /*
+**expand.c
+*/
+void	expand(t_cmd **head);
+
+/*
 **buildin.c
 */
 int	exec_buildin(char **command, t_env *env);
