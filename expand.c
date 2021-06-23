@@ -32,7 +32,8 @@ void	check_word(char *word)
 				state = NOT_Q;
 			else if (state == NOT_Q)
 				state = DOUBLE_Q;
-			strshift(word);
+			if (state != SINGLE_Q)
+				strshift(word);
 		}
 		if (*word == '\'')
 		{
@@ -40,7 +41,8 @@ void	check_word(char *word)
 				state = NOT_Q;
 			else if (state == NOT_Q)
 				state = SINGLE_Q;
-			strshift(word);
+			if (state != DOUBLE_Q)
+				strshift(word);
 		}
 		if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
