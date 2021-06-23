@@ -42,10 +42,9 @@ void	check_word(char *word)
 				state = SINGLE_Q;
 			strshift(word);
 		}
-		if (*word == '\\' && is_escape(*word + 1) && state == DOUBLE_Q)
+		if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
-			printf("test\n");
-			*word = *word + 1;
+			*word = *(word + 1);
 			word++;
 			strshift(word);
 		}
