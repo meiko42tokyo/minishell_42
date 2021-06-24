@@ -17,29 +17,31 @@ int	is_escape(char c)
 		return (0);
 }
 
-void	br(int *state, char *word)
+void	br(int *state, char **word)
 {
-	if (*word == '\"')
+	if (**word == '\"')
 	{
 		if (*state == DOUBLE_Q)
 			*state = NOT_Q;
 		else if (*state == NOT_Q)
 			*state = DOUBLE_Q;
 		if (*state != SINGLE_Q)
-			strshift(word);
+			strshift(*word);
 		else
-			word++;
+			*word = *word + 1;
 	}
-	else if (*word == '\'')
+	else if (**word == '\'')
 	{
 		if (*state == SINGLE_Q)
 			*state = NOT_Q;
 		else if (*state == NOT_Q)
 			*state = SINGLE_Q;
 		if (*state != DOUBLE_Q)
-			strshift(word);
+			strshift(*word);
 		else
-			word++;
+		{
+			*word = *word + 1;
+		}
 	}
 }
 
@@ -54,7 +56,7 @@ void	check_word(char *word)
 	{
 		printf("word:%s, state:%d\n", word, state);
 		if (*word == '\'' || *word == '\"')
-			br(&state, word);
+			br(&state, &word);
 		else if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
 			printf("test\n");
