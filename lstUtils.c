@@ -33,8 +33,27 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 		}
 		node = node->next;
 	}
-	node->next = NULL; 
+	node->next->next = NULL; 
 	return ;
+}
+
+int	ft_print_cmdsize(t_cmd **head)
+{
+	t_cmd	*node;
+	int	index;
+
+	node = *head;
+	index = 0;
+	while (node)
+	{
+		index++;
+		if (node->next == NULL)
+		{
+			break;
+		}
+		node = node->next;
+	}
+	return (index);
 }
 
 void	ft_print_cmdlist(t_cmd **head)
@@ -42,7 +61,7 @@ void	ft_print_cmdlist(t_cmd **head)
 	t_cmd	*node;
 	int	index;
 	int	arg_order;
-	char	op;
+	char	*op;
 
 	index = 0;
 	if (*head == NULL)
@@ -53,10 +72,6 @@ void	ft_print_cmdlist(t_cmd **head)
 	node = *head;
 	while (node)
 	{
-		if (node->next == NULL)
-		{
-			break ;
-		}
 		printf("cmd[%d]:\n", index++);
 		arg_order = 0;
 		while (node->argv[arg_order])
@@ -65,12 +80,26 @@ void	ft_print_cmdlist(t_cmd **head)
 			arg_order++;
 		}
 		if (node->op == OP_SEP)
-			op = ';';
+			op = ";";
 		if (node->op == OP_PIPE)
-			op = '|';
-		if (node->op == OP_OTHER)
-			op = 'O';
-		printf("  op:%c\n", op);
+			op = "|";
+		if (node->op == RD_LESSER)
+			op = "<";
+		if (node->op == RD_GREATER)
+			op = ">";
+		if (node->op == RD_EXTRACT)
+			op = ">>";
+		if (node->op == OTHER)
+			op = "O";
+		if (node->op == BR_DOUBLE)
+			op = "\"";
+		if (node->op == BR_SINGLE)
+			op = "\'";
+		printf("  op:%s\n", op);
+		if (node->next == NULL)
+		{
+			break ;
+		}
 		node = node->next;
 	}
 }	

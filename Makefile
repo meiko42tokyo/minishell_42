@@ -31,9 +31,13 @@ SRCS = exec.c\
 	env_utils.c\
 	error.c
 
+B_SRCS = $(SRCS)
+
 CFLAGS = -g -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
+
+B_OBJS = $(B_SRCS:%.c=%.o)
 
 CC = gcc
 
@@ -45,11 +49,14 @@ all: $(NAME)
 $(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
+bonus: $(B_OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(B_OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 sani:
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
 term: $(OBJS) $(LIBFT) 
 	$(CC) $(CFLAGS) $(OBJS) doubly_lstUtils.c termcap.c termmain.c $(LIBFT)  -ltermcap -o termcap
