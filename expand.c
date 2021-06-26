@@ -43,7 +43,7 @@ void	br(int *state, char **word)
 	}
 }
 
-void	check_word(char *word)
+void	check_word(char *word, t_env *env)
 {
 	int	state;
 	char 	*head;
@@ -62,11 +62,14 @@ void	check_word(char *word)
 			word++;
 			strshift(word);
 		}
-		/*else if (*word == '$' && state != SINGLE_Q)
+		else if (*word == '$' && state != SINGLE_Q)
 		{
 			//check env val exist
 			//
-		}*/
+			if (env)
+				printf("env\n");
+			word++;
+		}
 		else
 		{
 			if (*word == '\0')
@@ -76,7 +79,7 @@ void	check_word(char *word)
 	}
 }
 
-void	expand(t_cmd **head)
+void	expand(t_cmd **head, t_env *env)
 {
 	t_cmd	*node;
 	int	arg_i;
@@ -87,7 +90,7 @@ void	expand(t_cmd **head)
 	{
 		while (node->argv[arg_i])
 		{
-			check_word(node->argv[arg_i]);
+			check_word(node->argv[arg_i], env);
 			arg_i++;
 		}
 		if (node->next == NULL)

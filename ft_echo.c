@@ -41,7 +41,7 @@ static int echo_env(char *str, t_env *env)
 	}
 	tmp = ft_strdup(&str[sp + 1]);
 	sp = ft_strchr(tmp, '$') - tmp;
-	if (sp > 0)
+	if (sp > 1)
 		print = ft_strndup(tmp, sp);
 	else
 		print = ft_strdup(tmp);

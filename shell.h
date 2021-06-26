@@ -98,12 +98,12 @@ void	reset_termcap(struct termios *term);
 **parse.c
 */
 char	**get_argv(char *input);
-t_cmd	*make_cmdlist(char *input);
+t_cmd	*make_cmdlist(char *input, t_env *env);
 
 /*
 **expand.c
 */
-void	expand(t_cmd **head);
+void	expand(t_cmd **head, t_env *env);
 
 /*
 **buildin.c
