@@ -13,16 +13,14 @@ static int	check_spaces(const char *str, int i)
 	return (i);
 }
 
-/*
-int			ft_will_overflow(unsigned long n, int next_digit)
+int			ft_will_overflow_ex(unsigned long n, int next_digit)
 {
-	if (n > (SIZE_MAX) / 10)
+	if (n > (LONG_MAX) / 10)
 		return (1);
-	if (n == (SIZE_MAX / 10) && next_digit > (SIZE_MAX % 10))
+	if (n == (LONG_MAX / 10) && next_digit > (LONG_MAX % 10))
 		return (1);
 	return (0);
 }
-*/
 
 static ssize_t			ft_exit_atoi(const char *str)
 {
@@ -50,9 +48,8 @@ static ssize_t			ft_exit_atoi(const char *str)
 			ft_putstr_fd(" : numeric argument required\n", 2);
 			exit (255);
 		}
-		//オーバーフロー対策必要か後で要確認
-		//if (ft_will_overflow(ret, str[i] - '0'))
-		//	return (sign == 1 ? INT_MAX : INT_MIN);
+		if (ft_will_overflow_ex(ret, str[i] - '0'))
+			return (sign == 1 ? (int)LONG_MAX : (int)LONG_MIN);
 		ret = ret * 10 + str[i] - '0';
 		i++;
 	}
@@ -71,6 +68,14 @@ int	ft_exit(char **command)
 		exit (0);
 	}
 	num = ft_exit_atoi(command[1]);
+	if (num == -1 && ft_strcmp(command[1], "-1") != 0)
+	{
+		//プロンプトあとでチェック
+		ft_putstr_fd("exit\n>: exit: ", 2);
+		ft_putstr_fd(command[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(255);
+	}
 	if (num < 0)
 	{
 		num = num * (-1);
