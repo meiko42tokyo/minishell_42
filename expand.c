@@ -39,9 +39,7 @@ void	br(int *state, char **word)
 		if (*state != DOUBLE_Q)
 			strshift(*word);
 		else
-		{
 			*word = *word + 1;
-		}
 	}
 }
 
@@ -64,11 +62,11 @@ void	check_word(char *word)
 			word++;
 			strshift(word);
 		}
-		else if (*word == '$' && state != SINGLE_Q)
+		/*else if (*word == '$' && state != SINGLE_Q)
 		{
 			//check env val exist
 			//
-		}
+		}*/
 		else
 		{
 			if (*word == '\0')
