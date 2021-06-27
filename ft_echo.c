@@ -24,7 +24,7 @@ static int	count_n(char **command)
 	return (i);
 }
 
-static int echo_env(char *str, t_env *env)
+/*static int echo_env(char *str, t_env *env)
 {
 	int	sp;
 	char	*tmp;
@@ -45,6 +45,7 @@ static int echo_env(char *str, t_env *env)
 		print = ft_strndup(tmp, sp);
 	else
 		print = ft_strdup(tmp);
+*/
 /*
 	if (print[1] == '?')
 	{
@@ -52,7 +53,7 @@ static int echo_env(char *str, t_env *env)
 		ft_putstr_fd(status, 1);
 	//あとで後の文字も印字できるようにする
 	}
-*/
+*//*
 	while (env)
 	{
 		if (ft_strcmp(print, env->name) == 0)
@@ -66,8 +67,8 @@ static int echo_env(char *str, t_env *env)
 		echo_env(&tmp[sp], env);
 	return (0);
 }
-
-int	ft_echo(char **command, t_env *env)
+*/
+int	ft_echo(char **command)
 {
 	int	count;
 	int	i;
@@ -79,10 +80,10 @@ int	ft_echo(char **command, t_env *env)
 		{
 			if (i > count)
 				ft_putstr_fd(" ", 1);
-			if (ft_strchr(command[i], '$'))
-				echo_env(command[i], env);
-			else
-				ft_putstr_fd(command[i++], 1);
+			//if (ft_strchr(command[i], '$'))
+			//	echo_env(command[i], env);
+			//else
+			ft_putstr_fd(command[i++], 1);
 		}
 	}
 	else
@@ -92,10 +93,10 @@ int	ft_echo(char **command, t_env *env)
 		{
 			if (i > 1)
 				ft_putstr_fd(" ", 1);
-			if (ft_strchr(command[i], '$'))
-				echo_env(command[i], env);
-			else
-				ft_putstr_fd(command[i], 1);
+			//if (ft_strchr(command[i], '$'))
+			//	echo_env(command[i], env);
+			//else
+			ft_putstr_fd(command[i], 1);
 			i++;
 		}
 		ft_putstr_fd("\n", 1);
