@@ -9,27 +9,35 @@ void	strshift(char *word)
 	word[len - 1] = '\0';
 }
 
+void	ft_mempshift(char **dst, char **src, size_t len)
+{
+	while (len--)
+		*dst++ = *src++;
+}
+
 void	strpshift(char **argv, int arg_i)
 {
-	size_t len;
+	size_t	len;
 	char	*cur_arg;
+	int	cur_i;
 
 	len = 0;
 	cur_arg = argv[arg_i];
-	while(argv[arg_i])
+	cur_i = arg_i;
+	printf("arg_i:%d\n", arg_i);
+	while(argv[arg_i++])
 		len++;
-	free(argv[arg_i]);
-	ft_memmove(argv[arg_i], argv[arg_i + 1], len - 1);
-	argv[arg_i + len] = NULL;
-	
+	free(cur_arg);
+	ft_mempshift(argv + cur_i , argv + cur_i + 1, len - 1);
+	argv[cur_i + len - 1] = NULL;
 } 
 
 int	strnshift(char *word, int dis, char *head)
 {
 	size_t	len;
 
-	printf("strnshift\n");
-	len = ft_strlen(word);
+	len = ft_strlen(word + 1);
+	printf("strnshift :%s, %s, len - dis:%zu\n", word, word + dis, len - dis);
 	ft_memmove(word, word + dis, len - dis);
 	word[len - dis] = '\0';
 	if (*head == '\0')
@@ -74,7 +82,9 @@ void	br(int *state, char **word)
 int	expand_env(char **word, t_env *env, char *head)
 {
 	int	dis;
+	int	env_hit;
 
+	env_hit = 0;
 	if (ft_strchr(*word + 1, '$'))
 		dis = ft_strchr(*word + 1, '$') - *word;
 	else
@@ -85,12 +95,15 @@ int	expand_env(char **word, t_env *env, char *head)
 		if (ft_strncmp(*word + 1, env->name, ft_strlen(env->name)) == 0)
 		{
 			printf("hit !\n");
-			if (strnshift(*word, dis, head))
-				return (1);
+			env_hit = 1;
 		}
-		else
-			printf("wrong env:%s, len:%zu, ft_strncmp():%d \n", env->name, ft_strlen(env->name), ft_strncmp(*word, env->name, ft_strlen(env->name)));
 		env = env->next;	
+	}
+	if (env_hit == 0)
+	{
+		printf("env_hit == 0\n");
+		if (strnshift(*word, dis, head))
+			return (1);
 	}
 	*word += dis + 1;
 	return (0);
