@@ -12,6 +12,7 @@
 # include <termios.h>
 # include <term.h>
 # include <curses.h>
+# include <fcntl.h>
 # include <sys/ioctl.h>
 # include "libft/libft.h"
 
@@ -116,6 +117,12 @@ int	ft_exit(char **command);
 int	ft_env(t_env *env);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
+
+/*
+**redirect.c
+*/
+int	is_redir(char *command);
+char	**ft_redirect(char **command, int *in, int *out);
 
 /*
 **env_utils.c

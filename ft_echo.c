@@ -62,8 +62,23 @@ static int echo_env(char *str, t_env *env)
 		}
 		env = env->next;
 	}
-	if (sp > 0)
+	if (sp > 1)
 		echo_env(&tmp[sp], env);
+	return (0);
+}
+
+static int	include_redir(char **command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+	{
+		if (ft_strcmp(command[i], ">") == 0 || ft_strcmp(command[i], ">>") == 0\
+			|| ft_strcmp(command[i], "<<") == 0 || ft_strcmp(command[i], "<") == 0)
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -71,18 +86,26 @@ int	ft_echo(char **command, t_env *env)
 {
 	int	count;
 	int	i;
+	int	in;
+	int	out;
 
+	in = -1;
+	out = -1;
+	if (include_redir(command) > 0)
+		command = ft_redirect(command, &in, &out);
 	if ((count = count_n(command)) > 1)
 	{
 		i = count;
 		while(command[i])
 		{
+			//ここ以降別関数に書き出し
 			if (i > count)
 				ft_putstr_fd(" ", 1);
 			if (ft_strchr(command[i], '$'))
 				echo_env(command[i], env);
 			else
-				ft_putstr_fd(command[i++], 1);
+				ft_putstr_fd(command[i], 1);
+			i++;
 		}
 	}
 	else
@@ -100,5 +123,9 @@ int	ft_echo(char **command, t_env *env)
 		}
 		ft_putstr_fd("\n", 1);
 	}
+	if (in != -1)
+		dup2(in, 0);
+	if (out != -1)
+		dup2(out, 1);
 	return (0);
 }

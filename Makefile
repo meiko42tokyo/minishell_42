@@ -28,6 +28,7 @@ SRCS = exec.c\
 	ft_export.c\
 	ft_env.c\
 	ft_unset.c\
+	redirect.c\
 	env_utils.c\
 	error.c
 
