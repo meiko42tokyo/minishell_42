@@ -9,6 +9,34 @@ void	strshift(char *word)
 	word[len - 1] = '\0';
 }
 
+void	strpshift(char **argv, int arg_i)
+{
+	size_t len;
+	char	*cur_arg;
+
+	len = 0;
+	cur_arg = argv[arg_i];
+	while(argv[arg_i])
+		len++;
+	free(argv[arg_i]);
+	ft_memmove(argv[arg_i], argv[arg_i + 1], len - 1);
+	argv[arg_i + len] = NULL;
+	
+} 
+
+int	strnshift(char *word, int dis, char *head)
+{
+	size_t	len;
+
+	printf("strnshift\n");
+	len = ft_strlen(word);
+	ft_memmove(word, word + dis, len - dis);
+	word[len - dis] = '\0';
+	if (*head == '\0')
+		return (1);
+	return (0);
+}
+
 int	is_escape(char c)
 {
 	if (c == '\"' || c == '\"' || c == '`' || c == '$')
@@ -43,7 +71,32 @@ void	br(int *state, char **word)
 	}
 }
 
-void	check_word(char *word, t_env *env)
+int	expand_env(char **word, t_env *env, char *head)
+{
+	int	dis;
+
+	if (ft_strchr(*word + 1, '$'))
+		dis = ft_strchr(*word + 1, '$') - *word;
+	else
+		dis = ft_strlen(*word + 1);
+	printf("dis:%d\n", dis);
+	while (env)
+	{
+		if (ft_strncmp(*word + 1, env->name, ft_strlen(env->name)) == 0)
+		{
+			printf("hit !\n");
+			if (strnshift(*word, dis, head))
+				return (1);
+		}
+		else
+			printf("wrong env:%s, len:%zu, ft_strncmp():%d \n", env->name, ft_strlen(env->name), ft_strncmp(*word, env->name, ft_strlen(env->name)));
+		env = env->next;	
+	}
+	*word += dis + 1;
+	return (0);
+}
+
+int	check_word(char *word, t_env *env)
 {
 	int	state;
 	char 	*head;
@@ -57,18 +110,14 @@ void	check_word(char *word, t_env *env)
 			br(&state, &word);
 		else if (*word == '\\' && is_escape(*(word + 1)) && state == DOUBLE_Q)
 		{
-			printf("test\n");
 			*word = *(word + 1);
 			word++;
 			strshift(word);
 		}
 		else if (*word == '$' && state != SINGLE_Q)
 		{
-			//check env val exist
-			//
-			if (env)
-				printf("env\n");
-			word++;
+			if (expand_env(&word, env, head))
+				return (1);
 		}
 		else
 		{
@@ -77,6 +126,7 @@ void	check_word(char *word, t_env *env)
 			word++;
 		}
 	}
+	return (0);
 }
 
 void	expand(t_cmd **head, t_env *env)
@@ -90,7 +140,8 @@ void	expand(t_cmd **head, t_env *env)
 	{
 		while (node->argv[arg_i])
 		{
-			check_word(node->argv[arg_i], env);
+			if (check_word(node->argv[arg_i], env))
+				strpshift(node->argv, arg_i);
 			arg_i++;
 		}
 		if (node->next == NULL)
