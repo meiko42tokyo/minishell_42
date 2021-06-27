@@ -79,10 +79,12 @@ void	br(int *state, char **word)
 	}
 }
 
-int	expand_env(char **word, t_env *env, char *head)
+int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
 	int	dis;
 	int	env_hit;
+	char	*tmp;
+	char	*tmp1;
 
 	env_hit = 0;
 	if (ft_strchr(*word + 1, '$'))
@@ -94,7 +96,15 @@ int	expand_env(char **word, t_env *env, char *head)
 	{
 		if (ft_strncmp(*word + 1, env->name, ft_strlen(env->name)) == 0)
 		{
-			printf("hit !\n");
+			printf("hit ! *word - head:%ld\n", *word - node->argv[arg_i]);
+			tmp = ft_strndup(node->argv[arg_i], *word - node->argv[arg_i]);
+			tmp1 = ft_strjoin(tmp, env->value);
+			free(tmp);
+			tmp = ft_strjoin(tmp1, *word + dis + 1);
+			free(tmp1);
+			free(node->argv[arg_i]);
+			node->argv[arg_i] = tmp;
+			printf("test tmp:%s\n", tmp);
 			env_hit = 1;
 		}
 		env = env->next;	
@@ -102,19 +112,17 @@ int	expand_env(char **word, t_env *env, char *head)
 	if (env_hit == 0)
 	{
 		printf("env_hit == 0\n");
-		if (strnshift(*word, dis, head))
+		if (strnshift(*word, dis, node->argv[arg_i]))
 			return (1);
 	}
 	*word += dis + 1;
 	return (0);
 }
 
-int	check_word(char *word, t_env *env)
+int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 {
 	int	state;
-	char 	*head;
 
-	head = word;
 	state = NOT_Q;
 	while (word)
 	{
@@ -129,8 +137,10 @@ int	check_word(char *word, t_env *env)
 		}
 		else if (*word == '$' && state != SINGLE_Q)
 		{
-			if (expand_env(&word, env, head))
+			if (expand_env(&word, env, node, arg_i))
 				return (1);
+			if (*word == '\0')
+				break ;
 		}
 		else
 		{
@@ -153,7 +163,7 @@ void	expand(t_cmd **head, t_env *env)
 	{
 		while (node->argv[arg_i])
 		{
-			if (check_word(node->argv[arg_i], env))
+			if (check_word(node->argv[arg_i], env, node, arg_i))
 				strpshift(node->argv, arg_i);
 			arg_i++;
 		}
