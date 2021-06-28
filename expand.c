@@ -24,7 +24,6 @@ void	strpshift(char **argv, int arg_i)
 	len = 0;
 	cur_arg = argv[arg_i];
 	cur_i = arg_i;
-	printf("arg_i:%d\n", arg_i);
 	while(argv[arg_i++])
 		len++;
 	free(cur_arg);
@@ -37,8 +36,7 @@ int	strnshift(char *word, int dis, char *head)
 	size_t	len;
 
 	len = ft_strlen(word + 1);
-	printf("strnshift :%s, %s, len - dis:%zu\n", word, word + dis, len - dis);
-	ft_memmove(word, word + dis, len - dis);
+	ft_memmove(word, word + dis + 1, len - dis);
 	word[len - dis] = '\0';
 	if (*head == '\0')
 		return (1);
@@ -117,7 +115,6 @@ void	find_min_dis(int *dis, char **word)
 	{
 		if (ft_strchr(*word + 1, ops[i]))
 		{
-			printf("found %c in %s\n", ops[i], ft_strchr(*word + 1, ops[i]));
 			if (ft_strchr(*word + 1, ops[i]) - *word - 1 < *dis)
 				*dis = ft_strchr(*word + 1, ops[i]) - *word - 1;
 		}
@@ -135,9 +132,7 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 	env_hit = 0;
 	cur_pos = *word - node->argv[arg_i];
 	dis = ft_strlen(*word + 1);
-	printf("dis:%d\n", dis);
 	find_min_dis(&dis, word);
-	printf("dis:%d\n", dis);
 	while (env)
 	{
 		if (ft_strncmp(*word + 1, env->name, dis) == 0)
