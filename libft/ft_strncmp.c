@@ -11,11 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	while ((*s1 || *s2) && n--)
 	{
+		printf("*s1:%c, *s2:%c\n", *s1, *s2);
 		if (*s1 != *s2)
 			return (*(unsigned char*)s1 - *(unsigned char*)s2);
 		s1++;
