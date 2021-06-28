@@ -79,15 +79,15 @@ void	br(int *state, char **word)
 	}
 }
 
-char	**set_env_ops(void)
+char	*set_env_ops(void)
 {
-	char	**ops;
+	char	*ops;
 
-	ops = (char **)malloc(sizeof (char *) * ENV_OPS_SIZE + 1);
-	ops[0] = "$";
-	ops[1] = "\"";
-	ops[2] = "\'";
-	ops[ENV_OPS_SIZE] = 0;
+	ops = (char *)malloc(sizeof (char) * ENV_OPS_SIZE + 1);
+	ops[0] = '$';
+	ops[1] = '\"';
+	ops[2] = '\'';
+	ops[ENV_OPS_SIZE] = '\0';
 	return (ops);
 }
 
@@ -106,6 +106,26 @@ char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word)
 	return (tmp1);
 }
 
+void	find_min_dis(int *dis, char **word)
+{
+	char	*ops;
+	int	i;
+
+	ops = set_env_ops();
+	i = 0;
+	while (ops[i])
+	{
+		if (ft_strchr(*word + 1, ops[i]))
+		{
+			printf("found %c in %s\n", ops[i], ft_strchr(*word + 1, ops[i]));
+			if (ft_strchr(*word + 1, ops[i]) - *word - 1 < *dis)
+				*dis = ft_strchr(*word + 1, ops[i]) - *word - 1;
+		}
+		i++;
+	}
+	free(ops);
+}
+
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
 	int	dis;
@@ -114,10 +134,10 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 
 	env_hit = 0;
 	cur_pos = *word - node->argv[arg_i];
-	if (ft_strchr(*word + 1, '$'))
-		dis = ft_strchr(*word + 1, '$') - *word - 1;
-	else
-		dis = ft_strlen(*word + 1);
+	dis = ft_strlen(*word + 1);
+	printf("dis:%d\n", dis);
+	find_min_dis(&dis, word);
+	printf("dis:%d\n", dis);
 	while (env)
 	{
 		if (ft_strncmp(*word + 1, env->name, dis) == 0)

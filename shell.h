@@ -29,6 +29,7 @@
 # define BR_SINGLE 7
 # define OTHER -1
 # define OPS_SIZE 8
+# define ENV_OPS_SIZE 3
 
 # define NOT_Q 0
 # define SINGLE_Q 1
