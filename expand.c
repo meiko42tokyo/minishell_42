@@ -79,12 +79,37 @@ void	br(int *state, char **word)
 	}
 }
 
+char	**set_env_ops(void)
+{
+	char	**ops;
+
+	ops = (char **)malloc(sizeof (char *) * ENV_OPS_SIZE + 1);
+	ops[0] = "$";
+	ops[1] = "\"";
+	ops[2] = "\'";
+	ops[ENV_OPS_SIZE] = 0;
+	return (ops);
+}
+
+char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word)
+{
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_strndup(head, cur_pos);
+	cur_pos += ft_strlen(env_val);
+	tmp2 = ft_strjoin(tmp1, env_val);
+	free(tmp1);
+	tmp1 = ft_strjoin(tmp2, left_word + 1);
+	free(tmp2);
+	tmp1[ft_strlen(tmp1)] = '\0';
+	return (tmp1);
+}
+
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
 	int	dis;
 	int	env_hit;
-	char	*tmp;
-	char	*tmp1;
 	int	cur_pos;
 
 	env_hit = 0;
@@ -97,15 +122,7 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 	{
 		if (ft_strncmp(*word + 1, env->name, dis) == 0)
 		{
-			tmp = ft_strndup(node->argv[arg_i], cur_pos);
-			cur_pos += ft_strlen(env->value);
-			tmp1 = ft_strjoin(tmp, env->value);
-			free(tmp);
-			tmp = ft_strjoin(tmp1, *word + dis + 1);
-			free(tmp1);
-			free(node->argv[arg_i]);
-			tmp[ft_strlen(tmp)] = '\0';
-			node->argv[arg_i] = tmp;
+			node->argv[arg_i] = set_new_arg(node->argv[arg_i], cur_pos, env->value, *word + dis);
 			env_hit = 1;
 		}
 		env = env->next;	
