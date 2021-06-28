@@ -15,7 +15,7 @@ int	main(int argc, char **argv)
 	while (1) {
 		ft_putstr_fd("> ", 0);
 		get_next_line(0, &line);
-		head = make_cmdlist(line);
+		head = make_cmdlist(line, env);
 		free(line);
 		line = NULL;
 		signal(SIGINT, SIG_DFL);

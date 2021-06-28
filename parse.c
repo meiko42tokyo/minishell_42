@@ -276,7 +276,7 @@ int	is_allspace(char *s)
 	return (1);
 }
 
-t_cmd	*make_cmdlist(char *input)
+t_cmd	*make_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
@@ -386,6 +386,7 @@ t_cmd	*make_cmdlist(char *input)
 	{
 		ft_error_str("quote not closed\n"); // need to think about better error
 	}
-	//ft_print_cmdlist(&head);
+	expand(&head, env);
+	ft_print_cmdlist(&head);
 	return (head);
 }
