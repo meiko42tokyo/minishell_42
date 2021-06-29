@@ -213,7 +213,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		i++;
 		j++;
 	}
-	new_argv[i] = NULL;
+	new_argv[i] = NULL;// TODO:need free old argv?
 	return (new_argv);
 }
 
@@ -371,7 +371,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 		}
 		free(word);
 		input = new_pos;
-		if (input != NULL)
+		if (*input != '\0')
 		{
 			if (is_two_char(&token))
 				input += 2;
