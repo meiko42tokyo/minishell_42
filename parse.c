@@ -227,7 +227,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		j++;
 	}
 	new_argv[i] = NULL;
-	free(old_argv);
+	free_argv(old_argv);
 	return (new_argv);
 }
 
