@@ -126,7 +126,10 @@ void	find_min_dis(int *dis, char **word)
 // 終了ステータスを取得する
 char	*get_exit_status()
 {
-	return (ft_strdup("155"));
+	int	exit_status;
+
+	exit_status = 155; // tmp number
+	return (ft_itoa(exit_status));
 }
 
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
