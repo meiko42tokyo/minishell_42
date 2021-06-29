@@ -123,14 +123,29 @@ void	find_min_dis(int *dis, char **word)
 	free(ops);
 }
 
+// 終了ステータスを取得する
+char	*get_exit_status()
+{
+	return (ft_strdup("155"));
+}
+
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
 	int	dis;
 	int	env_hit;
 	int	cur_pos;
+	char	*exit_status;
 
 	env_hit = 0;
 	cur_pos = *word - node->argv[arg_i];
+	if (*(*word + 1) == '?')
+	{
+		exit_status = get_exit_status();
+		node->argv[arg_i] = set_new_arg(node->argv[arg_i], cur_pos, exit_status, *word + 2);
+		free(exit_status);
+		*word += 2;
+		return (0);
+	}
 	dis = ft_strlen(*word + 1);
 	find_min_dis(&dis, word);
 	while (env)
