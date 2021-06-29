@@ -186,6 +186,19 @@ char	*put_token(int token)
 	return (NULL);
 }
 
+void	free_argv(char **argv)
+{
+	int		i;
+
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
+}
+
 char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 {
 	char	**new_argv;
@@ -213,7 +226,8 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		i++;
 		j++;
 	}
-	new_argv[i] = NULL;// TODO:need free old argv?
+	new_argv[i] = NULL;
+	free(old_argv);
 	return (new_argv);
 }
 
