@@ -349,10 +349,11 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 			else
 			{
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-				if (state == BR_DOUBLE)
+				if (token == BR_DOUBLE)
 					state = DOUBLE_Q;
 				else if (token == BR_SINGLE)
-					state = SINGLE_Q;
+					state = SINGLE_Q; 
+				
 			}
 			cmd->op = get_op(new_pos);
 		}
