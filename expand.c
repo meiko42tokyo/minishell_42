@@ -194,7 +194,6 @@ void	expand(t_cmd **head, t_env *env)
 	{
 		while (node->argv[arg_i])
 		{
-			printf("head is :%s\n", node->argv[arg_i]);
 			if (check_word(node->argv[arg_i], env, node, arg_i))
 				strpshift(node->argv, arg_i);
 			arg_i++;
