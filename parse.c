@@ -207,7 +207,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 
 	i = 0;
 	j = 0;
-	new_argv = (char**)ft_calloc(len + is_redirect(token) + 1, sizeof (char *));
+	new_argv = (char**)malloc(sizeof (char *) * (len + is_redirect(token) + 1));
 	if (new_argv == NULL)
 		return (NULL);
 	while (old_argv[i])
@@ -308,9 +308,11 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	state = NOT_Q;
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
+		printf("state:%d\n", state);
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
 		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
 		{
+			printf("added from quote->not_q\n");
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 			if (new_pos != input)
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
@@ -348,6 +350,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 			}
 			else
 			{
+				printf("added from not_q -> br\n"); 
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
 				if (token == BR_DOUBLE)
 					state = DOUBLE_Q;
@@ -371,6 +374,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 			{
 				if (ft_isspace(word[ft_strlen(word) - 1]))
 				{
+					printf("added from else\n");
 					if (append_arg(get_argv(put_token(token)), &head) != 0)
 						return (NULL);
 				}
@@ -401,7 +405,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	{
 		ft_error_str("quote not closed\n"); // need to think about better error
 	}
+	ft_print_cmdlist(&head);
 	expand(&head, env);
-	//ft_print_cmdlist(&head);
 	return (head);
 }
