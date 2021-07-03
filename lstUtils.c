@@ -56,6 +56,16 @@ int	ft_print_cmdsize(t_cmd **head)
 	return (index);
 }
 
+int	check_argvsize(t_cmd *node)
+{
+	int	size;
+
+	size = 0;
+	while (node->argv[size])
+		size++;
+	return (size);
+}
+
 void	ft_print_cmdlist(t_cmd **head)
 {
 	t_cmd	*node;
