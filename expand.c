@@ -207,6 +207,7 @@ void	expand(t_cmd **head, t_env *env)
 	arg_i = 0;
 	while (node)
 	{
+		arg_i = 0;
 		while (node->argv[arg_i])
 		{
 			if (check_word(node->argv[arg_i], env, node, arg_i))
