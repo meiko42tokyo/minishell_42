@@ -24,49 +24,6 @@ static int	count_n(char **command)
 	return (i);
 }
 
-static int echo_env(char *str, t_env *env)
-{
-	int	sp;
-	char	*tmp;
-	char	*print;
-//	char	*status;
-
-	sp = ft_strchr(str, '$') - str;
-	if (sp > 0)
-	{
-		tmp = ft_strndup(str, sp);
-		ft_putstr_fd(tmp, 1);
-		free(tmp);
-		tmp = NULL;
-	}
-	tmp = ft_strdup(&str[sp + 1]);
-	sp = ft_strchr(tmp, '$') - tmp;
-	if (sp > 0)
-		print = ft_strndup(tmp, sp);
-	else
-		print = ft_strdup(tmp);
-/*
-	if (print[1] == '?')
-	{
-		status = ft_itoa($PIPESTATUS[0]);
-		ft_putstr_fd(status, 1);
-	//あとで後の文字も印字できるようにする
-	}
-*/
-	while (env)
-	{
-		if (ft_strcmp(print, env->name) == 0)
-		{
-			ft_putstr_fd(env->value, 1);
-			break ;
-		}
-		env = env->next;
-	}
-	if (sp > 1)
-		echo_env(&tmp[sp], env);
-	return (0);
-}
-
 static int	include_redir(char **command)
 {
 	int	i;
@@ -76,13 +33,13 @@ static int	include_redir(char **command)
 	{
 		if (ft_strcmp(command[i], ">") == 0 || ft_strcmp(command[i], ">>") == 0\
 			|| ft_strcmp(command[i], "<<") == 0 || ft_strcmp(command[i], "<") == 0)
-			return (1);
+		return (1);
 		i++;
 	}
 	return (0);
 }
 
-int	ft_echo(char **command, t_env *env)
+int	ft_echo(char **command)
 {
 	int	count;
 	int	i;
@@ -98,14 +55,9 @@ int	ft_echo(char **command, t_env *env)
 		i = count;
 		while(command[i])
 		{
-			//ここ以降別関数に書き出し
 			if (i > count)
 				ft_putstr_fd(" ", 1);
-			if (ft_strchr(command[i], '$'))
-				echo_env(command[i], env);
-			else
-				ft_putstr_fd(command[i], 1);
-			i++;
+			ft_putstr_fd(command[i++], 1);
 		}
 	}
 	else
@@ -115,10 +67,7 @@ int	ft_echo(char **command, t_env *env)
 		{
 			if (i > 1)
 				ft_putstr_fd(" ", 1);
-			if (ft_strchr(command[i], '$'))
-				echo_env(command[i], env);
-			else
-				ft_putstr_fd(command[i], 1);
+			ft_putstr_fd(command[i], 1);
 			i++;
 		}
 		ft_putstr_fd("\n", 1);

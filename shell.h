@@ -30,6 +30,7 @@
 # define BR_SINGLE 7
 # define OTHER -1
 # define OPS_SIZE 8
+# define ENV_OPS_SIZE 3
 
 # define NOT_Q 0
 # define SINGLE_Q 1
@@ -99,7 +100,12 @@ void	reset_termcap(struct termios *term);
 **parse.c
 */
 char	**get_argv(char *input);
-t_cmd	*make_cmdlist(char *input);
+t_cmd	*make_cmdlist(char *input, t_env *env);
+
+/*
+**expand.c
+*/
+void	expand(t_cmd **head, t_env *env);
 
 /*
 **buildin.c
@@ -112,7 +118,7 @@ int	is_buildin(char **command);
 */
 int	ft_cd(char *path, t_env *env);
 int	ft_pwd();
-int	ft_echo(char **command, t_env *env);
+int	ft_echo(char **command);
 int	ft_exit(char **command);
 int	ft_env(t_env *env);
 int	ft_export(char **command, t_env *env);

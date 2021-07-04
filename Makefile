@@ -20,6 +20,7 @@ endif
 SRCS = exec.c\
 	lstUtils.c\
 	parse.c\
+	expand.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\

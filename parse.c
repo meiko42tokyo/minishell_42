@@ -186,6 +186,19 @@ char	*put_token(int token)
 	return (NULL);
 }
 
+void	free_argv(char **argv)
+{
+	int		i;
+
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
+}
+
 char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 {
 	char	**new_argv;
@@ -194,7 +207,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 
 	i = 0;
 	j = 0;
-	new_argv = (char**)ft_calloc(len + is_redirect(token) + 1, sizeof (char *));
+	new_argv = (char**)malloc(sizeof (char *) * (len + is_redirect(token) + 1));
 	if (new_argv == NULL)
 		return (NULL);
 	while (old_argv[i])
@@ -214,6 +227,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 		j++;
 	}
 	new_argv[i] = NULL;
+	free_argv(old_argv);
 	return (new_argv);
 }
 
@@ -276,7 +290,7 @@ int	is_allspace(char *s)
 	return (1);
 }
 
-t_cmd	*make_cmdlist(char *input)
+t_cmd	*make_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
@@ -335,10 +349,11 @@ t_cmd	*make_cmdlist(char *input)
 			else
 			{
 				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-				if (state == BR_DOUBLE)
+				if (token == BR_DOUBLE)
 					state = DOUBLE_Q;
 				else if (token == BR_SINGLE)
-					state = SINGLE_Q;
+					state = SINGLE_Q; 
+				
 			}
 			cmd->op = get_op(new_pos);
 		}
@@ -371,7 +386,7 @@ t_cmd	*make_cmdlist(char *input)
 		}
 		free(word);
 		input = new_pos;
-		if (input != NULL)
+		if (*input != '\0')
 		{
 			if (is_two_char(&token))
 				input += 2;
@@ -386,6 +401,7 @@ t_cmd	*make_cmdlist(char *input)
 	{
 		ft_error_str("quote not closed\n"); // need to think about better error
 	}
+	expand(&head, env);
 	//ft_print_cmdlist(&head);
 	return (head);
 }
