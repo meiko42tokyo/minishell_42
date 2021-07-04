@@ -19,7 +19,7 @@ int	exec_buildin(char **command, t_env *env)
 		return  (ft_env(env));
 	else if (ft_strcmp(command[0], "exit") == 0)
 		return (ft_exit(command));
-	return (1);
+	return (0);
 }
 
 int	is_buildin(char **command)

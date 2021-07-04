@@ -13,7 +13,6 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	int	newpipe[2];
 	char *path;
 	char *input;
-	int exec;
 	extern char **environ; 
 	int	stat_loc;
 
@@ -43,7 +42,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		input = *c->argv; // TODO:input->c->argv[0]
 		path = ft_strjoin("/bin/", input);
 		errno = 0;
-		exec = execve(path, c->argv, environ); // exec needed?
+		status = execve(path, c->argv, environ); // exec needed?
 		if (errno){
 			ft_putstr_fd(strerror(errno), 2);
 			ft_putstr_fd("\n", 2);
@@ -92,7 +91,7 @@ void	run_list(t_cmd *c, t_env *env)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			exec_buildin(c->argv, env);
+			status = exec_buildin(c->argv, env);
 			c = c->next;
 			continue;
 		}
