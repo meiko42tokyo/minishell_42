@@ -28,9 +28,7 @@ static char	**redirect_free(char **command, int *in, int *out)
 		fd = redirect(open(command[1], O_WRONLY | O_CREAT | O_APPEND, 0666), 1, out);
 	else if (ft_strcmp(command[0], "<") == 0)
 		fd = redirect(open(command[1], O_RDONLY), 0, in);
-	//挙動要確認
-	else if (ft_strcmp(command[0], "<<") == 0)
-		fd = redirect(open(command[1], O_RDONLY), 0, in);
+	//echo <<はexpand?に移動
 	if (fd == -1)
 		return (NULL);
 	free(command[0]);
