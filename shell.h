@@ -36,12 +36,15 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
+extern int	status;
+
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
 	char		**argv;
 	pid_t		pid;
 	int		op;
+	int		status;
 }		t_cmd;
 
 typedef struct	s_env

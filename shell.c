@@ -1,5 +1,7 @@
 #include "shell.h"
 
+int	status;
+
 int	main(int argc, char **argv) 
 {
 	char		*line;
@@ -10,6 +12,7 @@ int	main(int argc, char **argv)
 	argv = NULL;
 	line = NULL;
 	head = NULL;
+	status = 0;
 	signal(SIGINT, SIG_IGN);
 	env = init_env();
 	while (1) {
