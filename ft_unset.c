@@ -42,7 +42,7 @@ int	ft_unset(char **command, t_env *env)
 			{
 				ft_putstr_fd("unset `", 2);
 				ft_putstr_fd(command[1], 2);
-				ft_error_str("': not a valid identifier");
+				ft_error_str("': not a valid identifier", 1);//数はあとで確認
 			}
 		}
 		env = env->next;

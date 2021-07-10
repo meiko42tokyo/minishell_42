@@ -60,8 +60,8 @@ int	ft_exit(char **command)
 {
 	ssize_t	num;
 
-	if (command[1] != NULL && command[2])//なぜかexitでここはいる
-		return (ft_error_str("too many argment"));
+	if (command[1] != NULL && command[2])
+		return (ft_error_str("exit\nminishell: exit: too many argment", 1));
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("exit\n", 2);
@@ -70,7 +70,6 @@ int	ft_exit(char **command)
 	num = ft_exit_atoi(command[1]);
 	if (num == -1 && ft_strcmp(command[1], "-1") != 0)
 	{
-		//プロンプトあとでチェック
 		ft_putstr_fd("exit\n>: exit: ", 2);
 		ft_putstr_fd(command[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);

@@ -8,10 +8,9 @@ int	ft_errno(int num)
 	return (-1);
 }
 
-int	ft_error_str(char *str)
+int	ft_error_str(char *str, int status)
 {
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", 2);
-	//終了コードいれる
-	return (-1);
+	return (status);
 }

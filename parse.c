@@ -401,7 +401,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	}
 	if (state != NOT_Q)
 	{
-		ft_error_str("quote not closed\n"); // need to think about better error
+		ft_error_str("quote not closed\n", 1); // need to think about better error
 	}
 	expand(&head, env);
 	//ft_print_cmdlist(&head);

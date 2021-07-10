@@ -5,7 +5,8 @@ static void	print_env(t_env *env, char **cp_name)
 	t_env	*tmp;
 	int		i;
 
-	tmp = (t_env*)malloc(sizeof(t_env));
+	if (!(tmp = (t_env*)malloc(sizeof(t_env))))
+		return ;
 	i = 0;
 	while(cp_name[i])
 	{
@@ -68,7 +69,8 @@ static int	dup_env(t_env *env, char **cp_name)
 	t_env	*tmp;
 	int		i;
 
-	tmp = (t_env*)malloc(sizeof(t_env));
+	if (!(tmp = (t_env*)malloc(sizeof(t_env))))
+		return (ft_error_str("malloc failure", errno));
 	tmp = env;
 	i = 0;
 	while (tmp)
@@ -78,6 +80,7 @@ static int	dup_env(t_env *env, char **cp_name)
 		i++;
 	}
 	cp_name[i] = NULL;
+	//free(tmp);
 	return (0);
 }
 
@@ -86,79 +89,88 @@ static int	export_env(t_env *env)
 	char	*cp_name[100];
 
 	//あとでマロックの仕方要検討
+	if (!env)
+		return (1);
 	dup_env(env, cp_name);
 	sort_env(cp_name);
 	print_env(env, cp_name);
 	return (0);
 }
 
+int	env_replace(char *cd_name, int sp, char *command, t_env *env)
+{
+	while (env) 
+	{
+		if (ft_strcmp(cd_name, env->name) == 0)
+		{
+			if (sp == (int)ft_strlen(command))//aaa=　ooのとき
+				env->value = ft_strdup("");
+			else
+				env->value = ft_strdup(&command[sp + 1]);
+			return (1) ;
+		}
+		env = env->next;
+	}
+	return (0);
+}
+
+
 int	ft_export(char **command, t_env *env)
 {
 	char		*ptr;
 	char		*cd_name;
 	int			sp;
+	int			i;
+	int			env_re;
 	t_env		*tmp;
-	t_env		*start;
+	//t_env		*start;
 
 	sp = 0;
 	if (command[0] == NULL)
 		return (export_env(env));
-	start = env;
-	ptr = ft_strchr(command[0], '=');
-	tmp = (t_env*)malloc(sizeof(t_env));
-	if (ptr)
+	i = 0;
+	//if (!(start = (t_env*)malloc(sizeof(t_env))))
+	//	(ft_error_str("malloc failure", errno));
+	//start = env;
+	while (command[i])
 	{
-		sp = ptr - command[0];
-		if (sp == 0)
+		if (!(tmp = (t_env*)malloc(sizeof(t_env))))
+			(ft_error_str("malloc failure", errno));
+		ptr = ft_strchr(command[i], '=');
+		if (ptr)
 		{
-			ft_putstr_fd("export `", 2);
-			ft_putstr_fd(command[0], 2);
-			ft_error_str("': not a valid identifier");
-			env_free(tmp);
-			return (0);
-		}
-		else
-		{
-			cd_name = ft_strndup(command[0], sp);
-			while (env) 
+			sp = ptr - command[i];
+			if (sp == 0)
 			{
-				if (ft_strcmp(cd_name, env->name) == 0)
+				ft_putstr_fd("minishell: export `", 2);
+				ft_putstr_fd(command[i], 2);
+				return (ft_error_str("': not a valid identifier", 1));
+				//env_free(tmp);
+			}
+			else
+			{
+				cd_name = ft_strndup(command[i], sp);
+				env_re = env_replace(cd_name, sp, command[i], env);
+				if (env_re == 0)
 				{
-					if (sp == (int)ft_strlen(command[0]))//aaa=　ooのとき
-					{
-						env->value = ft_strdup("");
-						if (command[1])
-							ft_export(&command[1], env);
-					}
+					tmp->name = ft_strndup(command[i], sp);
+					if (sp == (int)ft_strlen(command[i]))
+						tmp->value = ft_strdup("");
 					else
-						env->value = ft_strdup(&command[0][sp + 1]);
-					return (0);
+						tmp->value = ft_strdup(&command[i][sp + 1]);
 				}
-				env = env->next;
+				else
+					tmp = NULL;
 			}
 		}
-		tmp->name = ft_strndup(command[0], sp);
-		if (sp == (int)ft_strlen(command[0]))
-		{
-			tmp->value = ft_strdup("");
-			ft_envadd_back(&start, tmp);
-			if (command[1])
-				ft_export(&command[1], env);
-			return (0);
-		}
 		else
-			tmp->value = ft_strdup(&command[0][sp + 1]);
-		ft_envadd_back(&start, tmp);
-		return (0);
+		{
+			tmp->name = ft_strdup(command[i]);
+			tmp->value = NULL;
+		}
+		if (tmp)
+			ft_envadd_back(&env, tmp);
+		i++;
 	}
-	else if (command[1])
-	{
-		ft_putstr_fd("export `", 2);
-		ft_putstr_fd(command[1], 2);
-		ft_error_str("': not a valid identifier");
-		
-	}
-	tmp->name = ft_strdup(command[0]);
-	ft_envadd_back(&start, tmp);
 	return (0);
 }

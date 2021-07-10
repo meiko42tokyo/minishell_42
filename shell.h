@@ -36,6 +36,12 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
+# define DIR_ERROR 126
+# define COMMAND_ERROR 127
+# define END_CTL_C 130
+# define END_CTL_BS
+# define SYNTAAX_ERROR 258
+
 extern int	status;
 
 typedef struct s_cmd
@@ -144,6 +150,6 @@ void	env_free(t_env *env);
 **errnor.c
 */
 int	ft_errno(int num);
-int	ft_error_str(char *str);
+int	ft_error_str(char *str, int status);
 
 #endif

@@ -5,6 +5,8 @@ int	ft_env(t_env *env)
 	int			i;
 
 	i = 0;
+	if (!env)
+		return (1);
 	while(env)
 	{
 		if (env->value)

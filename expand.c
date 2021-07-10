@@ -81,7 +81,8 @@ char	*set_env_ops(void)
 {
 	char	*ops;
 
-	ops = (char *)malloc(sizeof (char) * ENV_OPS_SIZE + 1);
+	if (!(ops = (char *)malloc(sizeof (char) * ENV_OPS_SIZE + 1)))
+		return (NULL);
 	ops[0] = '$';
 	ops[1] = '\"';
 	ops[2] = '\'';
