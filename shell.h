@@ -100,6 +100,11 @@ void	set_termcap(struct termios *term);
 void	reset_termcap(struct termios *term);
 
 /*
+**syntax_error.c
+*/
+int	valid_syntax(char *input);
+
+/*
 **parse.c
 */
 char	**get_argv(char *input);

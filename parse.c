@@ -355,7 +355,6 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 					state = DOUBLE_Q;
 				else if (token == BR_SINGLE)
 					state = SINGLE_Q; 
-				
 			}
 			cmd->op = get_op(new_pos);
 		}
