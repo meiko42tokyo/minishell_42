@@ -21,6 +21,7 @@ SRCS = exec.c\
 	lstUtils.c\
 	syntax_error.c\
 	token_util.c\
+	token_classify_utils.c\
 	parse.c\
 	expand.c\
 	buildin.c\

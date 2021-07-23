@@ -107,6 +107,17 @@ int	valid_syntax(char *input);
 /*
 **token_util.c
 */
+char	**set_ops(void);
+int	get_op(char *op);
+char	*put_token(int token);
+
+/*
+**token_classify_utils.c
+*/
+int	is_op(int *token);
+int	is_redirect(int token);
+int	is_two_char(int *token);
+int	is_token_br(int token);
 
 /*
 **parse.c

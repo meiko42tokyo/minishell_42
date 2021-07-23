@@ -26,13 +26,6 @@ void	manage_state(int *state, char c)
 	}
 }
 
-int	is_redirects(char *input)
-{
-	if (input)
-		return (0);
-	return (1);	
-}
-
 int	valid_redirect(char *input)
 {
 	int	state;
@@ -42,7 +35,7 @@ int	valid_redirect(char *input)
 	{
 		if (*input == '\"' || *input == '\'')
 			manage_state(&state, *input);
-		else if (state == NOT_Q && is_redirects(input))
+		else if (state == NOT_Q)
 		{
 			while (ft_isspace(input[1]))
 				input++;
