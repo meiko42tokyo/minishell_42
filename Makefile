@@ -20,6 +20,7 @@ endif
 SRCS = exec.c\
 	lstUtils.c\
 	syntax_error.c\
+	token_util.c\
 	parse.c\
 	expand.c\
 	buildin.c\

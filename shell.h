@@ -105,6 +105,10 @@ void	reset_termcap(struct termios *term);
 int	valid_syntax(char *input);
 
 /*
+**token_util.c
+*/
+
+/*
 **parse.c
 */
 char	**get_argv(char *input);

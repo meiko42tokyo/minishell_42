@@ -26,6 +26,34 @@ void	manage_state(int *state, char c)
 	}
 }
 
+int	is_redirects(char *input)
+{
+	if (input)
+		return (0);
+	return (1);	
+}
+
+int	valid_redirect(char *input)
+{
+	int	state;
+
+	state = NOT_Q;
+	while (*input != '\0')
+	{
+		if (*input == '\"' || *input == '\'')
+			manage_state(&state, *input);
+		else if (state == NOT_Q && is_redirects(input))
+		{
+			while (ft_isspace(input[1]))
+				input++;
+			if (input[1] == '\0')
+				return (print_error("newline"));
+		}
+		input++;
+	}
+	return (1);
+}
+
 int	valid_pipe(char *input)
 {
 	int	state;
@@ -66,7 +94,7 @@ int	valid_semicolon(char *input)
 int	valid_syntax(char *input)
 {
 	
-	if (!valid_semicolon(input) || !valid_pipe(input))
+	if (!valid_pipe(input) || !valid_semicolon(input) || !valid_redirect(input))
 		return (0);
 	return (1);
 }
