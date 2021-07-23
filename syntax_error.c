@@ -26,6 +26,26 @@ void	manage_state(int *state, char c)
 	}
 }
 
+int	valid_pipe(char *input)
+{
+	int	state;
+
+	state = NOT_Q;
+	while (*input != '\0')
+	{
+		if (*input == '\"' || *input == '\'')
+			manage_state(&state, *input);
+		else if (state == NOT_Q && *input == '|')
+		{
+			while (ft_isspace(input[1]))
+				input++;
+			if (input[1] == '|')
+				return print_error("|");
+		}
+		input++;
+	}
+	return (1);
+}
 
 int	valid_semicolon(char *input)
 {
@@ -38,7 +58,6 @@ int	valid_semicolon(char *input)
 			manage_state(&state, *input);
 		else if (state == NOT_Q && *input == ';' && input[1] == ';')
 			return (print_error(";;"));
-		printf("input:%c\n", *input);
 		input++;
 	}
 	return (1);
@@ -46,8 +65,8 @@ int	valid_semicolon(char *input)
 
 int	valid_syntax(char *input)
 {
-	printf("ft_strlen(input):%zu\n", ft_strlen(input));
-	if (!valid_semicolon(input))
+	
+	if (!valid_semicolon(input) || !valid_pipe(input))
 		return (0);
 	return (1);
 }
