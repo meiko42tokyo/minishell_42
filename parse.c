@@ -79,14 +79,6 @@ char	*ft_min_strchr(char *input, int *token)
 	return (input + min_dis);;
 }
 
-int	is_in_quoto(int state)
-{
-	if (state == SINGLE_Q || state == DOUBLE_Q)
-		return (1);
-	else
-		return (0);
-}
-
 size_t	ft_strplen(char *argv[])
 {
 	size_t	i;

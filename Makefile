@@ -20,8 +20,10 @@ endif
 SRCS = exec.c\
 	lstUtils.c\
 	syntax_error.c\
+	heredoc.c\
 	token_util.c\
 	token_classify_utils.c\
+	state_manage.c\
 	parse.c\
 	expand.c\
 	buildin.c\
