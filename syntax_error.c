@@ -35,7 +35,7 @@ int	valid_redirect(char *input)
 	{
 		if (*input == '\"' || *input == '\'')
 			manage_state(&state, *input);
-		else if (state == NOT_Q)
+		else if (state == NOT_Q && is_redirect(get_op(input)))
 		{
 			while (ft_isspace(input[1]))
 				input++;
