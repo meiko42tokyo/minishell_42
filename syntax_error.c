@@ -8,23 +8,7 @@ int	print_error(char *token)
 	return (0);
 }
 
-void	manage_state(int *state, char c)
-{
-	if (c == '\'')
-	{
-		if (*state == NOT_Q)
-			*state = SINGLE_Q;
-		else if (*state == SINGLE_Q)
-			*state = NOT_Q;
-	}
-	else if (c == '\"')
-	{
-		if (*state == NOT_Q)
-			*state = DOUBLE_Q;
-		else if (*state == DOUBLE_Q)
-			*state = NOT_Q;
-	}
-}
+
 
 int	valid_redirect(char *input)
 {
@@ -86,6 +70,8 @@ int	valid_semicolon(char *input)
 
 int	valid_syntax(char *input)
 {
+	if (heredoc_exist(input))
+		heredoc(input);
 	if (!valid_pipe(input) || !valid_semicolon(input) || !valid_redirect(input))
 		return (0);
 	return (1);

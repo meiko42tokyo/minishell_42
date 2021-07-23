@@ -105,6 +105,12 @@ void	reset_termcap(struct termios *term);
 int	valid_syntax(char *input);
 
 /*
+**heredoc.c
+*/
+int	heredoc_exist(char *input);
+void	heredoc(char *input);
+
+/*
 **token_util.c
 */
 char	**set_ops(void);
@@ -119,6 +125,11 @@ int	is_redirect(int token);
 int	is_two_char(int *token);
 int	is_token_br(int token);
 
+/*
+**state_manage.c
+*/
+int	is_in_quoto(int state);
+void	manage_state(int *state, char c);
 /*
 **parse.c
 */
