@@ -86,7 +86,6 @@ int	valid_semicolon(char *input)
 
 int	valid_syntax(char *input)
 {
-	
 	if (!valid_pipe(input) || !valid_semicolon(input) || !valid_redirect(input))
 		return (0);
 	return (1);
