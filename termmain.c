@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 			break;
 		//get_next_line(0, &input); // TODO: if fail in GNL
 		// save input to doubly linked list
-		head = make_cmdlist(cur_node->data);
+		head = make_cmdlist(cur_node->data, env);
 		free(line);
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
