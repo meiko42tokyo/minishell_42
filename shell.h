@@ -107,8 +107,8 @@ int	valid_syntax(char *input);
 /*
 **heredoc.c
 */
-int	heredoc_exist(char *input);
-void	heredoc(char *input);
+int	heredoc_exist(char *input, int *times);
+void	heredoc(char *input, int times);
 
 /*
 **token_util.c
