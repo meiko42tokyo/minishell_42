@@ -102,13 +102,13 @@ void	reset_termcap(struct termios *term);
 /*
 **syntax_error.c
 */
-int	valid_syntax(char *input);
+int	syntax_error(char *input);
 
 /*
 **heredoc.c
 */
 int	heredoc_exist(char *input, int *times);
-void	heredoc(char *input, int times);
+int	heredoc(char *input);
 
 /*
 **token_util.c

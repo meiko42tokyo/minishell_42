@@ -16,10 +16,8 @@ int	heredoc_exist(char *input, int *times)
 	return (*times);
 }
 
-void	heredoc(char *input, int times)
+int	heredoc(char *input)
 {
-	while (times--)
-	{
-		printf("heredoc:%s\n", input);
-	}
+	printf("heredoc:%s\n", input);
+	return (0);
 }
