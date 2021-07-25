@@ -42,11 +42,14 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 		input = *c->argv; // TODO:input->c->argv[0]
 		path = ft_strjoin("/bin/", input);
 		errno = 0;
-		status = execve(path, c->argv, environ); // exec needed?
+		execve(path, c->argv, environ); // exec needed?
 		if (errno){
-			ft_putstr_fd(strerror(errno), 2);
-			ft_putstr_fd("\n", 2);
-			exit(errno);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(&input[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			printf("errno:%d\n", errno);
+			status = errno;
+			exit(COMMAND_ERROR);
 		}
 	} else {
 		waitpid(pid, &stat_loc, WUNTRACED);
@@ -89,6 +92,7 @@ void	run_list(t_cmd *c, t_env *env)
 {
 	while (c)
 	{
+		printf("status:%d\n", status);
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
 			status = exec_buildin(c->argv, env);
