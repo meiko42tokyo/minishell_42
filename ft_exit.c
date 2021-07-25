@@ -60,8 +60,11 @@ int	ft_exit(char **command)
 {
 	ssize_t	num;
 
-	if (command[1] != NULL && command[2])//なぜかexitでここはいる
-		return (ft_error_str("too many argment"));
+	if (command[1] != NULL && command[2])
+	{//なぜかexitでここはいる
+		ft_error_str("too many argment");
+		return (1);
+	}
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("exit\n", 2);
