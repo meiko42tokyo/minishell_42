@@ -1,7 +1,5 @@
 #include "shell.h"
 
-extern int	status;
-
 char	**get_argv(char *input)
 {
 	char	**argv;

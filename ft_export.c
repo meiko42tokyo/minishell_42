@@ -136,6 +136,9 @@ int	ft_export(char **command, t_env *env)
 	{
 		if (!(tmp = (t_env*)malloc(sizeof(t_env))))
 			(ft_error_str("malloc failure", errno));
+		if (i == 7)
+			exit (0);
+		printf("command:%s\n", command[i]);
 		ptr = ft_strchr(command[i], '=');
 		if (ptr)
 		{

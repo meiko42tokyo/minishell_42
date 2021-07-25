@@ -61,7 +61,9 @@ int	ft_exit(char **command)
 	ssize_t	num;
 
 	if (command[1] != NULL && command[2])
+	{
 		return (ft_error_str("exit\nminishell: exit: too many argment", 1));
+	}
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("exit\n", 2);
