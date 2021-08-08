@@ -48,9 +48,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			ft_putstr_fd(&input[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 			status = COMMAND_ERROR;
-			printf("status_fail_execve:%d\n", status);
-			return (pid);
-			//これ消して大丈夫KA確認exit(COMMAND_ERROR);
+			exit (127);//exitだとstasutが初期化されてしまう問題どうにかしたい
+			//return (pid); returnだと、エラーの後、exitがで出ていけなくなる
 		}
 	} else {
 		waitpid(pid, &stat_loc, WUNTRACED);
