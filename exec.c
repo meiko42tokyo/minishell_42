@@ -35,7 +35,10 @@ static int	do_execve(char *input, char **argv)
 		tmp = ft_strjoin(split_path[i], "/");
 		path = ft_strjoin(tmp, input);
 		if (!execve(path, argv, environ))
+		{
+			free(tmp);
 			return (0);
+		}
 		i++;
 	}
 	return (-1);
