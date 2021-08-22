@@ -7,13 +7,48 @@ int	ispipe(t_cmd *c)
 	return (0);
 }
 
+static int	do_execve(char *input, char **argv)
+{
+	extern char **environ;
+	char	**split_path;
+	char	*path;
+	char	*tmp;
+	int		i;
+
+	split_path = NULL;
+	i = 0;
+	while (environ[i])
+	{
+		if (ft_strnstr(environ[i], "PATH", 4))
+		{
+			tmp = ft_strdup(environ[i] + 5);
+			split_path = ft_split(tmp, ':');
+			i = 0;
+			free(tmp);
+			break ;
+		}
+		i++;
+	}
+	i = 0;
+	while (split_path[i])
+	{
+		tmp = ft_strjoin(split_path[i], "/");
+		path = ft_strjoin(tmp, input);
+		if (!execve(path, argv, environ))
+		{
+			free(tmp);
+			return (0);
+		}
+		i++;
+	}
+	return (-1);
+}
+
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
 	int	newpipe[2];
-	char *path;
 	char *input;
-	extern char **environ; 
 	int	stat_loc;
 
 	if (ispipe)
@@ -40,13 +75,12 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			close(newpipe[1]);
 		}
 		input = *c->argv; // TODO:input->c->argv[0]
-		path = ft_strjoin("/bin/", input);
-		errno = 0;
-		status = execve(path, c->argv, environ); // exec needed?
-		if (errno){
+		status = do_execve(input, c->argv); // exec needed?
+		if (status == -1)
+		{
 			ft_putstr_fd(strerror(errno), 2);
 			ft_putstr_fd("\n", 2);
-			exit(errno);
+			exit(127);
 		}
 	} else {
 		waitpid(pid, &stat_loc, WUNTRACED);
