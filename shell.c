@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 		free(line);
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
-		if (head != NULL)
+		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 	}
 	return (0);
