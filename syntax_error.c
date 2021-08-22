@@ -34,7 +34,6 @@ int	check_redirect_syntax(char *input)
 
 int	check_syntax(char *input, int *heredoc)
 {
-	printf("check_syntax:%s\n", input);
 	if (!ft_strncmp(input, "<<", 2) && (*heredoc = 1))
 		return (1);
 	else if (check_pipe_syntax(input))

@@ -107,7 +107,6 @@ int	syntax_error(char *input);
 /*
 **heredoc.c
 */
-int	heredoc_exist(char *input, int *times);
 int	heredoc(char *input);
 
 /*

@@ -304,6 +304,6 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 		ft_error_str("quote not closed\n"); // need to think about better error
 	}
 	expand(&head, env);
-	//ft_print_cmdlist(&head);
+	ft_print_cmdlist(&head);
 	return (head);
 }
