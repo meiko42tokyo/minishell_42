@@ -31,9 +31,11 @@ static int	include_redir(char **command)
 	i = 0;
 	while (command[i])
 	{
-		if (ft_strcmp(command[i], ">") == 0 || ft_strcmp(command[i], ">>") == 0\
-			|| ft_strcmp(command[i], "<<") == 0 || ft_strcmp(command[i], "<") == 0)
-		return (1);
+		if (ft_strcmp(command[i], ">") == 0 || \
+				ft_strcmp(command[i], ">>") == 0 \
+				|| ft_strcmp(command[i], "<<") == 0 || \
+				ft_strcmp(command[i], "<") == 0)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -58,7 +60,7 @@ int	ft_echo(char **command)
 	if ((count = count_n(command)) > 1)
 	{
 		i = count;
-		while(command[i])
+		while (command[i])
 		{
 			if (i > count)
 				ft_putstr_fd(" ", 1);
@@ -70,12 +72,11 @@ int	ft_echo(char **command)
 	else
 	{
 		i = 1;
-		while(command[i])
+		while (command[i])
 		{
 			if (i > 1)
 				ft_putstr_fd(" ", 1);
-			ft_putstr_fd(command[i], 1);
-			i++;
+			ft_putstr_fd(command[i++], 1);
 		}
 		ft_putstr_fd("\n", 1);
 	}
