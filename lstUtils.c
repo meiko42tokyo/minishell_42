@@ -37,6 +37,18 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 	return ;
 }
 
+int	ft_argv_len(t_cmd *cmd)
+{
+	int	len;
+
+	len = 0;
+	while (cmd->argv[len])
+	{
+		len++;
+	}
+	return (len);
+}
+
 int	ft_print_cmdsize(t_cmd **head)
 {
 	t_cmd	*node;

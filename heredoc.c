@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int	heredoc_exist(char *input)
+int	heredoc_exist(char *input, int *times)
 {
 	int	state;
 
@@ -9,12 +9,15 @@ int	heredoc_exist(char *input)
 	{
 		if (*input == '\"' || *input == '\'')
 			manage_state(&state, *input);
+		if (!ft_strncmp(input, "<<", 2))
+			(*times)++;
 		input++;
 	}
-	return (0);
+	return (*times);
 }
 
-void	heredoc(char *input)
+int	heredoc(char *input)
 {
 	printf("heredoc:%s\n", input);
+	return (0);
 }

@@ -70,7 +70,7 @@ char	**ft_split(char const *s, char c)
 	head = (char**)ft_calloc(len + 1, sizeof(char*));
 	if (head == NULL)
 		return (NULL);
-	ptr = ft_strtrim((char *)s, &c);
+	ptr = ft_strtrim((char *)s, " ");
 	tmp = ptr;
 	make_str(head, ptr, c, len);
 	free(tmp);

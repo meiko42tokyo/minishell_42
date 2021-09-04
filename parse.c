@@ -296,7 +296,9 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 				input++;
 		}
 		if (ft_strlen(input) == 0)
+		{
 			break;
+		}
 		
 	}
 	if (state != NOT_Q)
