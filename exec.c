@@ -51,6 +51,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	char *input;
 	int	stat_loc;
 
+	stat_loc = 0;
 	if (ispipe)
 		pipe(newpipe);
 	pid = fork();
@@ -85,6 +86,9 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	} else {
 		waitpid(pid, &stat_loc, WUNTRACED);
 	}
+	//printf("stat:%d\n", stat_loc);
+	if (stat_loc != 0)
+		status = 127;
 	if (haspipe)
 	{
 		close(lastpipe[0]);
