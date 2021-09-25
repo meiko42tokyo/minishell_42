@@ -60,19 +60,19 @@ void	store_line(char *identifier)
 
 	line = NULL;
 	save = ft_strjoin("", NULL);
+	write(1, "> ", 2);
 	while (get_next_line(STDIN_FILENO, &line))
 	{
+		write(1, "> ", 2);
 		if (ft_strncmp(line, identifier, ft_strlen(line)) == 0)
 		{
 			break;
 		}
 		tmp = ft_strjoin(save, line);
-		printf("in while, tmp :%s\n", tmp);
 		free(save);
 		save = tmp;
 	}
-	printf("save: %s\n", save);
-	//store_as_stdin(save);
+	write(0, save, ft_strlen(save));
 }
 
 int	heredoc(char *input)
@@ -82,6 +82,5 @@ int	heredoc(char *input)
 	identifier = get_identifier(input);
 	store_line(identifier);
 	// remove << and aaa from argv
-	printf("ientifier:%s\n", identifier);
 	return (0);
 }
