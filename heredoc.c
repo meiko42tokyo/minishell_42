@@ -19,34 +19,12 @@ int	heredoc_exist(char *input, int *times)
 char	*expand_identifier(char *id)
 {
 	char	*identifier;
-
-	identifier = NULL;
-	// expand quoto
-	//if (*id == '\"' || *input == '\'')
-		// skip and add null	
-	free (id);
-	return (identifier);
-}
-
-char	*get_identifier(char *input)
-{
-	int	len;
-	char	*id;
 	int 	state;
-	char	*save;
 
 	state = NOT_Q;
-	input += 2;
-	while (ft_isspace(*input))
-		input++;
-	len = ft_strlen(input);
-	if (ft_strchr(input, ' '))
-		len = ft_strchr(input, ' ') - input;
-	id = ft_strndup(input, len);
-	save = id;
-	while(id != '\0')
+	identifier = id;
+	while (id != '\0')
 	{
-		printf("id:%s\n", id);
 		if (*id == '\"' || *id == '\'')
 			br(&state, &id);
 		else
@@ -56,7 +34,22 @@ char	*get_identifier(char *input)
 			id++;
 		}
 	}
-	return (save);
+	return (identifier);
+}
+
+char	*get_identifier(char *input)
+{
+	int	len;
+	char	*id;
+
+	input += 2;
+	while (ft_isspace(*input))
+		input++;
+	len = ft_strlen(input);
+	if (ft_strchr(input, ' '))
+		len = ft_strchr(input, ' ') - input;
+	id = ft_strndup(input, len);
+	return (expand_identifier(id));
 }
 
 int	heredoc(char *input)

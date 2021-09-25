@@ -5,7 +5,6 @@ void	strshift(char *word)
 	size_t	len;
 
 	len = ft_strlen(word);
-	printf("word:%s, len:%zu\n", word, len);
 	ft_memmove(word, word + 1, len - 1);
 	word[len - 1] = '\0';
 }
