@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 	signal(SIGINT, SIG_IGN);
 	env = init_env();
 	while (1) {
-		ft_putstr_fd("> ", 0);
+		ft_putstr_fd("minishell> ", 0);
 		get_next_line(0, &line);
 		if (syntax_error(&line))
 			continue ;

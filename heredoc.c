@@ -78,21 +78,27 @@ void	store_line(char *identifier)
 	write(0, save, ft_strlen(save));
 }
 
+// remove << and aaa from argv
+int	remove_heredoc(char **input, size_t id_len)
+{
+	char	*heredoc_start;
+
+	heredoc_start = ft_strnstr(*input, "<<", 2);
+	ft_memmove(heredoc_start, heredoc_start + id_len, ft_strlen(*input));
+	*input[ft_strlen(*input) - id_len] = '\0';	
+	return (0);
+
+	
+	// count num until <<
+	// count num until ' '
+	// count num of input 
+}
+
 int	heredoc(char **input)
 {
 	char	*identifier;
 
 	identifier = get_identifier(*input);
 	store_line(identifier);
-	//ret = remove_heredoc(*input);
-	//if (ft_strchr(*input, ' '))
-	//{
-	//	len = ft_strchr(*input, ' ') - *input;
-	//}
-	// count number of identifier?
-		// num until <<
-		// num until ' '
-		// num until all
-	// remove << and aaa from argv
-	return (0);
+	return (remove_heredoc(input, ft_strlen(identifier)));
 }
