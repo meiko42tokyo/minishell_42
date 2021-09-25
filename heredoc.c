@@ -78,6 +78,16 @@ void	store_line(char *identifier)
 	write(0, save, ft_strlen(save));
 }
 
+int	remove_heredoc(char **input, size_t id_len)
+{
+	char	*heredoc_start;
+
+	heredoc_start = ft_strnstr(*input, "<<", 2);
+	ft_memmove(heredoc_start, heredoc_start + id_len, ft_strlen(*input));
+	*input[ft_strlen(*input) - id_len] = '\0';	
+	return (0);
+}
+
 int	heredoc(char **input)
 {
 	char	*identifier;
