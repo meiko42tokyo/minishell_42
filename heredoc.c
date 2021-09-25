@@ -78,7 +78,6 @@ void	store_line(char *identifier)
 	write(0, save, ft_strlen(save));
 }
 
-// remove << and aaa from argv
 int	remove_heredoc(char **input, size_t id_len)
 {
 	char	*heredoc_start;
@@ -87,11 +86,6 @@ int	remove_heredoc(char **input, size_t id_len)
 	ft_memmove(heredoc_start, heredoc_start + id_len, ft_strlen(*input));
 	*input[ft_strlen(*input) - id_len] = '\0';	
 	return (0);
-
-	
-	// count num until <<
-	// count num until ' '
-	// count num of input 
 }
 
 int	heredoc(char **input)
