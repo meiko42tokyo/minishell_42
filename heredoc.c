@@ -19,7 +19,7 @@ int	heredoc_exist(char *input, int *times)
 char	*expand_identifier(char *id)
 {
 	char	*identifier;
-	int 	state;
+	int	state;
 
 	state = NOT_Q;
 	identifier = id;
@@ -30,7 +30,7 @@ char	*expand_identifier(char *id)
 		else
 		{
 			if (*id == '\0')
-				break;
+				break ;
 			id++;
 		}
 	}
@@ -69,7 +69,7 @@ void	store_line(char *identifier)
 	while (get_next_line(STDIN_FILENO, &line))
 	{
 		if (ft_strncmp(line, identifier, ft_strlen(line)) == 0)
-			break;
+			break ;
 		else
 			write(1, "> ", 2);
 		free_set(&line, ft_strjoin(line, "\n"));
@@ -84,7 +84,7 @@ int	remove_heredoc(char **input, size_t id_len)
 
 	heredoc_start = ft_strnstr(*input, "<<", 2);
 	ft_memmove(heredoc_start, heredoc_start + id_len, ft_strlen(*input));
-	*input[ft_strlen(*input) - id_len] = '\0';	
+	*input[ft_strlen(*input) - id_len] = '\0';
 	return (0);
 }
 
