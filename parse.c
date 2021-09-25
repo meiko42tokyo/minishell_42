@@ -212,7 +212,6 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	while ((new_pos = ft_min_strchr(input, &token)) >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		printf("in parse, word:%s\n", word);
 		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
 		{
 			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
