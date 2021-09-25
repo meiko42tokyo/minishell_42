@@ -52,13 +52,35 @@ char	*get_identifier(char *input)
 	return (expand_identifier(id));
 }
 
+void	store_line(char *identifier)
+{
+	char	*line;
+	char	*save;
+	char	*tmp;
+
+	line = NULL;
+	save = ft_strjoin("", NULL);
+	while (get_next_line(STDIN_FILENO, &line))
+	{
+		if (ft_strncmp(line, identifier, ft_strlen(line)) == 0)
+		{
+			break;
+		}
+		tmp = ft_strjoin(save, line);
+		printf("in while, tmp :%s\n", tmp);
+		free(save);
+		save = tmp;
+	}
+	printf("save: %s\n", save);
+	//store_as_stdin(save);
+}
+
 int	heredoc(char *input)
 {
 	char	*identifier;
 
 	identifier = get_identifier(input);
-	// store input while line != identifier
-	// connect saved str to standard input
+	store_line(identifier);
 	// remove << and aaa from argv
 	printf("ientifier:%s\n", identifier);
 	return (0);
