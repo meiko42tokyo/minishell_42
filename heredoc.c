@@ -52,25 +52,28 @@ char	*get_identifier(char *input)
 	return (expand_identifier(id));
 }
 
+void	free_set(char **line, char *src)
+{
+	free(*line);
+	*line = src;
+}
+
 void	store_line(char *identifier)
 {
 	char	*line;
 	char	*save;
-	char	*tmp;
 
-	line = NULL;
+	line = ft_strjoin("", NULL);
 	save = ft_strjoin("", NULL);
 	write(1, "> ", 2);
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		write(1, "> ", 2);
 		if (ft_strncmp(line, identifier, ft_strlen(line)) == 0)
-		{
 			break;
-		}
-		tmp = ft_strjoin(save, line);
-		free(save);
-		save = tmp;
+		else
+			write(1, "> ", 2);
+		free_set(&line, ft_strjoin(line, "\n"));
+		free_set(&save, ft_strjoin(save, line));
 	}
 	write(0, save, ft_strlen(save));
 }
