@@ -32,6 +32,7 @@ SRCS = exec.c\
 	ft_echo.c\
 	ft_exit.c\
 	ft_export.c\
+	ft_export_utils.c\
 	ft_env.c\
 	ft_unset.c\
 	redirect.c\

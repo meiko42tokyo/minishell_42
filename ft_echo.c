@@ -41,10 +41,30 @@ static int	include_redir(char **command)
 	return (0);
 }
 
+static void	put_space(char **command, int i)
+{
+	int	start;
+
+	start = i;
+	while (command[i])
+	{
+		if (i > start)
+			ft_putstr_fd(" ", 1);
+		ft_putstr_fd(command[i++], 1);
+	}
+}
+
+static void	dup_pipe(int in, int out)
+{
+	if (in != -1)
+		dup2(in, 0);
+	if (out != -1)
+		dup2(out, 1);
+}
+
 int	ft_echo(char **command)
 {
 	int	count;
-	int	i;
 	int	in;
 	int	out;
 
@@ -57,32 +77,16 @@ int	ft_echo(char **command)
 	}
 	if (include_redir(command) > 0)
 		command = ft_redirect(command, &in, &out);
-	if ((count = count_n(command)) > 1)
-	{
-		i = count;
-		while (command[i])
-		{
-			if (i > count)
-				ft_putstr_fd(" ", 1);
-			ft_putstr_fd(command[i++], 1);
-		}
-	}
+	count = count_n(command);
+	if (count > 1)
+		put_space(command, count);
 	else if (count == -1)
 		return (0);
 	else
 	{
-		i = 1;
-		while (command[i])
-		{
-			if (i > 1)
-				ft_putstr_fd(" ", 1);
-			ft_putstr_fd(command[i++], 1);
-		}
+		put_space(command, 1);
 		ft_putstr_fd("\n", 1);
 	}
-	if (in != -1)
-		dup2(in, 0);
-	if (out != -1)
-		dup2(out, 1);
+	dup_pipe(in, out);
 	return (0);
 }
