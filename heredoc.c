@@ -78,12 +78,21 @@ void	store_line(char *identifier)
 	write(0, save, ft_strlen(save));
 }
 
-int	heredoc(char *input)
+int	heredoc(char **input)
 {
 	char	*identifier;
 
-	identifier = get_identifier(input);
+	identifier = get_identifier(*input);
 	store_line(identifier);
+	//ret = remove_heredoc(*input);
+	//if (ft_strchr(*input, ' '))
+	//{
+	//	len = ft_strchr(*input, ' ') - *input;
+	//}
+	// count number of identifier?
+		// num until <<
+		// num until ' '
+		// num until all
 	// remove << and aaa from argv
 	return (0);
 }
