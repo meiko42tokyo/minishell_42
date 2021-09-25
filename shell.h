@@ -140,6 +140,8 @@ t_cmd	*make_cmdlist(char *input, t_env *env);
 **expand.c
 */
 void	expand(t_cmd **head, t_env *env);
+void	br(int *state, char **word);
+void	strshift(char *word);
 
 /*
 **buildin.c
