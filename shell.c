@@ -22,7 +22,6 @@ int	main(int argc, char **argv)
 			continue ;
 		head = make_cmdlist(line, env);
 		line = NULL;
-		signal(SIGINT, SIG_DFL);
 		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 	}
