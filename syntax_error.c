@@ -49,8 +49,10 @@ int	syntax_error(char **input)
 {
 	int	state;
 	int	heredocs;
+	char	*save;
 
 	state = NOT_Q;
+	save = *input;
 	while (**input != '\0')
 	{
 		heredocs = 0;
@@ -64,5 +66,6 @@ int	syntax_error(char **input)
 		}
 		(*input)++;
 	}
+	*input = save;
 	return (0);
 }
