@@ -173,7 +173,7 @@ int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 	int	state;
 
 	state = NOT_Q;
-	while (word)
+	while (*word)
 	{
 		if (*word == '\'' || *word == '\"')
 			br(&state, &word);
