@@ -17,7 +17,7 @@ void	ft_env_unset(t_env **env, char *name)
 				pre->next = tmp->next;
 			else
 				*env = tmp->next;
-				env_free(tmp);
+			env_free(tmp);
 			return ;
 		}
 		pre = tmp;
@@ -48,6 +48,5 @@ int	ft_unset(char **command, t_env *env)
 		env = env->next;
 	}
 	//あてはまらない場合、unset: `入力コマンド': not a valid identifier
-	//の表示必要
 	return (0);
 }

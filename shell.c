@@ -1,18 +1,18 @@
 #include "shell.h"
 
-int	status;
+int	g_status;
 
-int	main(int argc, char **argv) 
+int	main(int argc, char **argv)
 {
-	char		*line;
-	t_cmd		*head;
+	char	*line;
+	t_cmd	*head;
 	t_env	*env;
-	
+
 	argc = 1;
 	argv = NULL;
 	line = NULL;
 	head = NULL;
-	status = 0;
+	g_status = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	env = init_env();

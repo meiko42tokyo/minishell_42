@@ -1,9 +1,9 @@
 #include "shell.h"
 
-int	ft_pwd()
+int	ft_pwd(void)
 {
-	size_t size;
-	char *buf;
+	size_t	size;
+	char	*buf;
 
 	size = 1024;
 	buf = malloc(size);
