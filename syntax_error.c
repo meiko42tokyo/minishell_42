@@ -45,24 +45,27 @@ int	check_syntax(char *input, int *heredoc)
 	return (0);
 }
 
-int	syntax_error(char *input)
+int	syntax_error(char **input)
 {
 	int	state;
 	int	heredocs;
+	char	*save;
 
 	state = NOT_Q;
-	while (*input != '\0')
+	save = *input;
+	while (**input != '\0')
 	{
 		heredocs = 0;
-		if (*input == '\"' || *input == '\'')
-			manage_state(&state, *input);
-		if (state == NOT_Q && check_syntax(input, &heredocs))
+		if (**input == '\"' || **input == '\'')
+			manage_state(&state, **input);
+		if (state == NOT_Q && check_syntax(*input, &heredocs))
 		{
 			if (heredocs)
 				return (heredoc(input));
 			return (1);
 		}
-		input++;
+		(*input)++;
 	}
+	*input = save;
 	return (0);
 }
