@@ -196,9 +196,14 @@ int	is_allspace(char *s)
 
 t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos)
 {
-	if (input && head && new_pos)
-		return (NULL);
-	return (NULL);
+	char	*word;
+
+	while (new_pos >= input)
+	{
+		word = ft_strndup(input, new_pos - input + (new_pos == input));
+		printf("word: %s\n", word);
+	}
+	return (head);
 }
 
 t_cmd	*make_cmdlist(char *input, t_env *env)
