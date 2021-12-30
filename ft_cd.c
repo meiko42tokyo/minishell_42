@@ -33,13 +33,29 @@ static char	*save_pwd(void)
 	return (buf);
 }
 
+static void	save_env(t_env *env, char *save_p, char *save_np)
+{
+	char	**new_p;
+	char	**new_op;
+
+	new_p = (char **)malloc(sizeof(char *) * 2);
+	new_op = (char **)malloc(sizeof(char *) * 2);
+	new_p[0] = ft_strjoin("PWD=", save_np);
+	new_op[0] = ft_strjoin("OLDPWD=", save_p);
+	new_p[1] = NULL;
+	new_op[1] = NULL;
+	ft_export(new_p, env);
+	ft_export(new_op, env);
+	free(new_p);
+	free(new_op);
+	return ;
+}
+
 int	ft_cd(char *path, t_env *env)
 {
 	char	*save_p;
 	char	*save_op;
 	char	*save_np;
-	char	**new_p;
-	char	**new_op;
 
 	save_p = save_pwd();
 	save_op = save_oldpwd(env);
@@ -55,15 +71,6 @@ int	ft_cd(char *path, t_env *env)
 			return (ft_errno(errno));
 	}
 	save_np = save_pwd();
-	new_p = (char **)malloc(sizeof(char*) * 2);
-	new_op = (char **)malloc(sizeof(char*) * 2);
-	new_p[0] = ft_strjoin("PWD=", save_np);
-	new_op[0] = ft_strjoin("OLDPWD=", save_p);
-	new_p[1] = NULL;
-	new_op[1] = NULL; 
-	ft_export(new_p, env);
-	ft_export(new_op, env);
-	free(new_p);
-	free(new_op);
+	save_env(env, save_p, save_np);
 	return (0);
 }
