@@ -41,7 +41,6 @@ int	dup_env(t_env *env, char **cp_name)
 	t_env	*tmp;
 	int		i;
 
-	tmp = (t_env *)malloc(sizeof(t_env));
 	tmp = env;
 	i = 0;
 	while (tmp)
