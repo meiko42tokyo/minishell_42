@@ -38,8 +38,8 @@ int	ft_cd(char *path, t_env *env)
 	char	*save_p;
 	char	*save_op;
 	char	*save_np;
-	char	*new_p;
-	char	*new_op;
+	char	**new_p;
+	char	**new_op;
 
 	save_p = save_pwd();
 	save_op = save_oldpwd(env);
@@ -48,16 +48,22 @@ int	ft_cd(char *path, t_env *env)
 		if (chdir(save_op) < 0)
 			return (ft_errno(errno));
 	}
-	//エラー処理後で入れる
+	//エラー処理& FREEの仕方を後で入れる
 	else
 	{
 		if (chdir(path) < 0)
 			return (ft_errno(errno));
 	}
 	save_np = save_pwd();
-	new_p = ft_strjoin("PWD=", save_np);
-	new_op = ft_strjoin("OLDPWD=", save_p);
-	ft_export(&new_op, env);
-	ft_export(&new_p, env);
+	new_p = (char **)malloc(sizeof(char*) * 2);
+	new_op = (char **)malloc(sizeof(char*) * 2);
+	new_p[0] = ft_strjoin("PWD=", save_np);
+	new_op[0] = ft_strjoin("OLDPWD=", save_p);
+	new_p[1] = NULL;
+	new_op[1] = NULL; 
+	ft_export(new_p, env);
+	ft_export(new_op, env);
+	free(new_p);
+	free(new_op);
 	return (0);
 }

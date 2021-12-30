@@ -83,7 +83,10 @@ int	ft_export(char **command, t_env *env)
 			r_status = export_without_value(command[i], env);
 		if (r_status == 1)
 			error_status = 1;
+		printf("command[i]:%s\n", command[i]);
 		i++;
+		if (i == 7)
+			exit (0);
 	}
 	return (error_status);
 }
