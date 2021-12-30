@@ -193,7 +193,31 @@ int	is_allspace(char *s)
 	return (1);
 }
 
+
+t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos)
+{
+	if (input && head && new_pos)
+		return (NULL);
+	return (NULL);
+}
+
 t_cmd	*make_cmdlist(char *input, t_env *env)
+{
+	t_cmd	*head;
+	char	*new_pos;
+	int	token;
+
+	head = NULL;
+	token = OTHER;
+	if (input == NULL)
+		return (NULL);
+	new_pos = ft_min_strchr(input, &token);
+	set_cmdlist(input, head, new_pos);
+	expand(&head, env);
+	return (head);
+}
+
+t_cmd	*mmake_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
