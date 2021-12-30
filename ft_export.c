@@ -45,8 +45,9 @@ static int	export_with_value(char *command, t_env *env, char *ptr)
 		tmp->name = ft_strdup(cd_name);
 		tmp->value = ft_strdup(&command[sp + 1]);
 		ft_envadd_back(&env, tmp);
-		//env_free(tmp);
+		free(tmp);
 	}
+	free(cd_name);
 	return (0);
 }
 
@@ -58,7 +59,7 @@ static int	export_without_value(char *command, t_env *env)
 	tmp->name = ft_strdup(command);
 	tmp->value = NULL;
 	ft_envadd_back(&env, tmp);
-	//env_free(tmp);
+	free(tmp);
 	return (0);
 }
 
