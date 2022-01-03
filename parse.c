@@ -193,14 +193,44 @@ int	is_allspace(char *s)
 	return (1);
 }
 
+void	append_str()
+{
+}
+
+void	pattern2()
+{
+}
+
+void	pattern3()
+{
+}
+
+void	new_cmd()
+{
+}
 
 t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos)
 {
 	char	*word;
+	int	state;
+	int	token;
+	t_cmd	*cmd;
 
+	state = NOT_Q;
+	token = OTHER;
+	cmd = NULL;
 	while (new_pos >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
+		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
+			append_str();
+		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
+			pattern2();
+		else if (cmd && (is_redirect(cmd->op)))
+			pattern3();
+		else
+			new_cmd();
+			
 		printf("word: %s\n", word);
 	}
 	return (head);
