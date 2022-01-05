@@ -5,7 +5,7 @@ static char	*save_oldpwd(t_env *env)
 	t_env	*tmp;
 
 	tmp = env;
-	while(tmp)
+	while (tmp)
 	{
 		if (ft_strcmp("OLDPWD", tmp->name) == 0)
 			return (tmp->value);
@@ -15,10 +15,10 @@ static char	*save_oldpwd(t_env *env)
 	return (0);
 }
 
-static char	*save_pwd()
+static char	*save_pwd(void)
 {
-	size_t size;
-	char *buf;
+	size_t	size;
+	char	*buf;
 
 	size = 1024;
 	buf = malloc(size);
@@ -41,8 +41,8 @@ int	ft_cd(char *path, t_env *env)
 	char	*new_p;
 	char	*new_op;
 
-	save_p = save_pwd(); 
-	save_op = save_oldpwd(env); 
+	save_p = save_pwd();
+	save_op = save_oldpwd(env);
 	if (ft_strcmp(path, "-") == 0)
 	{
 		if (chdir(save_op) < 0)
@@ -54,7 +54,7 @@ int	ft_cd(char *path, t_env *env)
 		if (chdir(path) < 0)
 			return (ft_errno(errno));
 	}
-	save_np = save_pwd(); 
+	save_np = save_pwd();
 	new_p = ft_strjoin("PWD=", save_np);
 	new_op = ft_strjoin("OLDPWD=", save_p);
 	ft_export(&new_op, env);

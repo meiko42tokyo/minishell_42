@@ -36,7 +36,7 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
-extern int	status;
+extern int	g_status;
 
 typedef struct s_cmd
 {
@@ -159,6 +159,16 @@ int	ft_exit(char **command);
 int	ft_env(t_env *env);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
+
+/*
+**ft_export_utils.c
+*/
+void	put_value(t_env *tmp);
+void	swap(char **s1, char **s2);
+int	sort_env(char **cp_name);
+int	dup_env(t_env *env, char **cp_name);
+int	export_env(t_env *env);
+void	print_env(t_env *env, char **cp_name);
 
 /*
 **redirect.c

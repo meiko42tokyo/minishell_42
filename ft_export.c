@@ -1,164 +1,89 @@
 #include "shell.h"
 
-static void	print_env(t_env *env, char **cp_name)
+static void	put_error(char *command)
+{
+	ft_putstr_fd("export `", 2);
+	ft_putstr_fd(command, 2);
+	ft_error_str("': not a valid identifier");
+}
+
+static int	is_env(char *cd_name, char *command, t_env *env, int sp)
+{
+	while (env)
+	{
+		if (ft_strcmp(cd_name, env->name) == 0)
+		{
+			if (sp == (int)ft_strlen(command))
+				env->value = ft_strdup("");
+			else
+				env->value = ft_strdup(&command[sp + 1]);
+			return (0);
+		}
+		env = env->next;
+	}
+	return (1);
+}
+
+static int	export_with_value(char *command, t_env *env, char *ptr)
 {
 	t_env	*tmp;
-	int		i;
+	int		sp;
+	int		judge_env;
+	char	*cd_name;
 
-	tmp = (t_env*)malloc(sizeof(t_env));
-	i = 0;
-	while(cp_name[i])
+	sp = ptr - command;
+	if (sp == 0)
 	{
-		tmp = env;
-		while (tmp)
-		{
-			//１回目のexportは_=出る問題
-			if ((ft_strcmp(cp_name[i], tmp->name) == 0) &&\
-					ft_strcmp(cp_name[i], "_") != 0)
-			{
-				ft_putstr_fd("declare -x ", 1);
-				ft_putstr_fd(tmp->name, 1);
-				if (tmp->value)
-				{
-					ft_putstr_fd("=\"", 1);
-					ft_putstr_fd(tmp->value, 1);
-					ft_putstr_fd("\"", 1);
-				}
-				ft_putstr_fd("\n", 1);
-				break ;
-			}
-			tmp = tmp->next;
-		}
-		i++;
+		put_error(command);
+		return (1);
 	}
-	return ;
-}
-
-static void	swap(char **s1, char **s2)
-{
-	char	*tmp;
-
-	tmp = *s1;
-	*s1 = *s2;
-	*s2 = tmp;
-}
-
-static int sort_env(char **cp_name)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while(cp_name[i])
+	cd_name = ft_strndup(command, sp);
+	judge_env = is_env(cd_name, command, env, sp);
+	if (judge_env == 1)
 	{
-		j = i + 1;
-		while(cp_name[j])
-		{
-			if(ft_strcmp(cp_name[i], cp_name[j]) > 0)
-				swap(&cp_name[i], &cp_name[j]);
-			j++;
-		}
-		i++;
+		tmp = (t_env *)malloc(sizeof(t_env));
+		tmp->name = ft_strdup(cd_name);
+		tmp->value = ft_strdup(&command[sp + 1]);
+		ft_envadd_back(&env, tmp);
+		//env_free(tmp);
 	}
 	return (0);
 }
 
-static int	dup_env(t_env *env, char **cp_name)
+static int	export_without_value(char *command, t_env *env)
 {
 	t_env	*tmp;
-	int		i;
 
-	tmp = (t_env*)malloc(sizeof(t_env));
-	tmp = env;
-	i = 0;
-	while (tmp)
-	{
-		cp_name[i] = ft_strdup(tmp->name);
-		tmp = tmp->next;
-		i++;
-	}
-	cp_name[i] = NULL;
-	return (0);
-}
-
-static int	export_env(t_env *env)
-{
-	char	*cp_name[100];
-
-	//あとでマロックの仕方要検討
-	dup_env(env, cp_name);
-	sort_env(cp_name);
-	print_env(env, cp_name);
+	tmp = (t_env *)malloc(sizeof(t_env));
+	tmp->name = ft_strdup(command);
+	tmp->value = NULL;
+	ft_envadd_back(&env, tmp);
+	//env_free(tmp);
 	return (0);
 }
 
 int	ft_export(char **command, t_env *env)
 {
 	char		*ptr;
-	char		*cd_name;
-	int			sp;
-	t_env		*tmp;
-	t_env		*start;
+	int			i;
+	int			r_status;
+	int			error_status;
 
-	sp = 0;
 	if (command[0] == NULL)
 		return (export_env(env));
-	start = env;
-	ptr = ft_strchr(command[0], '=');
-	tmp = (t_env*)malloc(sizeof(t_env));
-	if (ptr)
+	r_status = 0;
+	error_status = 0;
+	i = 0;
+	while (command[i])
 	{
-		sp = ptr - command[0];
-		if (sp == 0)
-		{
-			ft_putstr_fd("export `", 2);
-			ft_putstr_fd(command[0], 2);
-			ft_error_str("': not a valid identifier");
-			env_free(tmp);
-			return (0);
-		}
+		ptr = ft_strchr(command[i], '=');
+		if (ptr)
+			r_status = export_with_value(command[i], env, ptr);
 		else
-		{
-			cd_name = ft_strndup(command[0], sp);
-			while (env) 
-			{
-				if (ft_strcmp(cd_name, env->name) == 0)
-				{
-					if (sp == (int)ft_strlen(command[0]))//aaa=　ooのとき
-					{
-						env->value = ft_strdup("");
-						if (command[1])
-							ft_export(&command[1], env);
-					}
-					else
-						env->value = ft_strdup(&command[0][sp + 1]);
-					return (0);
-				}
-				env = env->next;
-			}
-		}
-		tmp->name = ft_strndup(command[0], sp);
-		if (sp == (int)ft_strlen(command[0]))
-		{
-			tmp->value = ft_strdup("");
-			ft_envadd_back(&start, tmp);
-			if (command[1])
-				ft_export(&command[1], env);
-			return (0);
-		}
-		else
-			tmp->value = ft_strdup(&command[0][sp + 1]);
-		ft_envadd_back(&start, tmp);
-		return (0);
+			r_status = export_without_value(command[i], env);
+		if (r_status == 1)
+			error_status = 1;
+		i++;
 	}
-	else if (command[1])
-	{
-		ft_putstr_fd("export `", 2);
-		ft_putstr_fd(command[1], 2);
-		ft_error_str("': not a valid identifier");
-		
-	}
-	tmp->name = ft_strdup(command[0]);
-	ft_envadd_back(&start, tmp);
-	return (0);
+	return (error_status);
 }
