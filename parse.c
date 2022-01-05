@@ -231,7 +231,6 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos)
 		else
 			new_cmd();
 			
-		printf("word: %s\n", word);
 	}
 	return (head);
 }
