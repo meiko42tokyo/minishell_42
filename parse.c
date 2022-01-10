@@ -210,67 +210,29 @@ void	pattern3()
 {
 }
 
-void	new_cmd(t_cmd **head, t_cmd *cmd, char *word, t_parse *ps)
+void	new_cmd()
 {
-	cmd = ft_cmdnew(get_argv(word), get_op(ps->new_pos));
-	ft_cmdadd_back(head, cmd);
-	if (is_token_br(cmd->op) && ps->state == NOT_Q)
-	{
-		if (ft_isspace(word[ft_strlen(word) - 1]))
-		{
-			if (append_arg(get_argv(put_token(ps->token)), head) != 0)
-			{
-				*head = NULL;
-				return ;
-			}
-		}
-		else
-		{
-			*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
-		}
-		if (ps->token == BR_DOUBLE)
-			ps->state = DOUBLE_Q;
-		else if (ps->token == BR_SINGLE)
-			ps->state = SINGLE_Q;
-	}
 }
 
-void	skip_token(char **input, t_parse *ps)
-{
-	if (**input != '\0')
-	{
-		if (is_two_char(&ps->token))
-			*input += 2;
-		else
-			*input += 1;
-	}
-}
-
-t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
+t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos, t_parse *ps)
 {
 	char	*word;
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	while (ps->new_pos >= input)
+	while (new_pos >= input)
 	{
-		word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
+		word = ft_strndup(input, new_pos - input + (new_pos == input));
 		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
-			append_str(&head, word, ps->new_pos == input, ps);
+			append_str(&head, word, new_pos == input, ps);
 		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
 			pattern2();
 		else if (cmd && (is_redirect(cmd->op)))
 			pattern3();
 		else
-			new_cmd(&head, cmd, word, ps);
-		free(word);
-		input = ps->new_pos;
-		skip_token(&input, ps);
+			new_cmd();
 		if (ft_strlen(input) == 0)
 			break;	
-		else
-			ps->new_pos = ft_min_strchr(input, &ps->token);
-
 		ft_print_cmdlist(&head);
 	}
 	return (head);
@@ -279,16 +241,17 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 t_cmd	*make_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
+	char	*new_pos;
 	t_parse	*ps;
 
 	head = NULL;
-	if (input == NULL)
-		return (NULL);
 	ps = (t_parse *)malloc(sizeof(t_parse)); 
 	ps->state = NOT_Q;
 	ps->token = OTHER;
-	ps->new_pos = ft_min_strchr(input, &ps->token);
-	set_cmdlist(input, head, ps);
+	if (input == NULL)
+		return (NULL);
+	new_pos = ft_min_strchr(input, &ps->token);
+	set_cmdlist(input, head, new_pos, ps);
 	free(ps);
 	expand(&head, env);
 	return (head);
