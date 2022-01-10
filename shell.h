@@ -90,6 +90,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 int	ft_argv_len(t_cmd *cmd);
 int	ft_print_cmdsize(t_cmd **head);
 void	ft_print_cmdlist(t_cmd **head);
+void	free_cmdlist(t_cmd **head);
 
 /*
 **doubly_lstUtils.c
