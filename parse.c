@@ -202,7 +202,7 @@ void	append_str(t_cmd **head, int left, t_parse *ps)
 		ps->state = NOT_Q;
 }
 
-void	pattern2(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
+void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 {
 	if (ft_isspace(ps->word[0]))
 	{
@@ -297,7 +297,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
 			append_str(&head, ps->new_pos == input, ps);
 		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
-			pattern2(&head, &cmd, input, ps);
+			start_br(&head, &cmd, input, ps);
 		else if (cmd && (is_redirect(cmd->op)))
 			pattern3();
 		else
