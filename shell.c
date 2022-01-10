@@ -13,8 +13,8 @@ int	main(int argc, char **argv)
 	line = NULL;
 	head = NULL;
 	g_status = 0;
-	//signal(SIGINT, SIG_IGN);
-	//signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	env = init_env();
 	while (1) {
 		ft_putstr_fd("minishell> ", 0);

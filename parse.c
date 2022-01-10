@@ -193,13 +193,8 @@ int	is_allspace(char *s)
 	return (1);
 }
 
-void	append_str(t_cmd **head, char *word, int left, t_parse *ps)
+void	append_str()
 {
-	*get_latestargv(head) = ft_strjoin(*get_latestargv(head), word);
-	if (!left)
-		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
-	if (is_token_br(ps->token))
-		ps->state = NOT_Q;
 }
 
 void	pattern2()
@@ -214,26 +209,28 @@ void	new_cmd()
 {
 }
 
-t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos, t_parse *ps)
+t_cmd	*set_cmdlist(char *input, t_cmd *head, char *new_pos)
 {
 	char	*word;
+	int	state;
+	int	token;
 	t_cmd	*cmd;
 
+	state = NOT_Q;
+	token = OTHER;
 	cmd = NULL;
 	while (new_pos >= input)
 	{
 		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
-			append_str(&head, word, new_pos == input, ps);
-		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
+		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
+			append_str();
+		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
 			pattern2();
 		else if (cmd && (is_redirect(cmd->op)))
 			pattern3();
 		else
 			new_cmd();
-		if (ft_strlen(input) == 0)
-			break;	
-		ft_print_cmdlist(&head);
+			
 	}
 	return (head);
 }
@@ -242,17 +239,14 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	char	*new_pos;
-	t_parse	*ps;
+	int	token;
 
 	head = NULL;
-	ps = (t_parse *)malloc(sizeof(t_parse)); 
-	ps->state = NOT_Q;
-	ps->token = OTHER;
+	token = OTHER;
 	if (input == NULL)
 		return (NULL);
-	new_pos = ft_min_strchr(input, &ps->token);
-	set_cmdlist(input, head, new_pos, ps);
-	free(ps);
+	new_pos = ft_min_strchr(input, &token);
+	set_cmdlist(input, head, new_pos);
 	expand(&head, env);
 	return (head);
 }

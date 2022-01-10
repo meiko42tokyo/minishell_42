@@ -54,18 +54,12 @@ typedef struct	s_env
 	char		*value;
 }		t_env;
 
-typedef struct	s_line
+typedef struct s_line
 {
 	struct s_line	*next;
 	struct s_line	*prev;
 	char		*data;
 }		t_line;
-
-typedef struct	s_parse
-{
-	int	state;
-	int	token;
-}		t_parse;
 
 /*
 **shell.c
