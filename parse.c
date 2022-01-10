@@ -195,7 +195,6 @@ int	is_allspace(char *s)
 
 void	append_str(t_cmd **head, int left, t_parse *ps)
 {
-	printf("aaa\n");
 	*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
 	if (!left)
 		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
@@ -253,11 +252,11 @@ void	pattern3()
 {
 }
 
-void	new_cmd(t_cmd **head, t_cmd *cmd, t_parse *ps)
+void	new_cmd(t_cmd **head, t_cmd **cmd, t_parse *ps)
 {
-	cmd = ft_cmdnew(get_argv(ps->word), get_op(ps->new_pos));
-	ft_cmdadd_back(head, cmd);
-	if (is_token_br(cmd->op) && ps->state == NOT_Q)
+	*cmd = ft_cmdnew(get_argv(ps->word), get_op(ps->new_pos));
+	ft_cmdadd_back(head, *cmd);
+	if (is_token_br((*cmd)->op) && ps->state == NOT_Q)
 	{
 		if (ft_isspace(ps->word[ft_strlen(ps->word) - 1]))
 		{
@@ -295,8 +294,6 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 	cmd = NULL;
 	while (ps->new_pos >= input)
 	{
-		ft_print_cmdlist(&head);
-		printf("state:%d, token:%d, append_arg:%d, %d\n", ps->state, ps->token, ps->state != NOT_Q && !is_token_br(ps->token), (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)));
 		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
 			append_str(&head, ps->new_pos == input, ps);
 		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
@@ -304,7 +301,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		else if (cmd && (is_redirect(cmd->op)))
 			pattern3();
 		else
-			new_cmd(&head, cmd, ps);
+			new_cmd(&head, &cmd, ps);
 		input = ps->new_pos;
 		skip_token(&input, ps);
 		free(ps->word);
@@ -316,6 +313,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		if (ps->new_pos >= input)
 			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	}
+	ft_print_cmdlist(&head);
 	return (head);
 }
 
