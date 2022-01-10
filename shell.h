@@ -66,7 +66,6 @@ typedef struct	s_parse
 	int	state;
 	int	token;
 	char	*new_pos;
-	char	*word;
 }		t_parse;
 
 /*
