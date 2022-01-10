@@ -319,7 +319,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 	return (head);
 }
 
-t_cmd	*mmake_cmdlist(char *input, t_env *env)
+t_cmd	*make_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	t_parse	*ps;
@@ -338,7 +338,7 @@ t_cmd	*mmake_cmdlist(char *input, t_env *env)
 	return (head);
 }
 
-t_cmd	*make_cmdlist(char *input, t_env *env)
+t_cmd	*mmake_cmdlist(char *input, t_env *env)
 {
 	t_cmd	*head;
 	t_cmd	*cmd;
