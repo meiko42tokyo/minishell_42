@@ -321,7 +321,6 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		if (ps->new_pos >= input)
 			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	}
-	ft_print_cmdlist(&head);
 	return (head);
 }
 
@@ -340,9 +339,6 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	head = set_cmdlist(input, head, ps);
 	free(ps);
-
-	if (ps->state != NOT_Q)
-		ft_error_str("quote not closed\n"); // need to think about better error
 	expand(&head, env);
 	return (head);
 }
