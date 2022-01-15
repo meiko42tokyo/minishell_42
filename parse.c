@@ -193,119 +193,152 @@ int	is_allspace(char *s)
 	return (1);
 }
 
-t_cmd	*make_cmdlist(char *input, t_env *env)
+void	append_str(t_cmd **head, int left, t_parse *ps)
 {
-	t_cmd	*head;
-	t_cmd	*cmd;
-	char	*word;
-	char	*new_pos;
-	int	token;
-	int	state;
+	*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+	if (!left)
+		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
+	if (is_token_br(ps->token))
+		ps->state = NOT_Q;
+}
 
-	head = NULL;
-	cmd = NULL;
-	new_pos = NULL;
-	if (input == NULL)
-		return (NULL);
-	token = OTHER;
-	state = NOT_Q;
-	while ((new_pos = ft_min_strchr(input, &token)) >= input)
+void	word_start_space(t_cmd **head, t_parse *ps)
+{
+	if (!is_allspace(ps->word))
 	{
-		word = ft_strndup(input, new_pos - input + (new_pos == input));
-		if ((state != NOT_Q && !is_token_br(token)) || (cmd && is_token_br(token) && is_in_quoto(state)))
+		if (append_arg(get_argv(ps->word), head) != 0)
 		{
-			*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-			if (new_pos != input)
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
-			if (is_token_br(token))
-				state = NOT_Q;
+			*head = NULL;
+			return ;
 		}
-		else if (cmd && is_token_br(cmd->op) && state == NOT_Q )
+	}
+	if (is_token_br(ps->token))
+	{
+		if (append_arg(get_argv(put_token(ps->token)), head) != 0)
 		{
-			if (ft_isspace(word[0]))
-			{
-				if (!is_allspace(word))
-				{
-					if (append_arg(get_argv(word), &head) != 0)
-						return (NULL);
-				}
-				if (is_token_br(token))
-				{
-					if (append_arg(get_argv(put_token(token)), &head) != 0)
-						return (NULL);
-					if (token == BR_DOUBLE)
-						state = DOUBLE_Q;
-					else if (token == BR_SINGLE)
-						state = SINGLE_Q;
-				}
-			}
-			else if (ft_strncmp(word, put_token(token), ft_strlen(put_token(token))))
-			{
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-				if (new_pos != input)
-					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
-				if (token == BR_DOUBLE)
-					state = DOUBLE_Q;
-				else if (token == BR_SINGLE)
-					state = SINGLE_Q;
-			}
-			else
-			{
-				*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), word);
-				if (token == BR_DOUBLE)
-					state = DOUBLE_Q;
-				else if (token == BR_SINGLE)
-					state = SINGLE_Q; 
-			}
-			cmd->op = get_op(new_pos);
+			*head = NULL;
+			return ;
 		}
-		else if (cmd && (is_redirect(cmd->op)))
+		if (ps->token == BR_DOUBLE)
+			ps->state = DOUBLE_Q;
+		else if (ps->token == BR_SINGLE)
+			ps->state = SINGLE_Q;
+	}
+}
+
+void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
+{
+	if (ft_isspace(ps->word[0]))
+		word_start_space(head, ps);
+	else if (ft_strncmp(ps->word, put_token(ps->token), ft_strlen(put_token(ps->token))))
+	{
+		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+		if (ps->new_pos != input)
+			*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
+		if (ps->token == BR_DOUBLE)
+			ps->state = DOUBLE_Q;
+		else if (ps->token == BR_SINGLE)
+			ps->state = SINGLE_Q;
+	}
+	else
+	{
+		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+		if (ps->token == BR_DOUBLE)
+			ps->state = DOUBLE_Q;
+		else if (ps->token == BR_SINGLE)
+			ps->state = SINGLE_Q; 
+	}
+	(*cmd)->op = get_op(ps->new_pos);
+}
+
+void	find_redirect(t_cmd **head, t_cmd **cmd, t_parse *ps)
+{
+	if (append_arg(get_argv(ps->word), head) != 0)
+	{
+		*head = NULL;
+		return ;
+	}
+	(*cmd)->op = get_op(ps->new_pos);
+}
+
+void	new_cmd(t_cmd **head, t_cmd **cmd, t_parse *ps)
+{
+	*cmd = ft_cmdnew(get_argv(ps->word), get_op(ps->new_pos));
+	ft_cmdadd_back(head, *cmd);
+	if (is_token_br((*cmd)->op) && ps->state == NOT_Q)
+	{
+		if (ft_isspace(ps->word[ft_strlen(ps->word) - 1]))
 		{
-			if (append_arg(get_argv(word), &head) != 0)
-				return (NULL);
-			cmd->op = get_op(new_pos);
+			if (append_arg(get_argv(put_token(ps->token)), head) != 0)
+			{
+				return ;
+			}
 		}
 		else
 		{
-			cmd = ft_cmdnew(get_argv(word), get_op(new_pos));
-			ft_cmdadd_back(&head, cmd);
-			if (is_token_br(cmd->op) && state == NOT_Q)
-			{
-				if (ft_isspace(word[ft_strlen(word) - 1]))
-				{
-					if (append_arg(get_argv(put_token(token)), &head) != 0)
-						return (NULL);
-				}
-				else
-				{
-					*get_latestargv(&head) = ft_strjoin(*get_latestargv(&head), put_token(token));
-				}
-				if (token == BR_DOUBLE)
-					state = DOUBLE_Q;
-				else if (token == BR_SINGLE)
-					state = SINGLE_Q;
-			}
+			*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
 		}
-		free(word);
-		input = new_pos;
-		if (*input != '\0')
-		{
-			if (is_two_char(&token))
-				input += 2;
-			else
-				input++;
-		}
-		if (ft_strlen(input) == 0)
-		{
-			break;
-		}
-		
+		if (ps->token == BR_DOUBLE)
+			ps->state = DOUBLE_Q;
+		else if (ps->token == BR_SINGLE)
+			ps->state = SINGLE_Q;
 	}
-	if (state != NOT_Q)
+}
+
+void	skip_token(char **input, t_parse *ps)
+{
+	if (**input != '\0')
 	{
-		ft_error_str("quote not closed\n"); // need to think about better error
+		if (is_two_char(&ps->token))
+			*input += 2;
+		else
+			*input += 1;
 	}
+}
+
+t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
+{
+	t_cmd	*cmd;
+
+	cmd = NULL;
+	while (ps->new_pos >= input)
+	{
+		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
+			append_str(&head, ps->new_pos == input, ps);
+		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
+			start_br(&head, &cmd, input, ps);
+		else if (cmd && (is_redirect(cmd->op)))
+			find_redirect(&head, &cmd, ps);
+		else
+			new_cmd(&head, &cmd, ps);
+		input = ps->new_pos;
+		skip_token(&input, ps);
+		free(ps->word);
+		if (ft_strlen(input) == 0)
+			break;	
+		else
+			ps->new_pos = ft_min_strchr(input, &ps->token);
+		if (ps->new_pos >= input)
+			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
+	}
+	return (head);
+}
+
+t_cmd	*make_cmdlist(char *input, t_env *env)
+{
+	t_cmd	*head;
+	t_parse	*ps;
+
+	head = NULL;
+	if (input == NULL)
+		return (NULL);
+	ps = (t_parse *)malloc(sizeof(t_parse));
+	ps->state = NOT_Q;
+	ps->token = OTHER;
+	ps->new_pos = ft_min_strchr(input, &ps->token);
+	ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
+	head = set_cmdlist(input, head, ps);
+	free(ps);
 	expand(&head, env);
-	//ft_print_cmdlist(&head);
 	return (head);
 }

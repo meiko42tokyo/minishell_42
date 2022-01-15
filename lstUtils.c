@@ -78,6 +78,26 @@ int	check_argvsize(t_cmd *node)
 	return (size);
 }
 
+void	free_cmdlist(t_cmd **cmd)
+{
+	t_cmd	*next_node;
+	int	arg_order;
+
+	while (*cmd)
+	{
+		next_node = (*cmd)->next;
+		arg_order = 0;
+		while ((*cmd)->argv[arg_order])
+		{
+			free((*cmd)->argv[arg_order]);
+			arg_order++;
+		}
+		free(*cmd);
+		*cmd = next_node;
+	}
+	*cmd = NULL;
+}
+
 void	ft_print_cmdlist(t_cmd **head)
 {
 	t_cmd	*node;

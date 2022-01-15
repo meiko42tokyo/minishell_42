@@ -22,9 +22,11 @@ int	main(int argc, char **argv)
 		if (syntax_error(&line))
 			continue ;
 		head = make_cmdlist(line, env);
+		free(line);
 		line = NULL;
 		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
+		free_cmdlist(&head);
 	}
 	return (0);
 }
