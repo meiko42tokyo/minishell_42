@@ -16,6 +16,10 @@
 # include <sys/ioctl.h>
 # include "libft/libft.h"
 
+#include "leakdetect.h"
+#define malloc(s) leak_detelc_malloc(s, __FILE__, __LINE__)
+#define free leak_detect_free
+
 # define EOF_KEY 4
 # define AR_U 4283163
 # define AR_D 4348699
@@ -191,6 +195,7 @@ char	**ft_redirect(char **command, int *in, int *out);
 void	ft_envadd_back(t_env **env, t_env *new);
 t_env	*init_env();
 void	env_free(t_env *env);
+void	env_all_free(t_env *env);
 
 /*
 **errnor.c

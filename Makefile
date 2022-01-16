@@ -38,7 +38,8 @@ SRCS = exec.c\
 	ft_unset.c\
 	redirect.c\
 	env_utils.c\
-	error.c
+	error.c\
+	leakdetect.c
 
 B_SRCS = $(SRCS)
 
@@ -57,6 +58,9 @@ all: $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+
+debug: CFLAGS += -g3
+debug: re
 
 bonus: $(B_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(B_OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)

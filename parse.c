@@ -195,9 +195,17 @@ int	is_allspace(char *s)
 
 void	append_str(t_cmd **head, int left, t_parse *ps)
 {
-	*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+	char	*tmp;	
+
+	tmp = *get_latestargv(head);
+	*get_latestargv(head) = ft_strjoin(tmp, ps->word);
+	free(tmp);
 	if (!left)
-		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
+	{
+		tmp = *get_latestargv(head);
+		*get_latestargv(head) = ft_strjoin(tmp, put_token(ps->token));
+		free(tmp);	
+	}
 	if (is_token_br(ps->token))
 		ps->state = NOT_Q;
 }
@@ -228,13 +236,21 @@ void	word_start_space(t_cmd **head, t_parse *ps)
 
 void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 {
+	char	*tmp;
+	//printf("start_br\n");
 	if (ft_isspace(ps->word[0]))
 		word_start_space(head, ps);
 	else if (ft_strncmp(ps->word, put_token(ps->token), ft_strlen(put_token(ps->token))))
 	{
-		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+		tmp = *get_latestargv(head);
+		*get_latestargv(head) = ft_strjoin(tmp, ps->word);
+		free(tmp);
 		if (ps->new_pos != input)
-			*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
+		{
+			tmp = *get_latestargv(head);
+			*get_latestargv(head) = ft_strjoin(tmp, put_token(ps->token));
+			free(tmp);
+		}
 		if (ps->token == BR_DOUBLE)
 			ps->state = DOUBLE_Q;
 		else if (ps->token == BR_SINGLE)
@@ -242,17 +258,21 @@ void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 	}
 	else
 	{
-		*get_latestargv(head) = ft_strjoin(*get_latestargv(head), ps->word);
+		tmp = *get_latestargv(head);
+		*get_latestargv(head) = ft_strjoin(tmp, ps->word);
+		free(tmp);
 		if (ps->token == BR_DOUBLE)
 			ps->state = DOUBLE_Q;
 		else if (ps->token == BR_SINGLE)
 			ps->state = SINGLE_Q; 
 	}
 	(*cmd)->op = get_op(ps->new_pos);
+	ft_print_cmdlist(head);
 }
 
 void	find_redirect(t_cmd **head, t_cmd **cmd, t_parse *ps)
 {
+	//printf("redirect\n");
 	if (append_arg(get_argv(ps->word), head) != 0)
 	{
 		*head = NULL;
@@ -263,6 +283,8 @@ void	find_redirect(t_cmd **head, t_cmd **cmd, t_parse *ps)
 
 void	new_cmd(t_cmd **head, t_cmd **cmd, t_parse *ps)
 {
+	char	*tmp;
+
 	*cmd = ft_cmdnew(get_argv(ps->word), get_op(ps->new_pos));
 	ft_cmdadd_back(head, *cmd);
 	if (is_token_br((*cmd)->op) && ps->state == NOT_Q)
@@ -276,7 +298,9 @@ void	new_cmd(t_cmd **head, t_cmd **cmd, t_parse *ps)
 		}
 		else
 		{
-			*get_latestargv(head) = ft_strjoin(*get_latestargv(head), put_token(ps->token));
+			tmp = *get_latestargv(head);
+			*get_latestargv(head) = ft_strjoin(tmp, put_token(ps->token));
+			free(tmp);
 		}
 		if (ps->token == BR_DOUBLE)
 			ps->state = DOUBLE_Q;
@@ -310,10 +334,11 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		else if (cmd && (is_redirect(cmd->op)))
 			find_redirect(&head, &cmd, ps);
 		else
-			new_cmd(&head, &cmd, ps);
+			new_cmd(&head, &cmd,  ps);
 		input = ps->new_pos;
 		skip_token(&input, ps);
 		free(ps->word);
+		ps->word = NULL;
 		if (ft_strlen(input) == 0)
 			break;	
 		else
@@ -321,6 +346,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		if (ps->new_pos >= input)
 			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	}
+	printf("%p\n", ps->word);
 	return (head);
 }
 
@@ -339,6 +365,7 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	head = set_cmdlist(input, head, ps);
 	free(ps);
+	//ft_print_cmdlist(&head);
 	expand(&head, env);
 	return (head);
 }

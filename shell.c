@@ -8,13 +8,14 @@ int	main(int argc, char **argv)
 	t_cmd	*head;
 	t_env	*env;
 
+	//leak_detect_init();
 	argc = 1;
 	argv = NULL;
 	line = NULL;
 	head = NULL;
 	g_status = 0;
-	//signal(SIGINT, SIG_IGN);
-	//signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	env = init_env();
 	while (1) {
 		ft_putstr_fd("minishell> ", 0);
@@ -27,6 +28,8 @@ int	main(int argc, char **argv)
 		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);
+		//leak_detect_check();
 	}
+	env_all_free(env);
 	return (0);
 }
