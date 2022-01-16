@@ -56,7 +56,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
 
 bonus: $(B_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(B_OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
