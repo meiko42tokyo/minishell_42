@@ -1,17 +1,12 @@
 #include "shell.h"
 
-void	del(char *info)
+void	ft_env_lstdelone(t_env *env)
 {
-	free(info);
-}
-
-void	ft_env_lstdelone(t_env *env, void(*del)(char *))
-{
-	if (env == NULL || !del)
+	if (env == NULL)
 		return ;
-	del(env->name);
+	free(env->name);
 	env->name = NULL;
-	del(env->value);
+	free(env->value);
 	env->value = NULL;
 	free(env);
 	return ;
@@ -34,7 +29,7 @@ void	ft_env_unset(t_env *env, char *name)
 				pre->next = tmp->next;
 			else
 				env = tmp->next;
-			ft_env_lstdelone(tmp, &del);
+			ft_env_lstdelone(tmp);
 			break ;
 		}
 		pre = tmp;

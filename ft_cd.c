@@ -11,7 +11,6 @@ static char	*save_oldpwd(t_env *env)
 			return (tmp->value);
 		tmp = tmp->next;
 	}
-	//env_free(tmp);
 	return (0);
 }
 
@@ -76,7 +75,6 @@ int	ft_cd(char *path, t_env *env)
 	}
 	save_pwd(save_np);
 	save_env(env, save_p, save_np);
-	free(save_op);
 	free(save_p);
 	free(save_np);
 	return (0);

@@ -18,7 +18,6 @@ static int	is_env(char *cd_name, char *command, t_env *env, int sp)
 			else
 			{
 				free(env->value);
-				env->value = NULL;
 				env->value = ft_strdup(&command[sp + 1]);
 			}
 			return (0);
