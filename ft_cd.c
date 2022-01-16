@@ -11,7 +11,7 @@ static char	*save_oldpwd(t_env *env)
 			return (tmp->value);
 		tmp = tmp->next;
 	}
-	env_free(tmp);
+	//env_free(tmp);
 	return (0);
 }
 
@@ -29,6 +29,7 @@ static void	save_pwd(char *save_np)
 	}
 	//エラー処理追記
 	getcwd(save_np, size);
+	free(save_np);
 	return ;
 }
 

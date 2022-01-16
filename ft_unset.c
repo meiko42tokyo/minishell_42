@@ -10,7 +10,9 @@ void	ft_env_lstdelone(t_env *env, void(*del)(char *))
 	if (env == NULL || !del)
 		return ;
 	del(env->name);
+	env->name = NULL;
 	del(env->value);
+	env->value = NULL;
 	free(env);
 	return ;
 }
