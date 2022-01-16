@@ -93,6 +93,7 @@ void	free_cmdlist(t_cmd **cmd)
 			(*cmd)->argv[arg_order] = NULL;
 			arg_order++;
 		}
+		free((*cmd)->argv);
 		free(*cmd);
 		*cmd = next_node;
 	}

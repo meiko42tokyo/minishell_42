@@ -125,12 +125,13 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 	}
 	while (argv[j])
 	{
-		new_argv[i] = ft_strdup(argv[j]);
+		new_argv[i] = argv[j];
 		i++;
 		j++;
 	}
 	new_argv[i] = NULL;
 	free_argv(old_argv);
+	free(argv);
 	return (new_argv);
 }
 
@@ -334,7 +335,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		else if (cmd && (is_redirect(cmd->op)))
 			find_redirect(&head, &cmd, ps);
 		else
-			new_cmd(&head, &cmd,  ps);
+			new_cmd(&head, &cmd, ps);
 		input = ps->new_pos;
 		skip_token(&input, ps);
 		free(ps->word);
@@ -346,7 +347,6 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		if (ps->new_pos >= input)
 			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	}
-	printf("%p\n", ps->word);
 	return (head);
 }
 
