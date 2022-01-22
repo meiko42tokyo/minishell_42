@@ -6,7 +6,7 @@
 /*   By: ykarasaw <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 09:58:26 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/11/26 16:14:26 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:50:04 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include "libft.h"
 
-char			*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
+char	*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 {
 	char		*newline;
 	char		*buf;
@@ -28,7 +28,7 @@ char			*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 		return (NULL);
 	}
 	while (((newline = gnl_strchr(*memo, '\n')) == NULL
-				&& (*n = read(fd, buf, BUFFER_SIZE)) > 0))
+			&& (*n = read(fd, buf, BUFFER_SIZE)) > 0))
 	{
 		buf[*n] = '\0';
 		if (*memo == NULL)
@@ -44,7 +44,7 @@ char			*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 	return (newline);
 }
 
-int				make_line(char **line, char **memo, char *newline, char *tmp)
+int	make_line(char **line, char **memo, char *newline, char *tmp)
 {
 	*line = ft_strndup(*memo, newline - *memo);
 	tmp = ft_strndup(newline + 1, gnl_strlen(newline + 1));
@@ -54,7 +54,7 @@ int				make_line(char **line, char **memo, char *newline, char *tmp)
 	return (1);
 }
 
-int				make_lastline(char **line, char **memo)
+int	make_lastline(char **line, char **memo)
 {
 	if (*memo == NULL)
 		*line = ft_strndup("", 1);
@@ -66,9 +66,9 @@ int				make_lastline(char **line, char **memo)
 	return (0);
 }
 
-int				get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
-	static char *memo;
+	static char	*memo;
 	int			n;
 	char		*tmp;
 	char		*newline;

@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/14 17:34:30 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/19 18:23:07 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:38:54 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t dstlen;
-	size_t i;
+	size_t	dstlen;
+	size_t	i;
 
 	dstlen = ft_strlen(dst);
 	if (dstlen >= dstsize)

@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/13 21:33:08 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/14 16:20:36 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:47:55 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_tolower(int c)
 {
-	int diff;
+	int	diff;
 
 	diff = 'A' - 'a';
 	if ('A' <= c && c <= 'Z')
