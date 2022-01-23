@@ -33,14 +33,14 @@ static int	do_execve(char *input, char **argv)
 	while (split_path[i])
 	{
 		tmp = ft_strjoin(split_path[i], "/");
+		free(split_path[i]);
 		path = ft_strjoin(tmp, input);
-		if (!execve(path, argv, environ))
-		{
-			free(tmp);
-			return (0);
-		}
+		free(tmp);
 		i++;
+		execve(path, argv, environ);
+		free(path);
 	}
+	free(split_path);
 	return (-1);
 }
 

@@ -30,6 +30,19 @@ void	env_free(t_env *env)
 	free(env->value);
 	env->value = NULL;
 	free(env);
+	env = NULL;
+}
+
+void	env_all_free(t_env *env)
+{
+	t_env *node;
+
+	while (env)
+	{
+		node = env->next;
+		env_free(env);
+		env = node;
+	}
 }
 
 t_env	*init_env(void)

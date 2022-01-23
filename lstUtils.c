@@ -90,8 +90,10 @@ void	free_cmdlist(t_cmd **cmd)
 		while ((*cmd)->argv[arg_order])
 		{
 			free((*cmd)->argv[arg_order]);
+			(*cmd)->argv[arg_order] = NULL;
 			arg_order++;
 		}
+		free((*cmd)->argv);
 		free(*cmd);
 		*cmd = next_node;
 	}

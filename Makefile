@@ -38,7 +38,8 @@ SRCS = exec.c\
 	ft_unset.c\
 	redirect.c\
 	env_utils.c\
-	error.c
+	error.c\
+	leakdetect.c
 
 B_SRCS = $(SRCS)
 
@@ -56,7 +57,10 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -fsanitize=address $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+
+debug: CFLAGS += -g3
+debug: re
 
 bonus: $(B_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(B_OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
