@@ -35,16 +35,15 @@ int	main(int argc, char **argv)
 		}
 		if (ret == 1)
 			break;
-
-		printf("cur_node:%c\n",*cur_node->data);
-		if (cur_node && syntax_error(&cur_node->data))
+		if (ft_strlen(line) == 0)
 			continue ;
-		//printf("cur_node:%s, len:%zu\n", cur_node->data, ft_strlen(cur_node->data));
+		if (syntax_error(&cur_node->data))
+			continue ;
 		head = make_cmdlist(cur_node->data, env);
 		free(line);
 		line = NULL;
 		signal(SIGINT, SIG_DFL);
-		if (cur_node && head != NULL && ft_argv_len(head) != 0)
+		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);
 		//leak_detect_check();
