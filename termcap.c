@@ -169,27 +169,3 @@ void	ft_print_linelist(t_line **head)
 	}
 	return ;
 }
-/*
-int	main()
-{
-	struct termios	term;
-	char		*line;
-	t_line		*head;
-	t_line		*cur_node;
-	int		ret;
-
-	head = NULL;
-	set_termcap(&term);
-	line = NULL;
-	cur_node = NULL;
-	while (1)
-	{
-		ret = get_line(line, &head, &cur_node);
-		if (ret == 1)
-			break;
-	}
-	reset_termcap(&term);
-	ft_print_linelist(&head);
-	ft_free_linehead(&head);
-	return (0);
-}*/

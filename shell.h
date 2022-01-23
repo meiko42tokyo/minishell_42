@@ -77,7 +77,7 @@ typedef struct	s_parse
 	char	*word;
 }		t_parse;
 
-extern t_shell	g_shell;
+extern t_shell	*g_shell;
 
 /*
 **shell.c

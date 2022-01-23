@@ -1,6 +1,6 @@
 #include "shell.h"
 
-t_shell	g_shell;
+t_shell	*g_shell;
 
 int	main(int argc, char **argv) 
 {
@@ -19,7 +19,9 @@ int	main(int argc, char **argv)
 	line_head = NULL;
 	cur_node = NULL;
 	set_termcap(&term);
-	g_shell.status = 0;
+	ft_bzero(&term, sizeof(struct termios));
+	g_shell->status = 0;
+	g_shell->term = term;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	env = init_env();
@@ -43,7 +45,7 @@ int	main(int argc, char **argv)
 			run_list(head, env);
 		free_cmdlist(&head);
 	}
-	reset_termcap(&term);
+	reset_termcap(&g_shell->term);
 	ft_free_linehead(&line_head);
 	env_all_free(env);
 	return (0);
