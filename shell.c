@@ -38,6 +38,7 @@ int	main(int argc, char **argv)
 
 		if (syntax_error(&cur_node->data))
 			continue ;
+		printf("cur_node:%s, len:%zu\n", cur_node->data, ft_strlen(cur_node->data));
 		head = make_cmdlist(cur_node->data, env);
 		free(line);
 		line = NULL;
