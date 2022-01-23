@@ -83,7 +83,10 @@ int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line)
 int	new_line(char *line, t_line **head, t_line **cur_node)
 {
 	if (line == NULL)
+	{
+		line = ft_strjoin("", NULL);
 		return (0);
+	}
 	if (*cur_node == NULL || ft_strlen(ft_get_latestdata(head)) != 0)
 	{
 		if (update_and_make_newnode(head, cur_node, line) != 0)
