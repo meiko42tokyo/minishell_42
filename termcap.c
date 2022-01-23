@@ -8,6 +8,7 @@ int	ft_putchar(int c)
 void	set_termcap()
 {
 	tcgetattr(0, &g_shell->term);
+	tcgetattr(0, &g_shell->term_origin);
 	g_shell->term.c_lflag &= ~(ECHO);
 	g_shell->term.c_lflag &= ~(ICANON);
 	g_shell->term.c_cc[VMIN] = 1;
@@ -16,13 +17,9 @@ void	set_termcap()
 	tgetent(0, getenv("TERM"));
 }
 
-void	reset_termcap(struct termios *term)
+void	reset_termcap()
 {
-	term->c_lflag |= (ECHO);
-	term->c_lflag |= (ICANON);
-	term->c_cc[VMIN] = 0;
-	term->c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, term);
+	tcsetattr(0, TCSANOW, &g_shell->term_origin);
 }
 
 char	*make_line(char *line, int c_int)

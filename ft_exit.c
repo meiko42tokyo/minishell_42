@@ -67,7 +67,7 @@ int	ft_exit(char **command)
 {
 	ssize_t	num;
 
-	reset_termcap(&g_shell->term);
+	reset_termcap();
 	num = 0;
 	if (command[1] != NULL && command[2])
 		return (ft_error_str("too many argment"));

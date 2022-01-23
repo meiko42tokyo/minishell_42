@@ -44,6 +44,7 @@ typedef struct	s_shell
 {
 	int		status;
 	struct termios	term;
+	struct termios	term_origin;
 }		t_shell;
 
 typedef struct s_cmd
@@ -117,7 +118,7 @@ void	ft_free_linehead(t_line **head);
 */
 int	get_line(char *line, t_line **head, t_line **cur_node);
 void	set_termcap();
-void	reset_termcap(struct termios *term);
+void	reset_termcap();
 
 /*
 **syntax_error.c

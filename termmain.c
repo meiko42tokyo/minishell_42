@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 			run_list(head, env);
 		free_cmdlist(&head);
 	}
-	reset_termcap(&g_shell->term);
+	reset_termcap();
 	ft_free_linehead(&line_head);
 	env_all_free(env);
 	return (0);
