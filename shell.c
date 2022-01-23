@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int	g_status;
+t_shell	g_shell;
 
 int	main(int argc, char **argv)
 {
@@ -13,7 +13,7 @@ int	main(int argc, char **argv)
 	argv = NULL;
 	line = NULL;
 	head = NULL;
-	g_status = 0;
+	g_shell.status = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	env = init_env();

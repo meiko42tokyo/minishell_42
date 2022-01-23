@@ -40,7 +40,11 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
-extern int	g_status;
+typedef struct	s_shell
+{
+	int		status;
+	struct termios	term;
+}		t_shell;
 
 typedef struct s_cmd
 {
@@ -72,6 +76,8 @@ typedef struct	s_parse
 	char	*new_pos;
 	char	*word;
 }		t_parse;
+
+extern t_shell	g_shell;
 
 /*
 **shell.c
