@@ -116,7 +116,7 @@ void	ft_free_linehead(t_line **head);
 **termcap.c
 */
 int	get_line(char *line, t_line **head, t_line **cur_node);
-void	set_termcap(struct termios *term);
+void	set_termcap();
 void	reset_termcap(struct termios *term);
 
 /*

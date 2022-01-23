@@ -4,13 +4,13 @@ t_shell	*g_shell;
 
 int	main(int argc, char **argv) 
 {
-	struct termios	term;
 	char		*line;
 	t_cmd		*head;
 	t_line		*line_head;
 	t_line		*cur_node;
 	int		ret;
 	t_env		*env;
+	t_shell		shell;
 	
 	argc = 1;
 	argv = NULL;
@@ -18,10 +18,10 @@ int	main(int argc, char **argv)
 	head = NULL;
 	line_head = NULL;
 	cur_node = NULL;
-	set_termcap(&term);
-	ft_bzero(&term, sizeof(struct termios));
+	ft_bzero(&shell, sizeof(t_shell));
+	g_shell = &shell;
+	set_termcap();
 	g_shell->status = 0;
-	g_shell->term = term;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	env = init_env();

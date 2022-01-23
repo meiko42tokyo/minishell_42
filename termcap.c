@@ -5,14 +5,14 @@ int	ft_putchar(int c)
 	return (write(1, &c, 1));
 }
 
-void	set_termcap(struct termios *term)
+void	set_termcap()
 {
-	tcgetattr(0, term);
-	term->c_lflag &= ~(ECHO);
-	term->c_lflag &= ~(ICANON);
-	term->c_cc[VMIN] = 1;
-	term->c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, term);
+	tcgetattr(0, &g_shell->term);
+	g_shell->term.c_lflag &= ~(ECHO);
+	g_shell->term.c_lflag &= ~(ICANON);
+	g_shell->term.c_cc[VMIN] = 1;
+	g_shell->term.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &g_shell->term);
 	tgetent(0, getenv("TERM"));
 }
 
