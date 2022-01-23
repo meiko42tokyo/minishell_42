@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 		}
 		if (ret == 1)
 			break;
-		if (ft_strlen(line) == 0)
+		if (ft_strlen(line) == 0 && cur_node == NULL)
 			continue ;
 		if (syntax_error(&cur_node->data))
 			continue ;
