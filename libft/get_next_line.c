@@ -44,7 +44,7 @@ char			*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 	return (newline);
 }
 
-int				make_line(char **line, char **memo, char *newline, char *tmp)
+int				make_a_line(char **line, char **memo, char *newline, char *tmp)
 {
 	*line = ft_strndup(*memo, newline - *memo);
 	tmp = ft_strndup(newline + 1, gnl_strlen(newline + 1));
@@ -84,7 +84,7 @@ int				get_next_line(int fd, char **line)
 		return (-1);
 	}
 	if (newline != NULL)
-		return (make_line(line, &memo, newline, tmp));
+		return (make_a_line(line, &memo, newline, tmp));
 	else
 		return (make_lastline(line, &memo));
 }
