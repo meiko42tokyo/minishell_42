@@ -126,7 +126,7 @@ void	find_min_dis(int *dis, char **word)
 // 終了ステータスを取得する
 char	*get_exit_status()
 {
-	return (ft_itoa(g_shell.status));
+	return (ft_itoa(g_shell->status));
 }
 
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)

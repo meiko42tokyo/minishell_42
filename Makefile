@@ -17,7 +17,8 @@ endif
 ifeq ($(PLATFORM), MACOS)
 endif
 
-SRCS = exec.c\
+SRCS = shell.c\
+	exec.c\
 	lstUtils.c\
 	syntax_error.c\
 	heredoc.c\
@@ -39,6 +40,8 @@ SRCS = exec.c\
 	redirect.c\
 	env_utils.c\
 	error.c\
+	termcap.c\
+	doubly_lstUtils.c\
 	leakdetect.c
 
 B_SRCS = $(SRCS)
@@ -57,7 +60,7 @@ all: $(NAME)
 	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) shell.c $(LIBFT) -ltermcap -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS)  $(LIBFT) -ltermcap -o $(NAME)
 
 debug: CFLAGS += -g3
 debug: re
