@@ -23,7 +23,7 @@ char	*expand_identifier(char *id)
 
 	state = NOT_Q;
 	identifier = id;
-	while (id != '\0')
+	while (id)
 	{
 		if (*id == '\"' || *id == '\'')
 			br(&state, &id);
