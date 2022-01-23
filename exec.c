@@ -37,8 +37,8 @@ static int	do_execve(char *input, char **argv)
 		path = ft_strjoin(tmp, input);
 		free(tmp);
 		i++;
-		if (!execve(path, argv, environ))
-			free(path);
+		execve(path, argv, environ);
+		free(path);
 	}
 	free(split_path);
 	return (-1);
