@@ -152,7 +152,7 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 	return (42);
 }
 
-void	ft_print_linelist(t_line **head)
+void	ft_print_linelist(t_line **head, t_line **cur_node)
 {
 	t_line		*tmp;
 	int		i;
@@ -161,7 +161,12 @@ void	ft_print_linelist(t_line **head)
 	i = 0;
 	while (tmp)
 	{
-		printf("node[%d]:%s\n", i, tmp->data);
+		printf("node[%d]:%s", i, tmp->data);
+		if (!ft_strncmp((*cur_node)->data, tmp->data, ft_strlen((*cur_node)->data)))
+		{
+			printf(" <-- cur_node");
+		}
+		printf("\n");
 		if (tmp->next == NULL)
 			break;
 		tmp = tmp->next;
