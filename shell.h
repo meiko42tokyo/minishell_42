@@ -165,7 +165,7 @@ int	ft_cd(char *path, t_env *env);
 int	ft_pwd();
 int	ft_echo(char **command);
 int	ft_exit(char **command);
-int	ft_env(t_env *env);
+int	ft_env(t_env *env, char **command);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
 
