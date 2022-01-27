@@ -16,9 +16,6 @@
 # include <sys/ioctl.h>
 # include "libft/libft.h"
 
-#define malloc(s) leak_detelc_malloc(s, __FILE__, __LINE__)
-#define free leak_detect_free
-
 # define EOF_KEY 4
 # define AR_U 4283163
 # define AR_D 4348699
