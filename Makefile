@@ -39,7 +39,6 @@ SRCS = exec.c\
 	redirect.c\
 	env_utils.c\
 	error.c\
-	leakdetect.c
 
 B_SRCS = $(SRCS)
 
