@@ -42,7 +42,6 @@ SRCS = shell.c\
 	error.c\
 	termcap.c\
 	doubly_lstUtils.c\
-	leakdetect.c
 
 B_SRCS = $(SRCS)
 

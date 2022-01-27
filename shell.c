@@ -36,15 +36,18 @@ int	main(int argc, char **argv)
 		ft_print_linelist(&line_head, &cur_node);
 		if (ret == 1)
 			break;
-		if (ft_strlen(line) == 0 && cur_node->data == NULL)
+		if (cur_node != NULL && ft_strlen(line) == 0 && cur_node->data == NULL)
 			continue ;
-		if (syntax_error(&cur_node->data))
+		if (cur_node != NULL && syntax_error(&cur_node->data))
 			continue ;
-		head = make_cmdlist(cur_node->data, env);
-		free(line);
-		line = NULL;
+		if (cur_node != NULL) 
+		{	
+			head = make_cmdlist(cur_node->data, env);
+			free(line);
+			line = NULL;
+		}
 		signal(SIGINT, SIG_DFL);
-		if (head != NULL && ft_argv_len(head) != 0)
+		if (cur_node != NULL && head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);
 		//leak_detect_check();

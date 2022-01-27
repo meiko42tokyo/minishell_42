@@ -84,10 +84,8 @@ int	new_line(char *line, t_line **head, t_line **cur_node)
 {
 	if (line == NULL)
 	{
-		printf("test aa\n");
 		if (*cur_node == NULL)
 			return (0);
-		printf("test aaa\n");
 		if (ft_strlen(ft_get_latestdata(head)) != 0 && update_and_make_newnode(head, cur_node, "") != 0)
 			return (-1);
 		return (0);
