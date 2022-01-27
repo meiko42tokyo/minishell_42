@@ -16,7 +16,6 @@
 # include <sys/ioctl.h>
 # include "libft/libft.h"
 
-#include "leakdetect.h"
 #define malloc(s) leak_detelc_malloc(s, __FILE__, __LINE__)
 #define free leak_detect_free
 
