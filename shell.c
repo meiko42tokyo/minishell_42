@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 		{
 			ret = get_line(line, &line_head, &cur_node);
 		}
-		ft_print_linelist(&line_head, &cur_node);
+		//ft_print_linelist(&line_head, &cur_node);
 		if (ret == 1)
 			break;
 		if (cur_node != NULL && ft_strlen(line) == 0 && cur_node->data == NULL)
