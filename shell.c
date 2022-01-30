@@ -12,7 +12,6 @@ int	main(int argc, char **argv)
 	int		ret;
 	t_shell		shell;
 
-	//leak_detect_init();
 	argc = 1;
 	argv = NULL;
 	line = NULL;
@@ -23,8 +22,8 @@ int	main(int argc, char **argv)
 	g_shell = &shell;
 	set_termcap();
 	g_shell->status = 0;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, (void*)signal_handler);
+	signal(SIGQUIT, (void*)signal_handler);
 	env = init_env();
 	while (1) {
 		ret = 0;
@@ -46,7 +45,6 @@ int	main(int argc, char **argv)
 			free(line);
 			line = NULL;
 		}
-		signal(SIGINT, SIG_DFL);
 		if (cur_node != NULL && head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);

@@ -202,6 +202,11 @@ void	env_free(t_env *env);
 void	env_all_free(t_env *env);
 
 /*
+**signal.c
+*/
+void	signal_handler(int signo);
+
+/*
 **errnor.c
 */
 int	ft_errno(int num);
