@@ -5,9 +5,7 @@ void	ft_env_lstdelone(t_env *env)
 	if (env == NULL)
 		return ;
 	free(env->name);
-	env->name = NULL;
 	free(env->value);
-	env->value = NULL;
 	free(env);
 	return ;
 }
@@ -30,7 +28,7 @@ void	ft_env_unset(t_env *env, char *name)
 			else
 				env = tmp->next;
 			ft_env_lstdelone(tmp);
-			break ;
+			return ;
 		}
 		pre = tmp;
 		tmp = tmp->next;
@@ -40,10 +38,13 @@ void	ft_env_unset(t_env *env, char *name)
 int	ft_unset(char **command, t_env *env)
 {
 	int	error;
+	t_env	*tmp;
 
 	error = -1;
-	if (!command[1])
+	tmp = env;
+	if (!command[1] || env == NULL)
 		return (0);
+	//_から始まるnameの処理
 	while (env)
 	{
 		if (ft_strcmp(command[1], env->name) == 0)
@@ -59,6 +60,11 @@ int	ft_unset(char **command, t_env *env)
 		ft_putstr_fd("unset `", 2);
 		ft_putstr_fd(command[1], 2);
 		ft_error_str("': not a valid identifier");
+	}
+	while (tmp)
+	{
+		printf("name:%s\n", tmp->name);
+		tmp = tmp->next;
 	}
 	return (0);
 }

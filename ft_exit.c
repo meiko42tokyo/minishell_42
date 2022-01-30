@@ -68,13 +68,13 @@ int	ft_exit(char **command)
 	ssize_t	num;
 
 	num = 0;
-	if (command[1] != NULL && command[2])
-		return (ft_error_str("too many argment"));
 	if (command[1] == NULL)
 		exit_error(NULL, 0);
 	num = ft_exit_atoi(command[1], num);
 	if (num == -1 && ft_strcmp(command[1], "-1") != 0)
 		exit_error(command[1], 255);
+	if (command[1] != NULL && command[2])
+		return (ft_error_str("too many argment"));
 	if (num < 0)
 	{
 		num = num * (-1);
