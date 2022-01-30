@@ -90,11 +90,14 @@ int	ft_echo(char **command)
 		n_command[i] = ft_strdup(command[i]);
 		i++;
 	}
+	n_command[i] = NULL;
 	if (include_redir(command) > 0)
 		n_command = ft_redirect(n_command, &in, &out);
 	count = count_n(n_command);
 	if (count > 1)
+	{
 		put_space(n_command, count);
+	}
 	else if (count == -1)
 		return (0);
 	else

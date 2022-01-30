@@ -155,7 +155,7 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 			node->argv[arg_i] = set_new_arg(node->argv[arg_i], cur_pos, env->value, *word + dis);
 			env_hit = 1;
 		}
-		env = env->next;	
+		env = env->next;
 	}
 	if (env_hit == 0)
 	{
