@@ -19,11 +19,11 @@ void	print_env(t_env *env, char **cp_name)
 				if (tmp->value)
 					put_value(tmp);
 				ft_putstr_fd("\n", 1);
-				free(cp_name[i]);
 				break ;
 			}
 			tmp = tmp->next;
 		}
+		free(cp_name[i]);
 		i++;
 	}
 	return ;
