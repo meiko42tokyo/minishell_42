@@ -80,6 +80,7 @@ void	ft_change_latestline(t_line **head, char *line)
 			break ;
 		node = node->next;
 	}
+	free(node->data);
 	node->data = ft_strdup(line);
 	return ;
 }
