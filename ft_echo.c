@@ -64,15 +64,14 @@ static void	dup_pipe(int in, int out)
 
 int	ft_echo(char **command)
 {
-	int	count;
-	int	in;
-	int	out;
-	int	i;
+	int		count;
+	int		in;
+	int		out;
+	int		i;
 	char	**n_command;
 
 	in = -1;
 	out = -1;
-
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("\n", 1);
@@ -81,7 +80,7 @@ int	ft_echo(char **command)
 	i = 0;
 	while (command[i])
 		i++;
-	n_command = (char **)malloc(sizeof(char*) * (i + 1));
+	n_command = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!n_command)
 		return (0);
 	i = 0;
