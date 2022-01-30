@@ -110,17 +110,15 @@ void	ft_print_cmdlist(t_cmd **head)
 	index = 0;
 	if (*head == NULL)
 	{
-		printf("cmd head null\n");
+		//printf("cmd head null\n");
 		return ;
 	}
 	node = *head;
 	while (node)
 	{
-		printf("cmd[%d]:\n", index++);
 		arg_order = 0;
 		while (node->argv[arg_order])
 		{
-			printf("  argv[%d]:%s\n", arg_order, node->argv[arg_order]);	
 			arg_order++;
 		}
 		if (node->op == OP_SEP)
@@ -139,7 +137,6 @@ void	ft_print_cmdlist(t_cmd **head)
 			op = "\"";
 		if (node->op == BR_SINGLE)
 			op = "\'";
-		printf("  op:%s\n", op);
 		if (node->next == NULL)
 		{
 			break ;
