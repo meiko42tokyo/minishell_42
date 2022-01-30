@@ -48,7 +48,6 @@ int	main(int argc, char **argv)
 		if (cur_node != NULL && head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);
-		//leak_detect_check();
 	}
 	reset_termcap();
 	ft_free_linehead(&line_head);
