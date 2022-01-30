@@ -101,6 +101,7 @@ char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word)
 	tmp1 = ft_strjoin(tmp2, left_word + 1);
 	free(tmp2);
 	tmp1[ft_strlen(tmp1)] = '\0';
+	free(head);
 	return (tmp1);
 }
 
