@@ -10,28 +10,31 @@ void	ft_env_lstdelone(t_env *env)
 	return ;
 }
 
-void	ft_env_unset(t_env *env, char *name)
+void	ft_env_unset(t_env **env, char *name)
 {
 	t_env	*tmp;
-	t_env	*pre;
+	t_env	*bigin;
 
-	if (env == NULL || name == NULL)
+	if (*env == NULL || name == NULL)
 		return ;
-	tmp = env;
-	pre = NULL;
-	while (tmp)
+	bigin = *env;
+	while (*env && (*env)->next)
 	{
-		if (ft_strcmp(tmp->name, name) == 0)
+		if (ft_strcmp((*env)->next->name, name) == 0)
 		{
-			if (pre)
-				pre->next = tmp->next;
-			else
-				env = tmp->next;
+			tmp = (*env)->next;
+			(*env)->next = (*env)->next->next;
 			ft_env_lstdelone(tmp);
-			return ;
 		}
-		pre = tmp;
-		tmp = tmp->next;
+		else
+			*env = (*env)->next;
+	}
+	*env = bigin;
+	if (ft_strcmp((*env)->name, name) == 0)
+	{
+		bigin = (*env)->next;
+		ft_env_lstdelone(*env);
+		*env = bigin;
 	}
 }
 
@@ -40,31 +43,19 @@ int	ft_unset(char **command, t_env *env)
 	int	error;
 	t_env	*tmp;
 
-	error = -1;
+	error = 0;
 	tmp = env;
 	if (!command[1] || env == NULL)
 		return (0);
 	//_から始まるnameの処理
-	while (env)
-	{
-		if (ft_strcmp(command[1], env->name) == 0)
-		{
-			ft_env_unset(env, env->name);
-			error = 0;
-			break ;
-		}
-		env = env->next;
-	}
+	//数字、=, /などのエラー処理をいれる
+	ft_env_unset(&env, command[1]);
 	if (error == -1)
 	{
 		ft_putstr_fd("unset `", 2);
 		ft_putstr_fd(command[1], 2);
 		ft_error_str("': not a valid identifier");
 	}
-	while (tmp)
-	{
-		printf("name:%s\n", tmp->name);
-		tmp = tmp->next;
-	}
+	env = tmp;
 	return (0);
 }
