@@ -85,8 +85,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			close(newpipe[1]);
 		}
 		input = *c->argv; // TODO:input->c->argv[0]
-		g_status = do_execve(input, c->argv); // exec needed?
-		if (g_status == -1)
+		g_shell->status = do_execve(input, c->argv); // exec needed?
+		if (g_shell->status == -1)
 		{
 			ft_putstr_fd(strerror(errno), 2);
 			ft_putstr_fd("\n", 2);
@@ -97,7 +97,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	}
 	//printf("stat:%d\n", stat_loc);
 	if (stat_loc != 0)
-		g_status = 127;
+		g_shell->status = 127;
 	if (haspipe)
 	{
 		close(lastpipe[0]);
@@ -138,7 +138,7 @@ void	run_list(t_cmd *c, t_env *env)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			g_status = exec_buildin(c->argv, env);
+			g_shell->status = exec_buildin(c->argv, env);
 			c = c->next;
 			continue;
 		}

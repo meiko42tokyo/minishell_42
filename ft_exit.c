@@ -67,6 +67,7 @@ int	ft_exit(char **command)
 {
 	ssize_t	num;
 
+	reset_termcap();
 	num = 0;
 	if (command[1] == NULL)
 		exit_error(NULL, 0);

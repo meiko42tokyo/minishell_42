@@ -36,7 +36,12 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
-extern int	g_status;
+typedef struct	s_shell
+{
+	int		status;
+	struct termios	term;
+	struct termios	term_origin;
+}		t_shell;
 
 typedef struct s_cmd
 {
@@ -68,6 +73,8 @@ typedef struct	s_parse
 	char	*new_pos;
 	char	*word;
 }		t_parse;
+
+extern t_shell	*g_shell;
 
 /*
 **shell.c
@@ -101,13 +108,14 @@ int	ft_get_lstsize(t_line **head);
 char	*ft_get_latestdata(t_line **head);
 void	ft_change_latestline(t_line **head, char *line);
 void	ft_free_linehead(t_line **head);
+void	ft_print_linelist(t_line **head, t_line **cur_node);
 
 /*
 **termcap.c
 */
 int	get_line(char *line, t_line **head, t_line **cur_node);
-void	set_termcap(struct termios *term);
-void	reset_termcap(struct termios *term);
+void	set_termcap();
+void	reset_termcap();
 
 /*
 **syntax_error.c

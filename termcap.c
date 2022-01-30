@@ -5,24 +5,21 @@ int	ft_putchar(int c)
 	return (write(1, &c, 1));
 }
 
-void	set_termcap(struct termios *term)
+void	set_termcap()
 {
-	tcgetattr(0, term);
-	term->c_lflag &= ~(ECHO);
-	term->c_lflag &= ~(ICANON);
-	term->c_cc[VMIN] = 1;
-	term->c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, term);
+	tcgetattr(0, &g_shell->term);
+	tcgetattr(0, &g_shell->term_origin);
+	g_shell->term.c_lflag &= ~(ECHO);
+	g_shell->term.c_lflag &= ~(ICANON);
+	g_shell->term.c_cc[VMIN] = 1;
+	g_shell->term.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &g_shell->term);
 	tgetent(0, getenv("TERM"));
 }
 
-void	reset_termcap(struct termios *term)
+void	reset_termcap()
 {
-	term->c_lflag |= (ECHO);
-	term->c_lflag |= (ICANON);
-	term->c_cc[VMIN] = 0;
-	term->c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, term);
+	tcsetattr(0, TCSANOW, &g_shell->term_origin);
 }
 
 char	*make_line(char *line, int c_int)
@@ -86,7 +83,13 @@ int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line)
 int	new_line(char *line, t_line **head, t_line **cur_node)
 {
 	if (line == NULL)
+	{
+		if (*cur_node == NULL)
+			return (0);
+		if (ft_strlen(ft_get_latestdata(head)) != 0 && update_and_make_newnode(head, cur_node, "") != 0)
+			return (-1);
 		return (0);
+	}
 	if (*cur_node == NULL || ft_strlen(ft_get_latestdata(head)) != 0)
 	{
 		if (update_and_make_newnode(head, cur_node, line) != 0)
@@ -152,7 +155,7 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 	return (42);
 }
 
-void	ft_print_linelist(t_line **head)
+void	ft_print_linelist(t_line **head, t_line **cur_node)
 {
 	t_line		*tmp;
 	int		i;
@@ -162,6 +165,11 @@ void	ft_print_linelist(t_line **head)
 	while (tmp)
 	{
 		//printf("node[%d]:%s\n", i, tmp->data);
+		if (!ft_strncmp((*cur_node)->data, tmp->data, ft_strlen((*cur_node)->data)))
+		{
+			printf(" <-- cur_node");
+		}
+		printf("\n");
 		if (tmp->next == NULL)
 			break;
 		tmp = tmp->next;
@@ -169,27 +177,3 @@ void	ft_print_linelist(t_line **head)
 	}
 	return ;
 }
-/*
-int	main()
-{
-	struct termios	term;
-	char		*line;
-	t_line		*head;
-	t_line		*cur_node;
-	int		ret;
-
-	head = NULL;
-	set_termcap(&term);
-	line = NULL;
-	cur_node = NULL;
-	while (1)
-	{
-		ret = get_line(line, &head, &cur_node);
-		if (ret == 1)
-			break;
-	}
-	reset_termcap(&term);
-	ft_print_linelist(&head);
-	ft_free_linehead(&head);
-	return (0);
-}*/
