@@ -67,26 +67,42 @@ int	ft_echo(char **command)
 	int	count;
 	int	in;
 	int	out;
+	int	i;
+	char	**n_command;
 
 	in = -1;
 	out = -1;
+
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("\n", 1);
 		return (0);
 	}
+	i = 0;
+	while (command[i])
+		i++;
+	n_command = (char **)malloc(sizeof(char*) * (i + 1));
+	if (!n_command)
+		return (0);
+	i = 0;
+	while (command[i])
+	{
+		n_command[i] = ft_strdup(command[i]);
+		i++;
+	}
 	if (include_redir(command) > 0)
-		command = ft_redirect(command, &in, &out);
-	count = count_n(command);
+		n_command = ft_redirect(n_command, &in, &out);
+	count = count_n(n_command);
 	if (count > 1)
-		put_space(command, count);
+		put_space(n_command, count);
 	else if (count == -1)
 		return (0);
 	else
 	{
-		put_space(command, 1);
+		put_space(n_command, 1);
 		ft_putstr_fd("\n", 1);
 	}
 	dup_pipe(in, out);
+	return_free(n_command);
 	return (0);
 }

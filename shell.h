@@ -184,6 +184,7 @@ void	print_env(t_env *env, char **cp_name);
 */
 int	is_redir(char *command);
 char	**ft_redirect(char **command, int *in, int *out);
+char	**return_free(char **command);
 
 /*
 **env_utils.c
@@ -191,6 +192,7 @@ char	**ft_redirect(char **command, int *in, int *out);
 void	ft_envadd_back(t_env **env, t_env *new);
 t_env	*init_env();
 void	env_free(t_env *env);
+void	env_all_free(t_env *env);
 
 /*
 **errnor.c

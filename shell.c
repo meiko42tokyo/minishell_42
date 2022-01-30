@@ -8,6 +8,7 @@ int	main(int argc, char **argv)
 	t_cmd	*head;
 	t_env	*env;
 
+	//leak_detect_init();
 	argc = 1;
 	argv = NULL;
 	line = NULL;
@@ -27,6 +28,8 @@ int	main(int argc, char **argv)
 		if (head != NULL && ft_argv_len(head) != 0)
 			run_list(head, env);
 		free_cmdlist(&head);
+		//leak_detect_check();
 	}
+	env_all_free(env);
 	return (0);
 }

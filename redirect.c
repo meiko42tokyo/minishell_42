@@ -32,10 +32,24 @@ static char	**redirect_free(char **command, int *in, int *out)
 	if (fd == -1)
 		return (NULL);
 	free(command[0]);
+	command[0] = NULL;
 	free(command[1]);
+	command[1] = NULL;
 	return (command + 2);
 }
 
+char	**return_free(char **command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+		free(command[i++]);
+	free(command);
+	return (NULL);
+}
+
+/*
 static char	**return_free(char **command, int i, char **n_command)
 {
 	while (command[i])
@@ -47,6 +61,7 @@ static char	**return_free(char **command, int i, char **n_command)
 	free(n_command);
 	return (NULL);
 }
+*/
 
 int	is_redir(char *command)
 {
@@ -59,30 +74,20 @@ int	is_redir(char *command)
 char	**ft_redirect(char **command, int *in, int *out)
 {
 	int	i;
-	int	j;
-	char	**n_command;
 
 	if (!command)
 		return (NULL);
 	i = 0;
 	while (command[i])
 		i++;
-	if (!(n_command = ft_calloc((i + 1) , sizeof(char *))))
-		return (NULL);
-	//あとでエラー書く
 	i = 0;
-	j = 0;
 	while (command[i])
 	{
-		if(is_redir(command[i]) == 0)
-			n_command[j++] = command[i++];
-		else
-		{
-			if (!(redirect_free(command + i, in, out)))
-				return (return_free(command, i, n_command));
-			i += 2;
-		}
+		while (is_redir(command[i]) == 0)
+			i++;
+		if (!(redirect_free(command + i, in, out)))
+			return (return_free(command));
+		i++;
 	}
-	free(command);
-	return (n_command);
+	return (command);
 }
