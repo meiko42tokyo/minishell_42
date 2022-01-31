@@ -238,7 +238,6 @@ void	word_start_space(t_cmd **head, t_parse *ps)
 void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 {
 	char	*tmp;
-	//printf("start_br\n");
 	if (ft_isspace(ps->word[0]))
 		word_start_space(head, ps);
 	else if (ft_strncmp(ps->word, put_token(ps->token), ft_strlen(put_token(ps->token))))
@@ -273,7 +272,6 @@ void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 
 void	find_redirect(t_cmd **head, t_cmd **cmd, t_parse *ps)
 {
-	//printf("redirect\n");
 	if (append_arg(get_argv(ps->word), head) != 0)
 	{
 		*head = NULL;

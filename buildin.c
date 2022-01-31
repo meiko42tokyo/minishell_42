@@ -14,7 +14,7 @@ int	exec_buildin(char **command, t_env *env)
 	else if (ft_strcmp(command[0], "unset") == 0)
 		return (ft_unset(command, env));
 	else if (ft_strcmp(command[0], "env") == 0)
-		return (ft_env(env));
+		return (ft_env(env, command));
 	else if (ft_strcmp(command[0], "exit") == 0)
 		return (ft_exit(command));
 	return (0);

@@ -5,7 +5,6 @@ void	print_env(t_env *env, char **cp_name)
 	t_env	*tmp;
 	int		i;
 
-	tmp = (t_env *)malloc(sizeof(t_env));
 	i = 0;
 	while (cp_name[i])
 	{
@@ -24,6 +23,7 @@ void	print_env(t_env *env, char **cp_name)
 			}
 			tmp = tmp->next;
 		}
+		free(cp_name[i]);
 		i++;
 	}
 	return ;

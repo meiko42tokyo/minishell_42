@@ -6,7 +6,7 @@
 /*   By: ykarasaw <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 18:02:09 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/19 18:17:16 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:42:25 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	unsigned char *s;
+	unsigned char	*s;
 
 	s = (unsigned char *)src;
 	while (n--)

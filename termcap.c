@@ -143,7 +143,7 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 		}
 		else if (c == EOF_KEY)
 		{
-			printf("EOF\n");
+			//printf("EOF\n");
 			return (1);
 		}
 		else if (ft_isprint(c))
@@ -164,7 +164,7 @@ void	ft_print_linelist(t_line **head, t_line **cur_node)
 	i = 0;
 	while (tmp)
 	{
-		printf("node[%d]:%s", i, tmp->data);
+		//printf("node[%d]:%s\n", i, tmp->data);
 		if (!ft_strncmp((*cur_node)->data, tmp->data, ft_strlen((*cur_node)->data)))
 		{
 			printf(" <-- cur_node");

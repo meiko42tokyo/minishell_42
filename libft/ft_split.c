@@ -6,13 +6,13 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/18 19:51:00 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/11/26 15:01:40 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:44:29 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		count_strs(char const *s, char c)
+int	count_strs(char const *s, char c)
 {
 	size_t	count;
 	size_t	index;
@@ -67,7 +67,7 @@ char	**ft_split(char const *s, char c)
 	if (s == NULL)
 		return (NULL);
 	len = count_strs(s, c);
-	head = (char**)ft_calloc(len + 1, sizeof(char*));
+	head = (char **)ft_calloc(len + 1, sizeof(char *));
 	if (head == NULL)
 		return (NULL);
 	ptr = ft_strtrim((char *)s, " ");

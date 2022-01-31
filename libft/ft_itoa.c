@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/19 04:16:47 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/19 18:09:02 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:49:11 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static int	add_num_to_str(int n, char *str)
 
 static char	*make_str(int n, int isnegative, int i)
 {
-	char *str;
+	char	*str;
 
-	str = (char*)malloc(sizeof(char) * (count_digit(n, isnegative) + 1));
+	str = (char *)malloc(sizeof(char) * (count_digit(n, isnegative) + 1));
 	if (str == NULL)
 		return (NULL);
 	i = add_num_to_str(n, str);
@@ -73,7 +73,7 @@ static char	*make_str(int n, int isnegative, int i)
 	return (reverse_str(str));
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	int		isnegative;
 	int		i;

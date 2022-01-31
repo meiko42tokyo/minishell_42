@@ -101,6 +101,7 @@ char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word)
 	tmp1 = ft_strjoin(tmp2, left_word + 1);
 	free(tmp2);
 	tmp1[ft_strlen(tmp1)] = '\0';
+	free(head);
 	return (tmp1);
 }
 
@@ -155,7 +156,7 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 			node->argv[arg_i] = set_new_arg(node->argv[arg_i], cur_pos, env->value, *word + dis);
 			env_hit = 1;
 		}
-		env = env->next;	
+		env = env->next;
 	}
 	if (env_hit == 0)
 	{

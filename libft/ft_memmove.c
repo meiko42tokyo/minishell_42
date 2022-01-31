@@ -6,7 +6,7 @@
 /*   By: ykarasaw <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 18:47:13 by ykarasaw          #+#    #+#             */
-/*   Updated: 2020/07/19 18:18:36 by ykarasaw         ###   ########.fr       */
+/*   Updated: 2022/01/22 23:39:33 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t n)
 {
-	unsigned char *d;
-	unsigned char *s;
+	unsigned char	*d;
+	unsigned char	*s;
 
 	if (dst == NULL && src == NULL)
 		return (NULL);

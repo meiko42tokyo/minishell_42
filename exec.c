@@ -14,9 +14,11 @@ static int	do_execve(char *input, char **argv)
 	char	*path;
 	char	*tmp;
 	int		i;
+	int		t;
 
 	split_path = NULL;
 	i = 0;
+	t = 0;
 	while (environ[i])
 	{
 		if (ft_strnstr(environ[i], "PATH", 4))
@@ -33,11 +35,17 @@ static int	do_execve(char *input, char **argv)
 	while (split_path[i])
 	{
 		tmp = ft_strjoin(split_path[i], "/");
+		t = ft_strncmp(input, split_path[i], ft_strlen(split_path[i]));
 		free(split_path[i]);
-		path = ft_strjoin(tmp, input);
+		if (t != 0)
+			path = ft_strjoin(tmp, input);
+		else
+			path = input;
 		free(tmp);
+		if (!execve(path, argv, environ))
+			return (0);
 		i++;
-		execve(path, argv, environ);
+		//execve(path, argv, environ);
 		free(path);
 	}
 	free(split_path);

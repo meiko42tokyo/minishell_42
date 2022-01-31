@@ -4,7 +4,7 @@ char	**set_ops(void)
 {
 	char	**ops;
 
-	ops = (char **)malloc(sizeof (char *) * OPS_SIZE + 1);
+	ops = (char **)malloc(sizeof (char *) * (OPS_SIZE + 1));
 	ops[OP_SEP] = ";";
 	ops[OP_PIPE] = "|";
 	ops[RD_LESSER] = "<";

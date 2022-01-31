@@ -173,9 +173,10 @@ int	ft_cd(char *path, t_env *env);
 int	ft_pwd();
 int	ft_echo(char **command);
 int	ft_exit(char **command);
-int	ft_env(t_env *env);
+int	ft_env(t_env *env, char **command);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
+int	command_er_check(char *command);
 
 /*
 **ft_export_utils.c
@@ -192,6 +193,7 @@ void	print_env(t_env *env, char **cp_name);
 */
 int	is_redir(char *command);
 char	**ft_redirect(char **command, int *in, int *out);
+char	**return_free(char **command);
 
 /*
 **env_utils.c

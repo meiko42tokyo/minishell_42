@@ -6,7 +6,7 @@
 /*   By: ykarasaw <ykarasaw@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 23:46:57 by ykarasaw          #+#    #+#             */
-/*   Updated: 2021/06/26 11:00:31 by sakasekaw        ###   ########.fr       */
+/*   Updated: 2022/01/22 21:54:51 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	check_spaces(const char *str, int i)
 {
 	while (str[i])
 	{
-		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' ||\
+		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || \
 				str[i] == '\r' || str[i] == '\v' || str[i] == '\f')
 			i++;
 		else
@@ -25,7 +25,7 @@ static int	check_spaces(const char *str, int i)
 	return (i);
 }
 
-long			ft_will_overflow(unsigned long n, int next_digit)
+long	ft_will_overflow(unsigned long n, int next_digit)
 {
 	if (n > (LONG_MAX) / 10)
 		return (1);
@@ -34,7 +34,15 @@ long			ft_will_overflow(unsigned long n, int next_digit)
 	return (0);
 }
 
-long			ft_atoi(const char *str)
+static long	return_value(int sign)
+{
+	if (sign == 1)
+		return (LONG_MAX);
+	else
+		return (LONG_MIN);
+}
+
+long	ft_atoi(const char *str)
 {
 	unsigned long	ret;
 	int				i;
@@ -56,7 +64,7 @@ long			ft_atoi(const char *str)
 		if (!ft_isdigit(str[i]))
 			break ;
 		if (ft_will_overflow(ret, str[i] - '0'))
-			return (sign == 1 ? LONG_MAX : LONG_MIN);
+			return (return_value(sign));
 		ret = ret * 10 + str[i] - '0';
 		i++;
 	}
