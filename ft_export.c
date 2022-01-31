@@ -38,7 +38,7 @@ static int	export_with_value(char *command, t_env *env, char *ptr)
 	if (sp == 0)
 	{
 		put_error(command);
-		return (1);
+		return (-1);
 	}
 	cd_name = ft_strndup(command, sp);
 	judge_env = is_env(cd_name, command, env, sp);
@@ -74,18 +74,28 @@ int	ft_export(char **command, t_env *env)
 	if (command[0] == NULL)
 		return (export_env(env));
 	r_status = 0;
-	error_status = 0;
 	i = 0;
 	while (command[i])
 	{
+		error_status = command_er_check(command[i]);
+		if (error_status < 0)
+		{
+			r_status += error_status;
+			ft_putstr_fd("export `", 2);
+			ft_putstr_fd(command[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			i++;
+			continue ;
+		}
 		ptr = ft_strchr(command[i], '=');
 		if (ptr)
-			r_status = export_with_value(command[i], env, ptr);
+			error_status = export_with_value(command[i], env, ptr);
 		else
-			r_status = export_without_value(command[i], env);
-		if (r_status == 1)
-			error_status = 1;
+			error_status = export_without_value(command[i], env);
+		r_status += error_status;
 		i++;
 	}
-	return (error_status);
+	if (r_status < 0)
+		return (1);
+	return (0);
 }

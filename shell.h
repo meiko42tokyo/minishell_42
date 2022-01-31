@@ -176,6 +176,7 @@ int	ft_exit(char **command);
 int	ft_env(t_env *env, char **command);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
+int	command_er_check(char *command);
 
 /*
 **ft_export_utils.c

@@ -69,14 +69,16 @@ int	ft_unset(char **command, t_env *env)
 	{
 		error = command_er_check(command[i]);
 	//数字、=, /などのエラー処理をいれる
-		ft_env_unset(&env, command[i]);
 		if (error == -1)
 		{
 			re_error += error;
 			ft_putstr_fd("unset `", 2);
-			ft_putstr_fd(command[1], 2);
+			ft_putstr_fd(command[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			i++;
+			continue ;
 		}
+		ft_env_unset(&env, command[i]);
 		env = tmp;
 		i++;
 	}
