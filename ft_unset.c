@@ -38,24 +38,49 @@ void	ft_env_unset(t_env **env, char *name)
 	}
 }
 
+int	command_er_check(char *command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+	{
+		if (!ft_isalpha(command[i]) && command[i] != '=')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 int	ft_unset(char **command, t_env *env)
 {
 	int	error;
+	int	re_error;
+	int	i;
 	t_env	*tmp;
 
-	error = 0;
 	tmp = env;
 	if (!command[1] || env == NULL)
 		return (0);
+	i = 1;
+	re_error = 0;
 	//_から始まるnameの処理
-	//数字、=, /などのエラー処理をいれる
-	ft_env_unset(&env, command[1]);
-	if (error == -1)
+	while (command[i])
 	{
-		ft_putstr_fd("unset `", 2);
-		ft_putstr_fd(command[1], 2);
-		ft_error_str("': not a valid identifier");
+		error = command_er_check(command[i]);
+	//数字、=, /などのエラー処理をいれる
+		ft_env_unset(&env, command[i]);
+		if (error == -1)
+		{
+			re_error += error;
+			ft_putstr_fd("unset `", 2);
+			ft_putstr_fd(command[1], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+		}
+		env = tmp;
+		i++;
 	}
-	env = tmp;
+	if (re_error < 0)
+		return (1);
 	return (0);
 }
