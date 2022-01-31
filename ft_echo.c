@@ -53,6 +53,7 @@ static void	put_space(char **command, int i)
 	}
 }
 
+/*
 static void	dup_pipe(int in, int out)
 {
 	if (in != -1)
@@ -60,6 +61,7 @@ static void	dup_pipe(int in, int out)
 	if (out != -1)
 		dup2(out, 1);
 }
+*/
 
 int	ft_echo(char **command)
 {
@@ -89,8 +91,8 @@ int	ft_echo(char **command)
 		i++;
 	}
 	n_command[i] = NULL;
-	if (include_redir(command) > 0)
-		n_command = ft_redirect(n_command, &in, &out);
+//	if (include_redir(command) > 0)
+//		n_command = ft_redirect(n_command, &in, &out);
 	count = count_n(n_command);
 	if (count > 1)
 	{
@@ -103,7 +105,7 @@ int	ft_echo(char **command)
 		put_space(n_command, 1);
 		ft_putstr_fd("\n", 1);
 	}
-	dup_pipe(in, out);
+//	dup_pipe(in, out);
 	return_free(n_command);
 	return (0);
 }
