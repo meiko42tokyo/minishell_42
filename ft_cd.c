@@ -45,10 +45,10 @@ static void	save_env(t_env *env, char *save_p, char *save_np)
 	new_op[1] = NULL;
 	ft_export(new_p, env);
 	ft_export(new_op, env);
-	free(new_p);
 	free(new_p[0]);
-	free(new_op);
+	free(new_p);
 	free(new_op[0]);
+	free(new_op);
 	return ;
 }
 
