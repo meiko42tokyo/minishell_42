@@ -40,3 +40,22 @@ int	is_buildin(char **command)
 		return (1);
 	return (0);
 }
+
+int	exec_buildin_parent(char **command, t_env *env)
+{
+	int	ret;
+	int	in;
+	int	out;
+
+	in = -1;
+	out = -1;
+	ret = 0;
+	if (include_redir(command) > 0)
+		command = ft_redirect(command, &in, &out);
+	ret = exec_buildin(command, env);
+	if (in != -1)
+		dup2(in, 0);
+	if (out != -1)
+		dup2(out, 1);
+	return (ret);
+}

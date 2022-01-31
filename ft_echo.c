@@ -24,7 +24,7 @@ static int	count_n(char **command)
 	return (i);
 }
 
-static int	include_redir(char **command)
+int	include_redir(char **command)
 {
 	int	i;
 
@@ -33,8 +33,7 @@ static int	include_redir(char **command)
 	{
 		if (ft_strcmp(command[i], ">") == 0 || \
 				ft_strcmp(command[i], ">>") == 0 \
-				|| ft_strcmp(command[i], "<<") == 0 || \
-				ft_strcmp(command[i], "<") == 0)
+				|| ft_strcmp(command[i], "<") == 0)
 			return (1);
 		i++;
 	}

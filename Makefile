@@ -41,7 +41,7 @@ SRCS = shell.c\
 	env_utils.c\
 	error.c\
 	termcap.c\
-	doubly_lstUtils.c\
+	doubly_lstutils.c\
 	signal.c\
 
 B_SRCS = $(SRCS)

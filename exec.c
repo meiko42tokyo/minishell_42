@@ -138,7 +138,7 @@ void	run_list(t_cmd *c, t_env *env)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			g_shell->status = exec_buildin(c->argv, env);
+			g_shell->status = exec_buildin_parent(c->argv, env);
 			c = c->next;
 			continue;
 		}

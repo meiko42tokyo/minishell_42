@@ -66,7 +66,7 @@ static char	**return_free(char **command, int i, char **n_command)
 int	is_redir(char *command)
 {
 	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") == 0\
-			|| ft_strcmp(command, "<<") == 0 || ft_strcmp(command, "<") == 0)
+			|| ft_strcmp(command, "<") == 0)
 		return (1);
 	return (0);
 }

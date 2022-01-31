@@ -165,12 +165,14 @@ void	strshift(char *word);
 */
 int	exec_buildin(char **command, t_env *env);
 int	is_buildin(char **command);
+int	exec_buildin_parent(char **command, t_env *env);
 
 /*
 **buildin_command
 */
 int	ft_cd(char *path, t_env *env);
 int	ft_pwd();
+int	include_redir(char **command);
 int	ft_echo(char **command);
 int	ft_exit(char **command);
 int	ft_env(t_env *env, char **command);
