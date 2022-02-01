@@ -60,21 +60,22 @@ char	**ft_redirect(char **command, int *in, int *out)
 {
 	int	i;
 	int	j;
-	char	**n_command;
+	//char	**n_command;
 
 	if (!command)
 		return (NULL);
 	i = 0;
 	while(command[i])
 		i++;
-	if (!(n_command = ft_calloc(i + 1, sizeof(char *))))
-		return (NULL);
+	//if (!(n_command = ft_calloc(i + 1, sizeof(char *))))
+	//	return (NULL);
 	i = 0;
 	j = 0;
 	while (command[i])
 	{
 		if(!is_redir(command[i]))
-			n_command[j++] = command[i++];
+			i++;
+			//		n_command[j++] = command[i++];
 		else
 		{
 			if (!(redirect_free(command + i, in, out)))
@@ -83,5 +84,5 @@ char	**ft_redirect(char **command, int *in, int *out)
 		}
 	}
 	//free(command);
-	return (n_command);
+	return (command);
 }

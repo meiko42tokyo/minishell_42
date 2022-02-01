@@ -3,6 +3,8 @@
 
 int	exec_buildin(char **command, t_env *env)
 {
+	if (!command || !command[0])
+		return (1);
 	if (ft_strcmp(command[0], "cd") == 0)
 		return (ft_cd(command[1], env));
 	else if (ft_strcmp(command[0], "echo") == 0)
