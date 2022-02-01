@@ -80,33 +80,42 @@ int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line)
 	return (0);
 }
 
-int	new_line(char *line, t_line **head, t_line **cur_node)
+int	update_and_make_empty_node()
 {
-	if (line == NULL)
+	g_shell->cur_node = ft_linenew("");
+	if (!g_shell->cur_node)
+		return (-1);
+	ft_lineadd_back(&g_shell->dhead, g_shell->cur_node);
+	return (0);
+}
+
+int	new_line()
+{
+	if (g_shell->line == NULL)
 	{
-		if (*cur_node == NULL)
+		if (g_shell->cur_node == NULL)
 			return (0);
-		if (ft_strlen(ft_get_latestdata(head)) != 0 && update_and_make_newnode(head, cur_node, "") != 0)
+		if (ft_strlen(ft_get_latestdata(&g_shell->dhead)) != 0 && update_and_make_empty_node() != 0)
 			return (-1);
 		return (0);
 	}
-	if (*cur_node == NULL || ft_strlen(ft_get_latestdata(head)) != 0)
+	if (g_shell->cur_node == NULL || ft_strlen(ft_get_latestdata(&g_shell->dhead)) != 0)
 	{
-		if (update_and_make_newnode(head, cur_node, line) != 0)
+		if (update_and_make_newnode(&g_shell->dhead, &g_shell->cur_node, g_shell->line) != 0)
 			return (-1);
 	}
-	else if (ft_strlen(ft_get_latestdata(head)) == 0)
-		ft_change_latestline(head, line);
+	else if (ft_strlen(ft_get_latestdata(&g_shell->dhead)) == 0)
+		ft_change_latestline(&g_shell->dhead, g_shell->line);
 	else
 	{
-		free(line);
-		line = NULL;
+		free(g_shell->line);
+		g_shell->line = NULL;
 		return (-1);
 	}
 	return (0);	
 }
 
-int	get_line(char *line, t_line **head, t_line **cur_node)
+int	get_line()
 {
 	int		c;
 	int		his_depth;
@@ -117,29 +126,29 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 		read(0, &c, sizeof(c));
 		if (c == '\n')
 		{
-			if (new_line(line, head, cur_node) != 0)
+			if (new_line() != 0)
 				return (-1);
 			break ;
 		}
 		if (c == AR_U || c == AR_D)
 		{
-			if (*cur_node == NULL)
+			if (g_shell->cur_node == NULL)
 			{
-				free(line);
-				line = NULL;
+				free(g_shell->line);
+				g_shell->line = NULL;
 				return (0);
 			}
-			if (c == AR_U && ft_strlen((*cur_node)->data) != 0  && ft_strlen(ft_get_latestdata(head)) != 0 && line == NULL)
+			if (c == AR_U && ft_strlen(g_shell->cur_node->data) != 0  && ft_strlen(ft_get_latestdata(&g_shell->dhead)) != 0 && g_shell->line == NULL)
 			{
-				if (update_and_make_newnode(head, cur_node, "") != 0)
+				if (update_and_make_empty_node() != 0)
 					return (-1);
 			}
-			if (line != NULL)
+			if (g_shell->line != NULL)
 			{	
-				free(line);
-				line = NULL;
+				free(g_shell->line);
+				g_shell->line = NULL;
 			}
-			line = history_out(cur_node, c);
+			g_shell->line = history_out(&g_shell->cur_node, c);
 		}
 		else if (c == EOF_KEY)
 		{
@@ -147,11 +156,11 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 			return (1);
 		}
 		else if (ft_isprint(c))
-			line = make_line(line, c);
+			g_shell->line = make_line(g_shell->line, c);
 	}
 	write(1, "\n", 1);
-	free(line);
-	line = NULL;
+	free(g_shell->line);
+	g_shell->line = NULL;
 	return (42);
 }
 

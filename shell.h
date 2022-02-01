@@ -70,7 +70,9 @@ typedef struct	s_parse
 typedef struct	s_shell
 {
 	int		status;
+	char		*line;
 	t_line		*dhead;
+	t_line		*cur_node;
 	struct termios	term;
 	struct termios	term_origin;
 }		t_shell;
@@ -114,7 +116,8 @@ void	ft_print_linelist(t_line **head, t_line **cur_node);
 /*
 **termcap.c
 */
-int	get_line(char *line, t_line **head, t_line **cur_node);
+int	get_line();
+int	update_and_make_empty_node();
 void	set_termcap();
 void	reset_termcap();
 
