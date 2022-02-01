@@ -101,10 +101,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			ft_putstr_fd("\n", 2);
 			exit(127);
 		}
-	} else {
-		waitpid(pid, &stat_loc, WUNTRACED);
 	}
-	//printf("stat:%d\n", stat_loc);
 	if (stat_loc != 0)
 		g_shell->status = 127;
 	if (haspipe)
@@ -152,8 +149,7 @@ void	run_list(t_cmd *c, t_env *env)
 			continue;
 		}
 		c = do_pipeline(c);
-		//waitpid(c->pid);
-		//printf("node:%s, %c\n", *c->argv, c->op); 
+		waitpid(c->pid, NULL, 0);
 		c = c->next;
 	}
 }
