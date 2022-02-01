@@ -174,6 +174,7 @@ int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 	int	state;
 
 	state = NOT_Q;
+	//printf("%s\n", word);
 	while (*word)
 	{
 		if (*word == '\'' || *word == '\"')
