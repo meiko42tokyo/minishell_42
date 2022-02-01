@@ -150,7 +150,7 @@ int	get_line()
 			}
 			g_shell->line = history_out(&g_shell->cur_node, c);
 		}
-		else if (c == EOF_KEY)
+		else if (c == EOF_KEY && g_shell->line == NULL)
 		{
 			//printf("EOF\n");
 			return (1);
