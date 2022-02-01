@@ -83,7 +83,7 @@ void	free_cmdlist(t_cmd **cmd)
 	t_cmd	*next_node;
 	int	arg_order;
 
-	if (!cmd)
+	if (!cmd || !*cmd)
 		return ;
 	while (*cmd)
 	{

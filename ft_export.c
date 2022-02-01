@@ -1,10 +1,11 @@
 #include "shell.h"
 
-static void	put_error(char *command)
+static int	put_error(char *command)
 {
 	ft_putstr_fd("export `", 2);
 	ft_putstr_fd(command, 2);
 	ft_error_str("': not a valid identifier");
+	return (1);
 }
 
 static int	is_env(char *cd_name, char *command, t_env *env, int sp)
@@ -36,10 +37,7 @@ static int	export_with_value(char *command, t_env *env, char *ptr)
 
 	sp = ptr - command;
 	if (sp == 0)
-	{
-		put_error(command);
-		return (-1);
-	}
+		return (put_error(command));
 	cd_name = ft_strndup(command, sp);
 	judge_env = is_env(cd_name, command, env, sp);
 	if (judge_env == 1)
@@ -56,11 +54,27 @@ static int	export_with_value(char *command, t_env *env, char *ptr)
 static int	export_without_value(char *command, t_env *env)
 {
 	t_env	*tmp;
+	int		check;
 
-	tmp = (t_env *)malloc(sizeof(t_env));
-	tmp->name = ft_strdup(command);
-	tmp->value = NULL;
-	ft_envadd_back(&env, tmp);
+	check = 0;
+	tmp = env;
+	while (env)
+	{
+		if (ft_strcmp(command, env->name) == 0)
+		{
+			check = 1;
+			break ;
+		}
+		env = env->next;
+	}
+	env = tmp;
+	if (check == 0)
+	{
+		tmp = (t_env *)malloc(sizeof(t_env));
+		tmp->name = ft_strdup(command);
+		tmp->value = NULL;
+		ft_envadd_back(&env, tmp);
+	}
 	return (0);
 }
 
@@ -81,9 +95,7 @@ int	ft_export(char **command, t_env *env)
 		if (error_status < 0)
 		{
 			r_status += error_status;
-			ft_putstr_fd("export `", 2);
-			ft_putstr_fd(command[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
+			put_error(command[i++]);
 			i++;
 			continue ;
 		}
