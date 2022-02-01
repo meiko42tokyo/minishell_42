@@ -36,13 +36,6 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
-typedef struct	s_shell
-{
-	int		status;
-	struct termios	term;
-	struct termios	term_origin;
-}		t_shell;
-
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
@@ -73,6 +66,14 @@ typedef struct	s_parse
 	char	*new_pos;
 	char	*word;
 }		t_parse;
+
+typedef struct	s_shell
+{
+	int		status;
+	t_line		*dhead;
+	struct termios	term;
+	struct termios	term_origin;
+}		t_shell;
 
 extern t_shell	*g_shell;
 
