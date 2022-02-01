@@ -40,6 +40,8 @@ int	check_syntax(char *input, int *heredoc)
 		return (print_error("|"));
 	else if (!ft_strncmp(input, ";;", 2))
 		return (print_error(";;"));
+	else if (!ft_strncmp(input, ";", 1))
+		return (print_error(";"));
 	else if (check_redirect_syntax(input))
 		return (print_error("new_line"));
 	return (0);
