@@ -72,8 +72,6 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	}
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		if (haspipe)
 		{
 			close(lastpipe[1]);
@@ -102,6 +100,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			exit(127);
 		}
 	}
+	signal(SIGINT, signal_handler_child);  
+	signal(SIGQUIT, signal_handler_child);
 	if (stat_loc != 0)
 		g_shell->status = 127;
 	if (haspipe)
