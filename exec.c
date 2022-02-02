@@ -15,6 +15,7 @@ static int	do_execve(char *input, char **argv)
 	char		*tmp;
 	int			i;
 	int			t;
+	int			re;
 
 	split_path = NULL;
 	i = 0;
@@ -44,7 +45,8 @@ static int	do_execve(char *input, char **argv)
 		free(tmp);
 		if (include_redir(argv))
 			argv = ft_redirect(argv, NULL, NULL);
-		if (!execve(path, argv, environ))
+		re = execve(path, argv, environ);
+		if (!re)
 		{
 			free(path);
 			return (0);
@@ -53,7 +55,7 @@ static int	do_execve(char *input, char **argv)
 		free(path);
 	}
 	free(split_path);
-	return (-1);
+	return (re);
 }
 
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
@@ -61,9 +63,9 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	pid_t	pid;
 	int		newpipe[2];
 	char	*input;
-	int		stat_loc;
+	int		re;
 
-	stat_loc = 0;
+	re = 0;
 	if (ispipe)
 		pipe(newpipe);
 	pid = fork();
@@ -87,18 +89,17 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			close(newpipe[1]);
 		}
 		input = *c->argv; // TODO:input->c->argv[0]
-		g_shell->status = do_execve(input, c->argv); // exec needed?
-		if (g_shell->status == -1)
+		re = do_execve(input, c->argv); // exec needed?
+		if (re != 0)
 		{
-			ft_putstr_fd(strerror(errno), 2);
-			ft_putstr_fd("\n", 2);
-			exit(127);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(input, 2);
+			ft_putstr_fd(": command not found\n", 2);
+			exit (127);
 		}
 	}
 	signal(SIGINT, signal_handler_child);  
 	signal(SIGQUIT, signal_handler_child);
-	if (stat_loc != 0)
-		g_shell->status = 127;
 	if (haspipe)
 	{
 		close(lastpipe[0]);
