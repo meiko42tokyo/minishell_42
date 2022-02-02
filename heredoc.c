@@ -91,7 +91,8 @@ int	remove_heredoc(char **input, size_t id_len)
 int	heredoc(char **input)
 {
 	char	*identifier;
-
+	
+	reset_termcap();
 	identifier = get_identifier(*input);
 	store_line(identifier);
 	//ret = remove_heredoc(*input);
@@ -104,5 +105,6 @@ int	heredoc(char **input)
 		// num until ' '
 		// num until all
 	// remove << and aaa from argv
+	set_termcap();
 	return (0);
 }

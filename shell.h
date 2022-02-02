@@ -36,13 +36,6 @@
 # define SINGLE_Q 1
 # define DOUBLE_Q 2
 
-typedef struct s_shell
-{
-	int				status;
-	struct termios	term;
-	struct termios	term_origin;
-}		t_shell;
-
 typedef struct s_cmd
 {
 	struct s_cmd	*next;
@@ -73,6 +66,16 @@ typedef struct s_parse
 	char	*new_pos;
 	char	*word;
 }		t_parse;
+
+typedef struct	s_shell
+{
+	int		status;
+	char		*line;
+	t_line		*dhead;
+	t_line		*cur_node;
+	struct termios	term;
+	struct termios	term_origin;
+}		t_shell;
 
 extern t_shell	*g_shell;
 
@@ -113,7 +116,9 @@ void	ft_print_linelist(t_line **head, t_line **cur_node);
 /*
 **termcap.c
 */
-int		get_line(char *line, t_line **head, t_line **cur_node);
+int	get_line(void);
+int	update_and_make_empty_node(void);
+void	init_termcap(void);
 void	set_termcap(void);
 void	reset_termcap(void);
 
@@ -227,6 +232,7 @@ void	env_all_free(t_env *env);
 **signal.c
 */
 void	signal_handler(int signo);
+void	signal_handler_child(int signo);
 
 /*
 **errnor.c
