@@ -211,6 +211,7 @@ void	env_all_free(t_env *env);
 **signal.c
 */
 void	signal_handler(int signo);
+void	signal_handler_child(int signo);
 
 /*
 **errnor.c
