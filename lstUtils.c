@@ -4,7 +4,7 @@ t_cmd	*ft_cmdnew(char *argv[], int op)
 {
 	t_cmd	*node;
 
-	node = (t_cmd*)malloc(sizeof(t_cmd));
+	node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (node == NULL)
 		return (NULL);
 	node->next = NULL;
@@ -21,7 +21,7 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 	if (*head == NULL)
 	{
 		*head = new;
-		return;
+		return ;
 	}
 	node = *head;
 	while (node)
@@ -29,11 +29,11 @@ void	ft_cmdadd_back(t_cmd **head, t_cmd *new)
 		if (node->next == NULL)
 		{
 			node->next = new;
-			break;
+			break ;
 		}
 		node = node->next;
 	}
-	node->next->next = NULL; 
+	node->next->next = NULL;
 	return ;
 }
 
@@ -52,7 +52,7 @@ int	ft_argv_len(t_cmd *cmd)
 int	ft_print_cmdsize(t_cmd **head)
 {
 	t_cmd	*node;
-	int	index;
+	int		index;
 
 	node = *head;
 	index = 0;
@@ -61,7 +61,7 @@ int	ft_print_cmdsize(t_cmd **head)
 		index++;
 		if (node->next == NULL)
 		{
-			break;
+			break ;
 		}
 		node = node->next;
 	}
@@ -81,7 +81,7 @@ int	check_argvsize(t_cmd *node)
 void	free_cmdlist(t_cmd **cmd)
 {
 	t_cmd	*next_node;
-	int	arg_order;
+	int		arg_order;
 
 	if (!cmd || !*cmd)
 		return ;
@@ -105,16 +105,13 @@ void	free_cmdlist(t_cmd **cmd)
 void	ft_print_cmdlist(t_cmd **head)
 {
 	t_cmd	*node;
-	int	index;
-	int	arg_order;
+	int		index;
+	int		arg_order;
 	char	*op;
 
 	index = 0;
 	if (*head == NULL)
-	{
-		printf("cmd head null\n");
 		return ;
-	}
 	node = *head;
 	while (node)
 	{
@@ -140,9 +137,7 @@ void	ft_print_cmdlist(t_cmd **head)
 		if (node->op == BR_SINGLE)
 			op = "\'";
 		if (node->next == NULL)
-		{
 			break ;
-		}
 		node = node->next;
 	}
 }	

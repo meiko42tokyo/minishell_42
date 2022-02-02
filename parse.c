@@ -8,7 +8,7 @@ char	**get_argv(char *input)
 	char	*separator;
 
 	separator = " ";
-	argv = ft_split((const char*)input, *separator);
+	argv = ft_split((const char *)input, *separator);
 	if (argv == NULL)
 	{
 		ft_putstr_fd("malloc fail", 2);
@@ -58,8 +58,8 @@ char	*ft_min_strchr(char *input, int *token)
 {
 	size_t	min_dis;
 	size_t	tmp;
-	char 	**ops; 
-	int	index;
+	char	**ops;
+	int		index;
 
 	index = 0;
 	ops = set_ops();
@@ -76,7 +76,7 @@ char	*ft_min_strchr(char *input, int *token)
 	}
 	free(ops);
 	get_token(input + min_dis, token);
-	return (input + min_dis);;
+	return (input + min_dis);
 }
 
 size_t	ft_strplen(char *argv[])
@@ -91,7 +91,7 @@ size_t	ft_strplen(char *argv[])
 
 void	free_argv(char **argv)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (argv[i])
@@ -105,12 +105,13 @@ void	free_argv(char **argv)
 char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 {
 	char	**new_argv;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
-	new_argv = (char**)malloc(sizeof (char *) * (len + is_redirect(token) + 1));
+	new_argv = (char **)malloc(sizeof (char *) \
+			* (len + is_redirect(token) + 1));
 	if (new_argv == NULL)
 		return (NULL);
 	while (old_argv[i])
@@ -135,7 +136,7 @@ char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token)
 	return (new_argv);
 }
 
-int		append_arg(char *argv[], t_cmd **head)
+int	append_arg(char *argv[], t_cmd **head)
 {
 	t_cmd	*node;
 	size_t	old_len;
@@ -146,7 +147,7 @@ int		append_arg(char *argv[], t_cmd **head)
 	while (node)
 	{
 		if (node->next == NULL)
-			break;
+			break ;
 		node = node->next;
 	}
 	old_argv = node->argv;
@@ -160,12 +161,12 @@ int		append_arg(char *argv[], t_cmd **head)
 
 char	**get_latestargv(t_cmd **head)
 {
-	int	index;
+	int		index;
 	t_cmd	*node;
 
 	index = 0;
 	node = *head;
-	while(node)
+	while (node)
 	{
 		if (node->next == NULL)
 		{
@@ -205,7 +206,7 @@ void	append_str(t_cmd **head, int left, t_parse *ps)
 	{
 		tmp = *get_latestargv(head);
 		*get_latestargv(head) = ft_strjoin(tmp, put_token(ps->token));
-		free(tmp);	
+		free(tmp);
 	}
 	if (is_token_br(ps->token))
 		ps->state = NOT_Q;
@@ -238,9 +239,11 @@ void	word_start_space(t_cmd **head, t_parse *ps)
 void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 {
 	char	*tmp;
+
 	if (ft_isspace(ps->word[0]))
 		word_start_space(head, ps);
-	else if (ft_strncmp(ps->word, put_token(ps->token), ft_strlen(put_token(ps->token))))
+	else if (ft_strncmp(ps->word, put_token(ps->token), \
+				ft_strlen(put_token(ps->token))))
 	{
 		tmp = *get_latestargv(head);
 		*get_latestargv(head) = ft_strjoin(tmp, ps->word);
@@ -264,7 +267,7 @@ void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps)
 		if (ps->token == BR_DOUBLE)
 			ps->state = DOUBLE_Q;
 		else if (ps->token == BR_SINGLE)
-			ps->state = SINGLE_Q; 
+			ps->state = SINGLE_Q;
 	}
 	(*cmd)->op = get_op(ps->new_pos);
 	ft_print_cmdlist(head);
@@ -326,9 +329,10 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 	cmd = NULL;
 	while (ps->new_pos >= input)
 	{
-		if ((ps->state != NOT_Q && !is_token_br(ps->token)) || (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
+		if ((ps->state != NOT_Q && !is_token_br(ps->token)) \
+				|| (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
 			append_str(&head, ps->new_pos == input, ps);
-		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q )
+		else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q)
 			start_br(&head, &cmd, input, ps);
 		else if (cmd && (is_redirect(cmd->op)))
 			find_redirect(&head, &cmd, ps);
@@ -339,11 +343,12 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 		free(ps->word);
 		ps->word = NULL;
 		if (ft_strlen(input) == 0)
-			break;	
+			break ;
 		else
 			ps->new_pos = ft_min_strchr(input, &ps->token);
 		if (ps->new_pos >= input)
-			ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
+			ps->word = ft_strndup(input, \
+					ps->new_pos - input + (ps->new_pos == input));
 	}
 	return (head);
 }

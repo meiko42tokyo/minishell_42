@@ -14,7 +14,9 @@ int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 		exit_status = get_exit_status();
 		node->argv[arg_i] = set_new_arg(node->argv[arg_i], cur_pos, exit_status, *word + 2);
 		free(exit_status);
-		*word += 2;
+		*word = node->argv[arg_i];
+		(*word)[ft_strlen(*word)] = '\0';
+		*word += cur_pos;
 		return (0);
 	}
 	dis = ft_strlen(*word + 1);

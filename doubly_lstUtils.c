@@ -1,18 +1,5 @@
 #include "shell.h"
 
-t_line	*ft_linenew(char *data)
-{
-	t_line	*node;
-
-	node = (t_line *)malloc(sizeof(t_line));
-	if (node == NULL)
-		return (NULL);
-	node->next = NULL;
-	node->prev = NULL;
-	node->data = ft_strdup(data);
-	return (node);
-}
-
 int	ft_lineadd_back(t_line **head, t_line *new)
 {
 	t_line	*node;
@@ -40,7 +27,7 @@ int	ft_lineadd_back(t_line **head, t_line *new)
 
 int	ft_get_lstsize(t_line **head)
 {
-	int	size;
+	int		size;
 	t_line	*node;
 
 	size = 0;
