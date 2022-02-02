@@ -91,7 +91,7 @@ int	ft_export(char **command, t_env *env)
 		return (export_env(env));
 	r_status = ft_strcmp(command[0], "_");
 	if (r_status == 0)
-		return (ft_env_unset(&env, "_"));
+		return (0);
 	i = 0;
 	while (command[i])
 	{

@@ -196,7 +196,6 @@ int	ft_env(t_env *env, char **command);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
 int	ft_env_unset(t_env **env, char *name);
-int	command_er_check(char *command);
 
 /*
 **ft_export_utils.c

@@ -39,7 +39,7 @@ int	ft_env_unset(t_env **env, char *name)
 	return (0);
 }
 
-int	command_er_check(char *command)
+int	command_er_check(char *command, int *re_error, int *t)
 {
 	int	i;
 
@@ -51,6 +51,8 @@ int	command_er_check(char *command)
 			ft_putstr_fd("unset `", 2);
 			ft_putstr_fd(command, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			*t += 1;
+			*re_error -= 1;
 			return (-1);
 		}
 		i++;
@@ -68,17 +70,16 @@ int	ft_unset(char **command, t_env *env)
 	tmp = env;
 	if (!command[1] || env == NULL)
 		return (0);
+	re_error = ft_strcmp(command[1], "_");
+	if (re_error == 0)
+		return (0);
 	i = 1;
 	re_error = 0;
 	while (command[i])
 	{
-		error = command_er_check(command[i]);
+		error = command_er_check(command[i], &re_error, &i);
 		if (error == -1)
-		{
-			re_error += error;
-			i++;
 			continue ;
-		}
 		ft_env_unset(&env, command[i++]);
 		env = tmp;
 	}
