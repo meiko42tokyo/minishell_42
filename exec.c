@@ -9,12 +9,12 @@ int	ispipe(t_cmd *c)
 
 static int	do_execve(char *input, char **argv)
 {
-	extern char **environ;
-	char	**split_path;
-	char	*path;
-	char	*tmp;
-	int		i;
-	int		t;
+	extern char	**environ;
+	char		**split_path;
+	char		*path;
+	char		*tmp;
+	int			i;
+	int			t;
 
 	split_path = NULL;
 	i = 0;
@@ -57,9 +57,9 @@ static int	do_execve(char *input, char **argv)
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
-	int	newpipe[2];
-	char *input;
-	int	stat_loc;
+	int		newpipe[2];
+	char	*input;
+	int		stat_loc;
 
 	stat_loc = 0;
 	if (ispipe)
@@ -117,7 +117,6 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	return (pid);
 }
 
-
 t_cmd	*do_pipeline(t_cmd *c)
 {
 	int	haspipe;
@@ -133,7 +132,7 @@ t_cmd	*do_pipeline(t_cmd *c)
 		if (haspipe)
 			c = c->next;
 		else
-			break;
+			break ;
 	}
 	return (c);
 }
@@ -146,7 +145,7 @@ void	run_list(t_cmd *c, t_env *env)
 		{
 			g_shell->status = exec_buildin_parent(c->argv, env);
 			c = c->next;
-			continue;
+			continue ;
 		}
 		c = do_pipeline(c);
 		waitpid(c->pid, NULL, 0);

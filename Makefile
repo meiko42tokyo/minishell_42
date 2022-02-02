@@ -27,6 +27,8 @@ SRCS = shell.c\
 	state_manage.c\
 	parse.c\
 	expand.c\
+	expand_utils.c\
+	expand_utils2.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\
@@ -41,7 +43,7 @@ SRCS = shell.c\
 	env_utils.c\
 	error.c\
 	termcap.c\
-	doubly_lstutils.c\
+	doubly_lstUtils.c\
 	signal.c\
 
 B_SRCS = $(SRCS)

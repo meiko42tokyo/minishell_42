@@ -158,7 +158,24 @@ t_cmd	*make_cmdlist(char *input, t_env *env);
 */
 void	expand(t_cmd **head, t_env *env);
 void	br(int *state, char **word);
+
+/*
+**expand_utils.c
+*/
 void	strshift(char *word);
+void	ft_mempshift(char **dst, char **src, size_t len);
+void	strpshift(char **argv, int arg_i);
+int		strnshift(char *word, int dis, char *head);
+int		is_escape(char c);
+
+/*
+**expand_utils.c
+*/
+void	br(int *state, char **word);
+char	*set_env_ops(void);
+char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word);
+void	find_min_dis(int *dis, char **word);
+char	*get_exit_status(void);
 
 /*
 **buildin.c

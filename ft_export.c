@@ -28,29 +28,6 @@ static int	is_env(char *cd_name, char *command, t_env *env, int sp)
 	return (1);
 }
 
-static int	export_with_value(char *command, t_env *env, char *ptr)
-{
-	t_env	*tmp;
-	int		sp;
-	int		judge_env;
-	char	*cd_name;
-
-	sp = ptr - command;
-	if (sp == 0)
-		return (put_error(command));
-	cd_name = ft_strndup(command, sp);
-	judge_env = is_env(cd_name, command, env, sp);
-	if (judge_env == 1)
-	{
-		tmp = (t_env *)malloc(sizeof(t_env));
-		tmp->name = ft_strdup(cd_name);
-		tmp->value = ft_strdup(&command[sp + 1]);
-		ft_envadd_back(&env, tmp);
-	}
-	free(cd_name);
-	return (0);
-}
-
 static int	export_without_value(char *command, t_env *env)
 {
 	t_env	*tmp;
@@ -78,6 +55,31 @@ static int	export_without_value(char *command, t_env *env)
 	return (0);
 }
 
+static int	value_judge(char *command, t_env *env, char *ptr)
+{
+	t_env	*tmp;
+	int		sp;
+	int		judge_env;
+	char	*cd_name;
+
+	if (!ptr)
+		return (export_without_value(command, env));
+	sp = ptr - command;
+	if (sp == 0)
+		return (put_error(command));
+	cd_name = ft_strndup(command, sp);
+	judge_env = is_env(cd_name, command, env, sp);
+	if (judge_env == 1)
+	{
+		tmp = (t_env *)malloc(sizeof(t_env));
+		tmp->name = ft_strdup(cd_name);
+		tmp->value = ft_strdup(&command[sp + 1]);
+		ft_envadd_back(&env, tmp);
+	}
+	free(cd_name);
+	return (0);
+}
+
 int	ft_export(char **command, t_env *env)
 {
 	char		*ptr;
@@ -96,16 +98,10 @@ int	ft_export(char **command, t_env *env)
 		{
 			r_status += error_status;
 			put_error(command[i++]);
-			i++;
 			continue ;
 		}
 		ptr = ft_strchr(command[i], '=');
-		if (ptr)
-			error_status = export_with_value(command[i], env, ptr);
-		else
-			error_status = export_without_value(command[i], env);
-		r_status += error_status;
-		i++;
+		value_judge(command[i++], env, ptr);
 	}
 	if (r_status < 0)
 		return (1);

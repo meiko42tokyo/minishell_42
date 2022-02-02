@@ -1,140 +1,10 @@
 #include "shell.h"
 
-void	strshift(char *word)
-{
-	size_t	len;
-
-	len = ft_strlen(word);
-	ft_memmove(word, word + 1, len - 1);
-	word[len - 1] = '\0';
-}
-
-void	ft_mempshift(char **dst, char **src, size_t len)
-{
-	while (len--)
-		*dst++ = *src++;
-}
-
-void	strpshift(char **argv, int arg_i)
-{
-	size_t	len;
-	char	*cur_arg;
-	int	cur_i;
-
-	len = 0;
-	cur_arg = argv[arg_i];
-	cur_i = arg_i;
-	while(argv[arg_i++])
-		len++;
-	free(cur_arg);
-	ft_mempshift(argv + cur_i , argv + cur_i + 1, len - 1);
-	argv[cur_i + len - 1] = NULL;
-} 
-
-int	strnshift(char *word, int dis, char *head)
-{
-	size_t	len;
-
-	len = ft_strlen(word + 1);
-	ft_memmove(word, word + dis + 1, len - dis);
-	word[len - dis] = '\0';
-	if (*head == '\0')
-		return (1);
-	return (0);
-}
-
-int	is_escape(char c)
-{
-	if (c == '\"' || c == '\"' || c == '`' || c == '$')
-		return (1);
-	else
-		return (0);
-}
-
-void	br(int *state, char **word)
-{
-	if (**word == '\"')
-	{
-		if (*state == DOUBLE_Q)
-			*state = NOT_Q;
-		else if (*state == NOT_Q)
-			*state = DOUBLE_Q;
-		if (*state != SINGLE_Q)
-			strshift(*word);
-		else
-			*word = *word + 1;
-	}
-	else if (**word == '\'')
-	{
-		if (*state == SINGLE_Q)
-			*state = NOT_Q;
-		else if (*state == NOT_Q)
-			*state = SINGLE_Q;
-		if (*state != DOUBLE_Q)
-			strshift(*word);
-		else
-			*word = *word + 1;
-	}
-}
-
-char	*set_env_ops(void)
-{
-	char	*ops;
-
-	ops = (char *)malloc(sizeof (char) * ENV_OPS_SIZE + 1);
-	ops[0] = '$';
-	ops[1] = '\"';
-	ops[2] = '\'';
-	ops[ENV_OPS_SIZE] = '\0';
-	return (ops);
-}
-
-char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word)
-{
-	char	*tmp1;
-	char	*tmp2;
-
-	tmp1 = ft_strndup(head, cur_pos);
-	cur_pos += ft_strlen(env_val);
-	tmp2 = ft_strjoin(tmp1, env_val);
-	free(tmp1);
-	tmp1 = ft_strjoin(tmp2, left_word + 1);
-	free(tmp2);
-	tmp1[ft_strlen(tmp1)] = '\0';
-	free(head);
-	return (tmp1);
-}
-
-void	find_min_dis(int *dis, char **word)
-{
-	char	*ops;
-	int	i;
-
-	ops = set_env_ops();
-	i = 0;
-	while (ops[i])
-	{
-		if (ft_strchr(*word + 1, ops[i]))
-		{
-			if (ft_strchr(*word + 1, ops[i]) - *word - 1 < *dis)
-				*dis = ft_strchr(*word + 1, ops[i]) - *word - 1;
-		}
-		i++;
-	}
-	free(ops);
-}
-
-// 終了ステータスを取得する
-char	*get_exit_status()
-{
-	return (ft_itoa(g_shell->status));
-}
-
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
-	int	dis;
-	int	env_hit;
-	int	cur_pos;
+	int		dis;
+	int		env_hit;
+	int		cur_pos;
 	char	*exit_status;
 
 	env_hit = 0;
@@ -174,7 +44,6 @@ int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 	int	state;
 
 	state = NOT_Q;
-	//printf("%s\n", word);
 	while (*word)
 	{
 		if (*word == '\'' || *word == '\"')
@@ -193,7 +62,7 @@ int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 		else
 		{
 			if (*word == '\0')
-				break;
+				break ;
 			word++;
 		}
 	}
@@ -203,7 +72,7 @@ int	check_word(char *word, t_env *env, t_cmd *node, int arg_i)
 void	expand(t_cmd **head, t_env *env)
 {
 	t_cmd	*node;
-	int	arg_i;
+	int		arg_i;
 
 	node = *head;
 	arg_i = 0;
