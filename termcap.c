@@ -5,10 +5,15 @@ int	ft_putchar(int c)
 	return (write(1, &c, 1));
 }
 
-void	set_termcap()
+void	init_termcap()
 {
 	tcgetattr(0, &g_shell->term);
 	tcgetattr(0, &g_shell->term_origin);
+	set_termcap();
+}
+
+void	set_termcap()
+{
 	g_shell->term.c_lflag &= ~(ECHO);
 	g_shell->term.c_lflag &= ~(ICANON);
 	g_shell->term.c_cc[VMIN] = 1;

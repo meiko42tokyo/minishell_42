@@ -118,6 +118,7 @@ void	ft_print_linelist(t_line **head, t_line **cur_node);
 */
 int	get_line();
 int	update_and_make_empty_node();
+void	init_termcap();
 void	set_termcap();
 void	reset_termcap();
 

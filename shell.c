@@ -14,7 +14,7 @@ int	main(int argc, char **argv)
 	head = NULL;
 	ft_bzero(&shell, sizeof(t_shell));
 	g_shell = &shell;
-	set_termcap();
+	init_termcap();
 	g_shell->status = 0;
 	g_shell->line = NULL;
 	g_shell->dhead = NULL;
