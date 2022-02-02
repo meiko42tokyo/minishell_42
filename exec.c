@@ -72,6 +72,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	}
 	if (pid == 0)
 	{
+		reset_termcap();
 		if (haspipe)
 		{
 			close(lastpipe[1]);
@@ -149,6 +150,7 @@ void	run_list(t_cmd *c, t_env *env)
 		}
 		c = do_pipeline(c);
 		waitpid(c->pid, NULL, 0);
+		set_termcap();
 		c = c->next;
 	}
 }

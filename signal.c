@@ -15,11 +15,13 @@ void	signal_handler_child(int signo)
 {
 	if (signo == SIGINT)
 	{
+		ft_putstr_fd("\b\b", 1);
 		ft_putstr_fd("^C\n", 1);
 	}
 	if (signo == SIGQUIT)
 	{
+		ft_putstr_fd("\b\b", 1);
 		ft_putstr_fd("^\\Quit: 3\n", 1);
 	}
-	signal(SIGINT, signal_handler);
+	signal(signo, signal_handler);
 }
