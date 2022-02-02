@@ -89,17 +89,15 @@ int	ft_export(char **command, t_env *env)
 
 	if (command[0] == NULL)
 		return (export_env(env));
-	r_status = 0;
+	r_status = ft_strcmp(command[0], "_");
+	if (r_status == 0)
+		return (ft_env_unset(&env, "_"));
 	i = 0;
 	while (command[i])
 	{
-		error_status = command_er_check(command[i]);
+		error_status = command_ex_check(command[i], &r_status, &i);
 		if (error_status < 0)
-		{
-			r_status += error_status;
-			put_error(command[i++]);
 			continue ;
-		}
 		ptr = ft_strchr(command[i], '=');
 		value_judge(command[i++], env, ptr);
 	}

@@ -13,7 +13,6 @@ int	ft_pwd(void)
 		ft_putstr_fd("\n", 2);
 		return (-1);
 	}
-	//エラー処理追記
 	if (!getcwd(buf, size))
 		return (ft_errno(errno));
 	ft_putstr_fd(buf, 1);

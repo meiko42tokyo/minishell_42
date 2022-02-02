@@ -195,6 +195,7 @@ int	ft_exit(char **command);
 int	ft_env(t_env *env, char **command);
 int	ft_export(char **command, t_env *env);
 int	ft_unset(char **command, t_env *env);
+int	ft_env_unset(t_env **env, char *name);
 int	command_er_check(char *command);
 
 /*
@@ -206,6 +207,7 @@ int	sort_env(char **cp_name);
 int	dup_env(t_env *env, char **cp_name);
 int	export_env(t_env *env);
 void	print_env(t_env *env, char **cp_name);
+int	command_ex_check(char *command, int *r_status, int *t);
 
 /*
 **redirect.c
