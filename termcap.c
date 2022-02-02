@@ -143,7 +143,7 @@ int	get_line(char *line, t_line **head, t_line **cur_node)
 		}
 		else if (c == EOF_KEY)
 		{
-			//printf("EOF\n");
+			write(1, "exit", 4);
 			return (1);
 		}
 		else if (ft_isprint(c))
