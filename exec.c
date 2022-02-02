@@ -76,6 +76,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	}
 	if (pid == 0)
 	{
+		reset_termcap();
 		if (haspipe)
 		{
 			close(lastpipe[1]);
@@ -152,6 +153,7 @@ void	run_list(t_cmd *c, t_env *env)
 			g_shell->status = 127;
 		else if (stat_loc == 256)
 			g_shell->status = 1;
+		set_termcap();
 		c = c->next;
 	}
 }
