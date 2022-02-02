@@ -88,7 +88,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
-		input = *c->argv; 
+		input = *c->argv;
 		re = do_execve(input, c->argv);
 		if (re != 0)
 		{
@@ -98,7 +98,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			exit (127);
 		}
 	}
-	signal(SIGINT, signal_handler_child);  
+	signal(SIGINT, signal_handler_child);
 	signal(SIGQUIT, signal_handler_child);
 	if (haspipe)
 	{
