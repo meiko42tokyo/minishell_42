@@ -1,12 +1,11 @@
 #include "shell.h"
 
-//ファイル名修正はやるかあとで確認
-
 static int	redirect(int fd, int stdfd, int *in_out)
 {
 	if (fd == -1)
 	{
-	//エラー処理
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (fd);
 	}
 	if (in_out && *in_out == -1)
@@ -21,11 +20,12 @@ static char	**redirect_free(char **command, int *in, int *out)
 	int	fd;
 
 	fd = 0;
-	//0666はあとで
 	if (ft_strcmp(command[0], ">") == 0)
-		fd = redirect(open(command[1], O_WRONLY | O_CREAT | O_TRUNC, 0666), 1, out);
+		fd = redirect(open(command[1], O_WRONLY \
+			| O_CREAT | O_TRUNC, 0666), 1, out);
 	else if (ft_strcmp(command[0], ">>") == 0)
-		fd = redirect(open(command[1], O_WRONLY | O_CREAT | O_APPEND, 0666), 1, out);
+		fd = redirect(open(command[1], O_WRONLY \
+				| O_CREAT | O_APPEND, 0666), 1, out);
 	else if (ft_strcmp(command[0], "<") == 0)
 		fd = redirect(open(command[1], O_RDONLY), 0, in);
 	if (fd == -1)
@@ -50,8 +50,8 @@ char	**return_free(char **command)
 
 int	is_redir(char *command)
 {
-	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") == 0\
-			|| ft_strcmp(command, "<") == 0)
+	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") \
+		   	 == 0 || ft_strcmp(command, "<") == 0)
 		return (1);
 	return (0);
 }
@@ -60,22 +60,18 @@ char	**ft_redirect(char **command, int *in, int *out)
 {
 	int	i;
 	int	j;
-	//char	**n_command;
 
 	if (!command)
 		return (NULL);
 	i = 0;
-	while(command[i])
+	while (command[i])
 		i++;
-	//if (!(n_command = ft_calloc(i + 1, sizeof(char *))))
-	//	return (NULL);
 	i = 0;
 	j = 0;
 	while (command[i])
 	{
-		if(!is_redir(command[i]))
+		if (!is_redir(command[i]))
 			i++;
-			//		n_command[j++] = command[i++];
 		else
 		{
 			if (!(redirect_free(command + i, in, out)))
@@ -83,6 +79,5 @@ char	**ft_redirect(char **command, int *in, int *out)
 			i += 2;
 		}
 	}
-	//free(command);
 	return (command);
 }
