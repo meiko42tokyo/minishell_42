@@ -19,10 +19,10 @@ int	main(int argc, char **argv)
 	g_shell->line = NULL;
 	g_shell->dhead = NULL;
 	g_shell->cur_node = NULL;
-	signal(SIGINT, (void*)signal_handler);
-	signal(SIGQUIT, (void*)signal_handler);
 	env = init_env();
 	while (1) {
+		signal(SIGINT, (void*)signal_handler);
+		signal(SIGQUIT, (void*)signal_handler);
 		ret = 0;
 		ft_putstr_fd("minishell> ", 0);
 		while (ret == 0)

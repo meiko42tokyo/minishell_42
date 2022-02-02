@@ -93,6 +93,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			exit(127);
 		}
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	if (stat_loc != 0)
 		g_shell->status = 127;
 	if (haspipe)
