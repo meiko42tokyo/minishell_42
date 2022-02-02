@@ -27,6 +27,8 @@ SRCS = shell.c\
 	state_manage.c\
 	parse.c\
 	expand.c\
+	expand_utils.c\
+	expand_utils2.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\
@@ -46,7 +48,7 @@ SRCS = shell.c\
 
 B_SRCS = $(SRCS)
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
 

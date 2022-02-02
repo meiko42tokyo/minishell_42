@@ -157,7 +157,7 @@ int	get_line()
 		}
 		else if (c == EOF_KEY && g_shell->line == NULL)
 		{
-			//printf("EOF\n");
+			write(1, "exit", 4);
 			return (1);
 		}
 		else if (ft_isprint(c))

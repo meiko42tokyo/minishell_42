@@ -1,12 +1,11 @@
 #include "shell.h"
 
-//ファイル名修正はやるかあとで確認
-
 static int	redirect(int fd, int stdfd, int *in_out)
 {
 	if (fd == -1)
 	{
-	//エラー処理
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (fd);
 	}
 	if (in_out && *in_out == -1)
@@ -21,14 +20,14 @@ static char	**redirect_free(char **command, int *in, int *out)
 	int	fd;
 
 	fd = 0;
-	//0666はあとで
 	if (ft_strcmp(command[0], ">") == 0)
-		fd = redirect(open(command[1], O_WRONLY | O_CREAT | O_TRUNC, 0666), 1, out);
+		fd = redirect(open(command[1], O_WRONLY \
+			| O_CREAT | O_TRUNC, 0666), 1, out);
 	else if (ft_strcmp(command[0], ">>") == 0)
-		fd = redirect(open(command[1], O_WRONLY | O_CREAT | O_APPEND, 0666), 1, out);
+		fd = redirect(open(command[1], O_WRONLY \
+				| O_CREAT | O_APPEND, 0666), 1, out);
 	else if (ft_strcmp(command[0], "<") == 0)
 		fd = redirect(open(command[1], O_RDONLY), 0, in);
-	//echo <<はexpand?に移動
 	if (fd == -1)
 		return (NULL);
 	free(command[0]);
@@ -49,24 +48,10 @@ char	**return_free(char **command)
 	return (NULL);
 }
 
-/*
-static char	**return_free(char **command, int i, char **n_command)
-{
-	while (command[i])
-		free(command[i++]);
-	free(command);
-	i = 0;
-	while (n_command[i])
-		free(n_command[i++]);
-	free(n_command);
-	return (NULL);
-}
-*/
-
 int	is_redir(char *command)
 {
-	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") == 0\
-			|| ft_strcmp(command, "<<") == 0 || ft_strcmp(command, "<") == 0)
+	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") \
+		   	 == 0 || ft_strcmp(command, "<") == 0)
 		return (1);
 	return (0);
 }
@@ -74,6 +59,7 @@ int	is_redir(char *command)
 char	**ft_redirect(char **command, int *in, int *out)
 {
 	int	i;
+	int	j;
 
 	if (!command)
 		return (NULL);
@@ -81,13 +67,17 @@ char	**ft_redirect(char **command, int *in, int *out)
 	while (command[i])
 		i++;
 	i = 0;
+	j = 0;
 	while (command[i])
 	{
-		while (is_redir(command[i]) == 0)
+		if (!is_redir(command[i]))
 			i++;
-		if (!(redirect_free(command + i, in, out)))
-			return (return_free(command));
-		i++;
+		else
+		{
+			if (!(redirect_free(command + i, in, out)))
+				return (return_free(command));
+			i += 2;
+		}
 	}
 	return (command);
 }

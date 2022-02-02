@@ -10,10 +10,11 @@ int	is_op(int *token)
 
 int	is_redirect(int token)
 {
-	if (token == RD_LESSER || token == RD_GREATER || token == RD_EXTRACT || token == RD_INSERT)
+	if (token == RD_LESSER || token == RD_GREATER \
+			|| token == RD_EXTRACT || token == RD_INSERT)
 		return (1);
 	else
-		return (0); 
+		return (0);
 }
 
 int	is_two_char(int *token)
