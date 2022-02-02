@@ -58,4 +58,3 @@ char	*put_token(int token)
 		return ("\'");
 	return (NULL);
 }
-

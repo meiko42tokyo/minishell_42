@@ -56,25 +56,12 @@ static void	put_space(char **command, int i)
 int	ft_echo(char **command)
 {
 	int		count;
-	//char	**n_command;
 
 	if (command[1] == NULL)
 	{
 		ft_putstr_fd("\n", 1);
 		return (0);
 	}
-	//while (command[i])
-	//	i++;
-	//n_command = (char **)malloc(sizeof(char *) * (i + 1));
-	//if (!n_command)
-	//	return (0);
-	//i = 0;
-	//while (command[i])
-	//{
-	//	n_command[i] = ft_strdup(command[i]);
-	//	i++;
-	//}
-	//n_command[i] = NULL;
 	count = count_n(command);
 	if (count > 1)
 	{
@@ -87,6 +74,5 @@ int	ft_echo(char **command)
 		put_space(command, 1);
 		ft_putstr_fd("\n", 1);
 	}
-	//return_free(n_command);
 	return (0);
 }
