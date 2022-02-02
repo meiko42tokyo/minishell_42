@@ -9,12 +9,12 @@ int	ispipe(t_cmd *c)
 
 static int	do_execve(char *input, char **argv)
 {
-	extern char **environ;
-	char	**split_path;
-	char	*path;
-	char	*tmp;
-	int		i;
-	int		t;
+	extern char	**environ;
+	char		**split_path;
+	char		*path;
+	char		*tmp;
+	int			i;
+	int			t;
 
 	split_path = NULL;
 	i = 0;
@@ -42,6 +42,8 @@ static int	do_execve(char *input, char **argv)
 		else
 			path = input;
 		free(tmp);
+		if (include_redir(argv))
+			argv = ft_redirect(argv, NULL, NULL);
 		if (!execve(path, argv, environ))
 			return (0);
 		i++;
@@ -55,9 +57,9 @@ static int	do_execve(char *input, char **argv)
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 {
 	pid_t	pid;
-	int	newpipe[2];
-	char *input;
-	int	stat_loc;
+	int		newpipe[2];
+	char	*input;
+	int		stat_loc;
 
 	stat_loc = 0;
 	if (ispipe)
@@ -84,6 +86,13 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
+		if (include_redir(c->argv))
+			c->argv = ft_redirect(c->argv, NULL, NULL);
+		if (!c->argv)
+		{
+			ft_putstr_fd("No such file or directory\n", 2);
+			exit(1);
+		}
 		input = *c->argv; // TODO:input->c->argv[0]
 		g_shell->status = do_execve(input, c->argv); // exec needed?
 		if (g_shell->status == -1)
@@ -108,7 +117,6 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 	return (pid);
 }
 
-
 t_cmd	*do_pipeline(t_cmd *c)
 {
 	int	haspipe;
@@ -124,7 +132,7 @@ t_cmd	*do_pipeline(t_cmd *c)
 		if (haspipe)
 			c = c->next;
 		else
-			break;
+			break ;
 	}
 	return (c);
 }
@@ -135,9 +143,9 @@ void	run_list(t_cmd *c, t_env *env)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
 		{
-			g_shell->status = exec_buildin(c->argv, env);
+			g_shell->status = exec_buildin_parent(c->argv, env);
 			c = c->next;
-			continue;
+			continue ;
 		}
 		c = do_pipeline(c);
 		waitpid(c->pid, NULL, 0);

@@ -28,3 +28,24 @@ void	print_env(t_env *env, char **cp_name)
 	}
 	return ;
 }
+
+int	command_ex_check(char *command, int *r_status, int *t)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+	{
+		if (!ft_isalpha(command[i]) && command[i] != '_')
+		{
+			ft_putstr_fd("export `", 2);
+			ft_putstr_fd(command, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			*r_status -= 1;
+			*t += 1;
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
+}

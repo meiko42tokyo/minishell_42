@@ -4,6 +4,8 @@ static char	*save_oldpwd(t_env *env)
 {
 	t_env	*tmp;
 
+	if (!env)
+		return (0);
 	tmp = env;
 	while (tmp)
 	{
@@ -26,7 +28,6 @@ static void	save_pwd(char *save_np)
 		ft_putstr_fd("\n", 2);
 		return ;
 	}
-	//エラー処理追記
 	getcwd(save_np, size);
 	free(save_np);
 	return ;
@@ -37,6 +38,8 @@ static void	save_env(t_env *env, char *save_p, char *save_np)
 	char	**new_p;
 	char	**new_op;
 
+	if (!env || !save_p || !save_np)
+		return ;
 	new_p = (char **)malloc(sizeof(char *) * 2);
 	new_op = (char **)malloc(sizeof(char *) * 2);
 	new_p[0] = ft_strjoin("PWD=", save_np);
@@ -67,7 +70,6 @@ int	ft_cd(char *path, t_env *env)
 		if (chdir(save_op) < 0)
 			return (ft_errno(errno));
 	}
-	//エラー処理& FREEの仕方を後で入れる
 	else
 	{
 		if (chdir(path) < 0)

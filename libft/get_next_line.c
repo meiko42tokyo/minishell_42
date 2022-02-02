@@ -6,7 +6,7 @@
 /*   By: ykarasaw <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 09:58:26 by ykarasaw          #+#    #+#             */
-/*   Updated: 2022/01/30 17:54:29 by sakasekaw        ###   ########.fr       */
+/*   Updated: 2022/02/02 19:41:12 by sakasekaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ char	*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 		*n = -1;
 		return (NULL);
 	}
-	while (((newline = gnl_strchr(*memo, '\n')) == NULL
-			&& (*n = read(fd, buf, BUFFER_SIZE)) > 0))
+	newline = gnl_strchr(*memo, '\n');
+	*n = read(fd, buf, BUFFER_SIZE);
+	while (newline == NULL && *n > 0)
 	{
 		buf[*n] = '\0';
 		if (*memo == NULL)
@@ -44,7 +45,7 @@ char	*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 	return (newline);
 }
 
-int				make_a_line(char **line, char **memo, char *newline, char *tmp)
+int	make_a_line(char **line, char **memo, char *newline, char *tmp)
 {
 	*line = ft_strndup(*memo, newline - *memo);
 	tmp = ft_strndup(newline + 1, gnl_strlen(newline + 1));
