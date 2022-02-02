@@ -49,7 +49,7 @@ SRCS = shell.c\
 
 B_SRCS = $(SRCS)
 
-CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
 
