@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("minishell> ", 0);
 		while (ret == 0)
 		{
-			ret = get_line(g_shell->line, &g_shell->dhead, &g_shell->cur_node);
+			ret = get_line();
 		}
 		//ft_print_linelist(&line_head, &cur_node);
 		if (ret == 1)
