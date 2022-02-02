@@ -19,6 +19,7 @@ endif
 
 SRCS = shell.c\
 	exec.c\
+	exec_utils.c\
 	lstUtils.c\
 	syntax_error.c\
 	heredoc.c\

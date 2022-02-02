@@ -90,7 +90,14 @@ extern t_shell	*g_shell;
 void	run_list(t_cmd *c, t_env *env);
 t_cmd	*do_pipeline(t_cmd *c);
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
+
+/*
+**exec_utils.c
+*/
 int		ispipe(t_cmd *c);
+char	**make_split_path(char **environ);
+char	*make_path(char *input, char **split_path, int i);
+int	do_execve(char *input, char **argv);
 
 /*
 **lstUtils.c
