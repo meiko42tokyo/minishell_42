@@ -27,9 +27,7 @@ char	*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 		*n = -1;
 		return (NULL);
 	}
-	newline = gnl_strchr(*memo, '\n');
-	*n = read(fd, buf, BUFFER_SIZE);
-	while (newline == NULL && *n > 0)
+	while ((newline = gnl_strchr(*memo, '\n')) == NULL && (*n = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[*n] = '\0';
 		if (*memo == NULL)
@@ -40,6 +38,7 @@ char	*ft_read_till_newline(char *tmp, char **memo, int fd, int *n)
 			free(*memo);
 			*memo = tmp;
 		}
+		newline = gnl_strchr(*memo, '\n');
 	}
 	free(buf);
 	return (newline);

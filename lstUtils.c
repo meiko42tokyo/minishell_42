@@ -112,7 +112,7 @@ void	ft_print_cmdlist(t_cmd **head)
 	index = 0;
 	if (*head == NULL)
 	{
-		//printf("cmd head null\n");
+		printf("cmd head null\n");
 		return ;
 	}
 	node = *head;

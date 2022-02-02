@@ -29,7 +29,6 @@ int	main(int argc, char **argv)
 		{
 			ret = get_line();
 		}
-		//ft_print_linelist(&line_head, &cur_node);
 		if (ret == 1)
 			break;
 		if (g_shell->cur_node != NULL && ft_strlen(g_shell->line) == 0 && g_shell->cur_node->data == NULL)

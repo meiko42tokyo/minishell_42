@@ -75,17 +75,30 @@ void	store_line(char *identifier)
 		free_set(&line, ft_strjoin(line, "\n"));
 		free_set(&save, ft_strjoin(save, line));
 	}
-	write(0, save, ft_strlen(save));
 }
 
-int	remove_heredoc(char **input, size_t id_len)
+void	skip_heredoc(t_cmd **head)
 {
-	char	*heredoc_start;
+	t_cmd	*cmd;
+	int	arg_i;
 
-	heredoc_start = ft_strnstr(*input, "<<", 2);
-	ft_memmove(heredoc_start, heredoc_start + id_len, ft_strlen(*input));
-	*input[ft_strlen(*input) - id_len] = '\0';
-	return (0);
+	cmd = *head;
+	while (cmd)
+	{
+		arg_i = 0;
+		while (cmd->argv[arg_i])
+		{
+			if (!ft_strncmp(cmd->argv[arg_i], "<<", 2))
+			{
+				strpshift(cmd->argv, arg_i);
+				strpshift(cmd->argv, arg_i);
+			}
+			arg_i++;
+		}
+		if (cmd->next == NULL)
+			break ;
+		cmd = cmd->next;
+	}
 }
 
 int	heredoc(char **input)

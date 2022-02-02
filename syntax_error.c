@@ -58,19 +58,20 @@ int	syntax_error(char **input)
 
 	state = NOT_Q;
 	save = *input;
-	while (**input != '\0')
+	while (*save != '\0')
 	{
 		heredocs = 0;
-		if (**input == '\"' || **input == '\'')
-			manage_state(&state, **input);
-		if (state == NOT_Q && check_syntax(*input, &heredocs))
+		if (*save == '\"' || *save == '\'')
+			manage_state(&state, *save);
+		if (state == NOT_Q && check_syntax(save, &heredocs))
 		{
 			if (heredocs)
-				return (heredoc(input));
+			{
+				return (heredoc(&save));
+			}
 			return (1);
 		}
-		(*input)++;
+		save++;
 	}
-	*input = save;
 	return (0);
 }

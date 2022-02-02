@@ -131,6 +131,7 @@ int		syntax_error(char **input);
 **heredoc.c
 */
 int		heredoc(char **input);
+void		skip_heredoc(t_cmd **head);
 
 /*
 **token_util.c
@@ -152,6 +153,7 @@ int		is_token_br(int token);
 */
 int		is_in_quoto(int state);
 void	manage_state(int *state, char c);
+
 /*
 **parse.c
 */
