@@ -2,16 +2,16 @@
 
 t_shell	*g_shell;
 
-int	main(int argc, char **argv) 
+int	main(int argc, char **argv)
 {
-	char		*line;
-	t_cmd		*head;
-	t_line		*line_head;
-	t_line		*cur_node;
+	char	*line;
+	t_cmd	*head;
+	t_line	*line_head;
+	t_line	*cur_node;
 	int		ret;
-	t_env		*env;
-	t_shell		shell;
-	
+	t_env	*env;
+	t_shell	shell;
+
 	argc = 1;
 	argv = NULL;
 	line = NULL;
@@ -25,8 +25,8 @@ int	main(int argc, char **argv)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	env = init_env();
-	//printf("%s, %s\n", env->name, env->value);
-	while (1) {
+	while (1)
+	{
 		ret = 0;
 		ft_putstr_fd("minishell> ", 0);
 		while (ret == 0)
@@ -34,9 +34,7 @@ int	main(int argc, char **argv)
 			ret = get_line(line, &line_head, &cur_node);
 		}
 		if (ret == 1)
-			break;
-		//get_next_line(0, &input); // TODO: if fail in GNL
-		// save input to doubly linked list
+			break ;
 		head = make_cmdlist(cur_node->data, env);
 		free(line);
 		line = NULL;
