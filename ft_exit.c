@@ -27,7 +27,7 @@ static void	exit_error(const char *str, int num)
 	ft_putstr_fd("exit\n", 1);
 	if (str)
 	{
-		ft_putstr_fd("exit\nbash: exit :", 2);
+		ft_putstr_fd("bash: exit :", 2);
 		ft_putstr_fd((char *)str, 2);
 		ft_putstr_fd(" : numeric argument required\n", 2);
 	}

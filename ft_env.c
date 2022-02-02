@@ -35,7 +35,7 @@ int	ft_env(t_env *env, char **command)
 	if (command[1])
 		i = judge_error(command);
 	if (i == -1)
-		return (1);
+		return (127);
 	while (env)
 	{
 		if (env->value)

@@ -28,12 +28,12 @@ static char	**redirect_free(char **command, int *in, int *out)
 				| O_CREAT | O_APPEND, 0666), 1, out);
 	else if (ft_strcmp(command[0], "<") == 0)
 		fd = redirect(open(command[1], O_RDONLY), 0, in);
-	if (fd == -1)
-		return (NULL);
 	free(command[0]);
 	command[0] = NULL;
 	free(command[1]);
 	command[1] = NULL;
+	if (fd == -1)
+		return (NULL);
 	return (command + 2);
 }
 
@@ -75,7 +75,7 @@ char	**ft_redirect(char **command, int *in, int *out)
 		else
 		{
 			if (!(redirect_free(command + i, in, out)))
-				return (return_free(command));
+				return (NULL);
 			i += 2;
 		}
 	}

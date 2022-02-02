@@ -45,9 +45,11 @@ static int	do_execve(char *input, char **argv)
 		if (include_redir(argv))
 			argv = ft_redirect(argv, NULL, NULL);
 		if (!execve(path, argv, environ))
+		{
+			free(path);
 			return (0);
+		}
 		i++;
-		//execve(path, argv, environ);
 		free(path);
 	}
 	free(split_path);
@@ -83,13 +85,6 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			close(newpipe[0]);
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
-		}
-		if (include_redir(c->argv))
-			c->argv = ft_redirect(c->argv, NULL, NULL);
-		if (!c->argv)
-		{
-			ft_putstr_fd("No such file or directory\n", 2);
-			exit(1);
 		}
 		input = *c->argv; // TODO:input->c->argv[0]
 		g_shell->status = do_execve(input, c->argv); // exec needed?
