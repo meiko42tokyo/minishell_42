@@ -88,8 +88,8 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			dup2(newpipe[1], 1);
 			close(newpipe[1]);
 		}
-		input = *c->argv; // TODO:input->c->argv[0]
-		re = do_execve(input, c->argv); // exec needed?
+		input = *c->argv; 
+		re = do_execve(input, c->argv);
 		if (re != 0)
 		{
 			ft_putstr_fd("bash: ", 2);
@@ -135,6 +135,9 @@ t_cmd	*do_pipeline(t_cmd *c)
 
 void	run_list(t_cmd *c, t_env *env)
 {
+	int	stat_loc;
+
+	stat_loc = 0;
 	while (c)
 	{
 		if (is_buildin(c->argv) && !ispipe(c))
@@ -144,7 +147,11 @@ void	run_list(t_cmd *c, t_env *env)
 			continue ;
 		}
 		c = do_pipeline(c);
-		waitpid(c->pid, NULL, 0);
+		waitpid(c->pid, &stat_loc, WUNTRACED);
+		if (stat_loc == 32512)
+			g_shell->status = 127;
+		else if (stat_loc == 256)
+			g_shell->status = 1;
 		c = c->next;
 	}
 }
