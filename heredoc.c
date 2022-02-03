@@ -62,6 +62,7 @@ void	store_line(char *identifier)
 {
 	char	*line;
 	char	*save;
+	char	*tmp;
 
 	line = ft_strjoin("", NULL);
 	save = ft_strjoin("", NULL);
@@ -73,9 +74,10 @@ void	store_line(char *identifier)
 		else
 			write(1, "> ", 2);
 		free_set(&line, ft_strjoin(line, "\n"));
-		if (
+		tmp = save;
 		free_set(&save, ft_strjoin(save, line));
 		free(line);
+		free(tmp);
 	}
 	free(line);
 	if (pipe(g_shell->heredoc_fd) != -1)
