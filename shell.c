@@ -7,21 +7,23 @@ int	main(int argc, char **argv)
 	t_cmd	*head;
 	t_env	*env;
 	int		ret;
-	t_shell	shell;
 
 	argc = 1;
 	argv = NULL;
 	head = NULL;
-	ft_bzero(&shell, sizeof(t_shell));
-	g_shell = &shell;
+	g_shell = malloc(sizeof(t_shell));
+	ft_bzero(g_shell, sizeof(t_shell));
 	init_termcap();
 	g_shell->status = 0;
 	g_shell->line = NULL;
 	g_shell->dhead = NULL;
 	g_shell->cur_node = NULL;
+	g_shell->save_heredoc = NULL;
 	env = init_env();
 	while (1)
 	{
+		g_shell->heredoc_fd[0] = -1;
+		g_shell->heredoc_fd[1] = -1;
 		signal(SIGINT, (void *)signal_handler);
 		signal(SIGQUIT, (void *)signal_handler);
 		ret = 0;

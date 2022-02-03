@@ -71,6 +71,8 @@ typedef struct s_shell
 {
 	int				status;
 	char			*line;
+	char			*save_heredoc;
+	int			heredoc_fd[2];
 	t_line			*dhead;
 	t_line			*cur_node;
 	struct termios	term;
@@ -147,6 +149,12 @@ int		is_op(int *token);
 int		is_redirect(int token);
 int		is_two_char(int *token);
 int		is_token_br(int token);
+
+/*
+**redirect.c
+*/
+int	redirect(int fd, int stdfd, int *in_out);
+void	heredoc_kota(int n);
 
 /*
 **state_manage.c
