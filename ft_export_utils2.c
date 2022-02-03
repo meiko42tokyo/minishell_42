@@ -36,7 +36,7 @@ int	command_ex_check(char *command, int *r_status, int *t)
 	i = 0;
 	while (command[i])
 	{
-		if (!ft_isalpha(command[i]) && command[i] != '_')
+		if (!ft_isalpha(command[i]) && command[i] != '_' && command[i] != '=')
 		{
 			ft_putstr_fd("export `", 2);
 			ft_putstr_fd(command, 2);
