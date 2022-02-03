@@ -59,6 +59,7 @@ void	find_min_dis(int *dis, char **word)
 	char	*ops;
 	int		i;
 
+	*dis = ft_strlen(*word + 1);
 	ops = set_env_ops();
 	i = 0;
 	while (ops[i])

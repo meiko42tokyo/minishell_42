@@ -28,14 +28,13 @@ static void	word_set(char **word, t_cmd *node, int cur_pos, int arg_i)
 
 int	expand_env(char **word, t_env *env, t_cmd *node, int arg_i)
 {
-	int		dis;
-	int		env_hit;
-	int		cur_pos;
+	int	dis;
+	int	env_hit;
+	int	cur_pos;
 
 	env_hit = word_judge(&cur_pos, word, node, arg_i);
 	if (env_hit != 0)
 		return (0);
-	dis = ft_strlen(*word + 1);
 	find_min_dis(&dis, word);
 	while (env)
 	{

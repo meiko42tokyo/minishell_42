@@ -39,31 +39,14 @@ void	skip_token(char **input, t_parse *ps)
 	}
 }
 
-/*
-static void	set_command(char *input, t_cmd *head, t_cmd *cmd, t_parse *ps)
+static void	set_input(char **input, t_parse *ps)
 {
-	if ((ps->state != NOT_Q && !is_token_br(ps->token)) \
-			|| (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
-		append_str(&head, ps->new_pos == input, ps);
-	else if (cmd && is_token_br(cmd->op) && ps->state == NOT_Q)
-		start_br(&head, &cmd, input, ps);
-	else if (cmd && (is_redirect(cmd->op)))
-		find_redirect(&head, &cmd, ps);
-	else
-		new_cmd(&head, &cmd, ps);
-}
-*/
-
-/*
-static void	set_input(char *input, t_parse *ps)
-{
-	input = ps->new_pos;
-	skip_token(&input, ps);
+	*input = ps->new_pos;
+	skip_token(input, ps);
 	free(ps->word);
 	ps->word = NULL;
 	return ;
 }
-*/
 
 t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 {
@@ -72,7 +55,6 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 	cmd = NULL;
 	while (ps->new_pos >= input)
 	{
-		//set_command(input, head, cmd, ps);
 		if ((ps->state != NOT_Q && !is_token_br(ps->token)) \
 				|| (cmd && is_token_br(ps->token) && is_in_quoto(ps->state)))
 			append_str(&head, ps->new_pos == input, ps);
@@ -82,11 +64,7 @@ t_cmd	*set_cmdlist(char *input, t_cmd *head, t_parse *ps)
 			find_redirect(&head, &cmd, ps);
 		else
 			new_cmd(&head, &cmd, ps);
-		//set_input(input, &ps);
-		input = ps->new_pos;
-		skip_token(&input, ps);
-		free(ps->word);
-		ps->word = NULL;
+		set_input(&input, ps);
 		if (ft_strlen(input) == 0)
 			break ;
 		else
