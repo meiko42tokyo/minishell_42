@@ -154,6 +154,8 @@ int		new_line(void);
 **syntax_error.c
 */
 int		syntax_error(char **input);
+int		shell_error(void);
+int		avoid_segfault(char *input);
 
 /*
 **heredoc.c

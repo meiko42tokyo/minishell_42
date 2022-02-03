@@ -37,7 +37,7 @@ static int	c_judge(int c)
 	}
 	else if (c == EOF_KEY && g_shell->line == NULL)
 	{
-		write(1, "exit", 4);
+		write(1, "exit\n", 5);
 		return (1);
 	}
 	else if (ft_isprint(c))

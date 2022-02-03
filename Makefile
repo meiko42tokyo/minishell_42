@@ -20,9 +20,10 @@ endif
 SRCS = shell.c\
 	exec.c\
 	exec_utils.c\
-	lstutils.c\
+	lstUtils.c\
 	lstutils2.c\
 	syntax_error.c\
+	syntax_error2.c\
 	heredoc.c\
 	heredoc_utils.c\
 	token_util.c\
@@ -52,7 +53,7 @@ SRCS = shell.c\
 	termcap.c\
 	termcap_utils.c\
 	termcap_utils2.c\
-	doubly_lstutils.c\
+	doubly_lstUtils.c\
 	doubly_lstutils2.c\
 	signal.c\
 	close_utility.c\
