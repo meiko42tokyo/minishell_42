@@ -75,12 +75,8 @@ void	store_line(char *identifier)
 		free_set(&line, ft_strjoin(line, "\n"));
 		free_set(&save, ft_strjoin(save, line));
 	}
-	// pipe にsaveの中身入れちゃう
 	if (pipe(g_shell->heredoc_fd) != -1)
-	{
-		printf("g_shell->heredoc_fd[1]:%d\n", g_shell->heredoc_fd[1]);
 		write(g_shell->heredoc_fd[1], save, ft_strlen(save));
-	}
 	free(save);
 }
 
