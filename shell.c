@@ -24,7 +24,7 @@ static void	make_command_run(t_env *env)
 	if (g_shell->cur_node != NULL && \
 			syntax_error(&g_shell->cur_node->data))
 	{
-		g_shell->status = 1;
+		g_shell->status = 258;
 		return ;
 	}
 	if (g_shell->cur_node != NULL)
