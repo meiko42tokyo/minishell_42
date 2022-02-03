@@ -74,34 +74,12 @@ void	store_line(char *identifier)
 			write(1, "> ", 2);
 		free_set(&line, ft_strjoin(line, "\n"));
 		free_set(&save, ft_strjoin(save, line));
+		free(line);
 	}
 	if (pipe(g_shell->heredoc_fd) != -1)
 		write(g_shell->heredoc_fd[1], save, ft_strlen(save));
 	free(save);
-}
-
-void	skip_heredoc(t_cmd **head)
-{
-	t_cmd	*cmd;
-	int	arg_i;
-
-	cmd = *head;
-	while (cmd)
-	{
-		arg_i = 0;
-		while (cmd->argv[arg_i])
-		{
-			if (!ft_strncmp(cmd->argv[arg_i], "<<", 2))
-			{
-				strpshift(cmd->argv, arg_i);
-				strpshift(cmd->argv, arg_i);
-			}
-			arg_i++;
-		}
-		if (cmd->next == NULL)
-			break ;
-		cmd = cmd->next;
-	}
+	free(identifier);
 }
 
 int	heredoc(char **input)
@@ -111,16 +89,6 @@ int	heredoc(char **input)
 	reset_termcap();
 	identifier = get_identifier(*input);
 	store_line(identifier);
-	//ret = remove_heredoc(*input);
-	//if (ft_strchr(*input, ' '))
-	//{
-	//	len = ft_strchr(*input, ' ') - *input;
-	//}
-	// count number of identifier?
-		// num until <<
-		// num until ' '
-		// num until all
-	// remove << and aaa from argv
 	set_termcap();
 	return (0);
 }
