@@ -57,7 +57,6 @@ int	export_env(t_env *env)
 {
 	char	*cp_name[100];
 
-	//あとでマロックの仕方要検討
 	dup_env(env, cp_name);
 	sort_env(cp_name);
 	print_env(env, cp_name);
