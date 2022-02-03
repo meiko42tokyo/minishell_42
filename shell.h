@@ -102,12 +102,17 @@ int	do_execve(char *input, char **argv);
 /*
 **lstUtils.c
 */
+void	ft_print_cmdlist(t_cmd **head);
+void	free_cmdlist(t_cmd **head);
+
+/*
+**lstUtils.c
+*/
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 int		ft_argv_len(t_cmd *cmd);
+int		check_argvsize(t_cmd *node);
 int		ft_print_cmdsize(t_cmd **head);
-void	ft_print_cmdlist(t_cmd **head);
-void	free_cmdlist(t_cmd **head);
 
 /*
 **doubly_lstUtils.c
