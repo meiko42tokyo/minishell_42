@@ -158,7 +158,7 @@ int		syntax_error(char **input);
 /*
 **heredoc.c
 */
-int		heredoc(char **input);
+int		heredoc(char *input);
 void	skip_heredoc(t_cmd **head);
 
 /*
