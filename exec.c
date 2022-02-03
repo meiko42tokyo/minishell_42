@@ -41,6 +41,11 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2])
 			exit (127);
 		}
 	}
+	if (g_shell->heredoc_fd[0] > 0)
+	{
+		close(g_shell->heredoc_fd[0]);
+		close(g_shell->heredoc_fd[1]);
+	}
 	signal(SIGINT, signal_handler_child);
 	signal(SIGQUIT, signal_handler_child);
 	if (haspipe)
