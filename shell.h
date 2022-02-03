@@ -125,9 +125,23 @@ void	ft_print_linelist(t_line **head, t_line **cur_node);
 */
 int		get_line(void);
 int		update_and_make_empty_node(void);
+
+/*
+**termcap_utils.c
+*/
+int		ft_putchar(int c);
 void	init_termcap(void);
 void	set_termcap(void);
 void	reset_termcap(void);
+char	*make_line(char *line, int c_int);
+
+/*
+**termcap_utils2.c
+*/
+char	*history_out(t_line **cur_node, int c);
+int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line);
+int	update_and_make_empty_node(void);
+int	new_line(void);
 
 /*
 **syntax_error.c

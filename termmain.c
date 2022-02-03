@@ -2,6 +2,8 @@
 
 t_shell	*g_shell;
 
+
+
 int	main(int argc, char **argv)
 {
 	char	*line;
@@ -30,9 +32,7 @@ int	main(int argc, char **argv)
 		ret = 0;
 		ft_putstr_fd("minishell> ", 0);
 		while (ret == 0)
-		{
 			ret = get_line(line, &line_head, &cur_node);
-		}
 		if (ret == 1)
 			break ;
 		head = make_cmdlist(cur_node->data, env);

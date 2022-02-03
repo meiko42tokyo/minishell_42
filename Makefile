@@ -44,6 +44,8 @@ SRCS = shell.c\
 	env_utils.c\
 	error.c\
 	termcap.c\
+	termcap_utils.c\
+	termcap_utils2.c\
 	doubly_lstUtils.c\
 	doubly_lstutils2.c\
 	signal.c\
