@@ -90,7 +90,20 @@ extern t_shell	*g_shell;
 void	run_list(t_cmd *c, t_env *env);
 t_cmd	*do_pipeline(t_cmd *c);
 pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
+
+/*
+**exec_utils.c
+*/
 int		ispipe(t_cmd *c);
+char	**make_split_path(char **environ);
+char	*make_path(char *input, char **split_path, int i);
+int	do_execve(char *input, char **argv);
+
+/*
+**lstUtils.c
+*/
+void	ft_print_cmdlist(t_cmd **head);
+void	free_cmdlist(t_cmd **head);
 
 /*
 **lstUtils.c
@@ -98,9 +111,8 @@ int		ispipe(t_cmd *c);
 t_cmd	*ft_cmdnew(char *argv[], int op);
 void	ft_cmdadd_back(t_cmd **head, t_cmd *new);
 int		ft_argv_len(t_cmd *cmd);
+int		check_argvsize(t_cmd *node);
 int		ft_print_cmdsize(t_cmd **head);
-void	ft_print_cmdlist(t_cmd **head);
-void	free_cmdlist(t_cmd **head);
 
 /*
 **doubly_lstUtils.c
@@ -118,9 +130,23 @@ void	ft_print_linelist(t_line **head, t_line **cur_node);
 */
 int		get_line(void);
 int		update_and_make_empty_node(void);
+
+/*
+**termcap_utils.c
+*/
+int		ft_putchar(int c);
 void	init_termcap(void);
 void	set_termcap(void);
 void	reset_termcap(void);
+char	*make_line(char *line, int c_int);
+
+/*
+**termcap_utils2.c
+*/
+char	*history_out(t_line **cur_node, int c);
+int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line);
+int	update_and_make_empty_node(void);
+int	new_line(void);
 
 /*
 **syntax_error.c

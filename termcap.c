@@ -1,136 +1,61 @@
 #include "shell.h"
 
-int	ft_putchar(int c)
+static int	g_judge(int c)
 {
-	return (write(1, &c, 1));
-}
-
-void	init_termcap(void)
-{
-	tcgetattr(0, &g_shell->term);
-	tcgetattr(0, &g_shell->term_origin);
-	set_termcap();
-}
-
-void	set_termcap(void)
-{
-	g_shell->term.c_lflag &= ~(ECHO);
-	g_shell->term.c_lflag &= ~(ICANON);
-	g_shell->term.c_cc[VMIN] = 1;
-	g_shell->term.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &g_shell->term);
-	tgetent(0, getenv("TERM"));
-}
-
-void	reset_termcap(void)
-{
-	tcsetattr(0, TCSANOW, &g_shell->term_origin);
-}
-
-char	*make_line(char *line, int c_int)
-{
-	char	*ret;
-	char	*tail;
-	char	c;
-
-	c = (char)c_int;
-	write(1, &c, 1);
-	tail = ft_strndup(&c, 1);
-	if (line == NULL)
-		return (tail);
-	ret = ft_strjoin(line, tail);
-	free(line);
-	free(tail);
-	line = NULL;
-	tail = NULL;
-	return (ret);
-}
-
-char	*history_out(t_line **cur_node, int c)
-{
-	t_line	*node;
-	char	*line;
-
-	if (*cur_node == NULL)
-		return (NULL);
-	node = *cur_node;
-	if (c == AR_U)
-	{
-		if (node->prev != NULL)
-			(*cur_node) = node->prev;
-		else
-			return (NULL);
-	}
-	else if (c == AR_D)
-	{
-		if (node->next != NULL)
-			(*cur_node) = node->next;
-		else
-			return (NULL);
-	}
-	tputs(tgetstr("cr", 0), 1, ft_putchar);
-	tputs(tgetstr("ce", 0), 1, ft_putchar);
-	write(1, (*cur_node)->data, ft_strlen((*cur_node)->data));
-	line = ft_strdup((*cur_node)->data);
-	return (line);
-}
-
-int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line)
-{
-	*cur_node = ft_linenew(line);
-	if (!*cur_node)
-		return (-1);
-	ft_lineadd_back(head, *cur_node);
-	return (0);
-}
-
-int	update_and_make_empty_node(void)
-{
-	g_shell->cur_node = ft_linenew("");
-	if (!g_shell->cur_node)
-		return (-1);
-	ft_lineadd_back(&g_shell->dhead, g_shell->cur_node);
-	return (0);
-}
-
-int	new_line(void)
-{
-	if (g_shell->line == NULL)
-	{
-		if (g_shell->cur_node == NULL)
-			return (0);
-		if (ft_strlen(ft_get_latestdata(&g_shell->dhead)) \
-				!= 0 && update_and_make_empty_node() != 0)
-			return (-1);
-		return (0);
-	}
-	if (g_shell->cur_node == NULL || \
-			ft_strlen(ft_get_latestdata(&g_shell->dhead)) != 0)
-	{
-		if (update_and_make_newnode(&g_shell->dhead, \
-					&g_shell->cur_node, g_shell->line) != 0)
-			return (-1);
-	}
-	else if (ft_strlen(ft_get_latestdata(&g_shell->dhead)) == 0)
-		ft_change_latestline(&g_shell->dhead, g_shell->line);
-	else
+	if (g_shell->cur_node == NULL)
 	{
 		free(g_shell->line);
 		g_shell->line = NULL;
-		return (-1);
+		return (0);
 	}
-	return (0);
+	if (c == AR_U && ft_strlen(g_shell->cur_node->data) != 0 \
+			&& ft_strlen(ft_get_latestdata(&g_shell->dhead)) \
+			!= 0 && g_shell->line == NULL)
+	{
+		if (update_and_make_empty_node() != 0)
+			return (-1);
+	}
+	if (g_shell->line != NULL)
+	{	
+		free(g_shell->line);
+		g_shell->line = NULL;
+	}
+	g_shell->line = history_out(&g_shell->cur_node, c);
+	return (1);
+}
+
+static int	c_judge(int c)
+{
+	int	re;
+
+	re = 0;
+	if (c == AR_U || c == AR_D)
+	{
+		re = g_judge(c);
+		if (re == 0 || re == -1)
+			return (re);
+	}
+	else if (c == EOF_KEY && g_shell->line == NULL)
+	{
+		write(1, "exit", 4);
+		return (1);
+	}
+	else if (ft_isprint(c))
+		g_shell->line = make_line(g_shell->line, c);
+	return (2);
 }
 
 int	get_line(void)
 {
 	int	c;
+	int	re;
 	int	his_depth;
 
 	his_depth = 0;
 	while (1)
 	{
 		c = 0;
+		re = 2;
 		read(0, &c, sizeof(c));
 		if (c == '\n')
 		{
@@ -138,35 +63,9 @@ int	get_line(void)
 				return (-1);
 			break ;
 		}
-		if (c == AR_U || c == AR_D)
-		{
-			if (g_shell->cur_node == NULL)
-			{
-				free(g_shell->line);
-				g_shell->line = NULL;
-				return (0);
-			}
-			if (c == AR_U && ft_strlen(g_shell->cur_node->data) != 0 \
-					&& ft_strlen(ft_get_latestdata(&g_shell->dhead)) \
-					!= 0 && g_shell->line == NULL)
-			{
-				if (update_and_make_empty_node() != 0)
-					return (-1);
-			}
-			if (g_shell->line != NULL)
-			{	
-				free(g_shell->line);
-				g_shell->line = NULL;
-			}
-			g_shell->line = history_out(&g_shell->cur_node, c);
-		}
-		else if (c == EOF_KEY && g_shell->line == NULL)
-		{
-			write(1, "exit", 4);
-			return (1);
-		}
-		else if (ft_isprint(c))
-			g_shell->line = make_line(g_shell->line, c);
+		re = c_judge(c);
+		if (re != 2)
+			return (re);
 	}
 	write(1, "\n", 1);
 	free(g_shell->line);
