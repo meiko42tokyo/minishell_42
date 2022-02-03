@@ -23,7 +23,10 @@ static void	make_command_run(t_env *env)
 		return ;
 	if (g_shell->cur_node != NULL && \
 			syntax_error(&g_shell->cur_node->data))
+	{
+		g_shell->status = 1;
 		return ;
+	}
 	if (g_shell->cur_node != NULL)
 	{
 		head = make_cmdlist(g_shell->cur_node->data, env);

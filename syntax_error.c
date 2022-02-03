@@ -37,8 +37,11 @@ int	check_syntax(char *input, int *heredoc)
 	int	i;
 
 	i = ft_strncmp(input, "<<", 2);
-	if (i == 0 && (*heredoc = 1))
+	if (i == 0)
+	{
+		*heredoc = 1;
 		return (1);
+	}
 	else if (check_pipe_syntax(input))
 		return (print_error("|"));
 	else if (!ft_strncmp(input, ";;", 2))

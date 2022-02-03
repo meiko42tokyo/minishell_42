@@ -19,7 +19,7 @@ int	heredoc_exist(char *input, int *times)
 char	*expand_identifier(char *id)
 {
 	char	*identifier;
-	int	state;
+	int		state;
 
 	state = NOT_Q;
 	identifier = id;
@@ -39,7 +39,7 @@ char	*expand_identifier(char *id)
 
 char	*get_identifier(char *input)
 {
-	int	len;
+	int		len;
 	char	*id;
 
 	input += 2;
@@ -85,7 +85,7 @@ void	store_line(char *identifier)
 int	heredoc(char **input)
 {
 	char	*identifier;
-	
+
 	reset_termcap();
 	identifier = get_identifier(*input);
 	store_line(identifier);
