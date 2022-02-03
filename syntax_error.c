@@ -34,14 +34,13 @@ int	check_redirect_syntax(char *input)
 
 int	check_syntax(char *input, int *heredoc)
 {
-	int	i;
-
-	i = ft_strncmp(input, "<<", 2);
-	if (i == 0)
+	if (ft_strncmp(input, "<<", 2) == 0 && *(input + 2) != '\0')
 	{
 		*heredoc = 1;
 		return (1);
 	}
+	else if (ft_strncmp(input, "<<", 2) == 0)
+		return (shell_error());
 	else if (check_pipe_syntax(input))
 		return (print_error("|"));
 	else if (!ft_strncmp(input, ";;", 2))
@@ -50,6 +49,8 @@ int	check_syntax(char *input, int *heredoc)
 		return (print_error(";"));
 	else if (check_redirect_syntax(input))
 		return (print_error("new_line"));
+	else if (avoid_segfault(input))
+		return (shell_error());
 	return (0);
 }
 
@@ -61,6 +62,8 @@ int	syntax_error(char **input)
 
 	state = NOT_Q;
 	save = *input;
+	if (*save == '|')
+		return (shell_error());
 	while (*save != '\0')
 	{
 		heredocs = 0;
