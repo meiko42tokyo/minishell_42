@@ -67,7 +67,7 @@ int	syntax_error(char **input)
 		{
 			if (heredocs)
 			{
-				return (heredoc(&save));
+				return (heredoc(save));
 			}
 			return (1);
 		}

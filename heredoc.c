@@ -63,12 +63,11 @@ void	store_line(char *identifier)
 	char	*line;
 	char	*save;
 
-	line = ft_strjoin("", NULL);
 	save = ft_strjoin("", NULL);
 	write(1, "> ", 2);
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		if (ft_strncmp(line, identifier, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, identifier, ft_strlen(identifier)) == 0)
 			break ;
 		else
 			write(1, "> ", 2);
@@ -83,12 +82,12 @@ void	store_line(char *identifier)
 	free(identifier);
 }
 
-int	heredoc(char **input)
+int	heredoc(char *input)
 {
 	char	*identifier;
 	
 	reset_termcap();
-	identifier = get_identifier(*input);
+	identifier = get_identifier(input);
 	store_line(identifier);
 	set_termcap();
 	return (0);
