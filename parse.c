@@ -92,7 +92,6 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	head = set_cmdlist(input, head, ps);
 	ft_print_cmdlist(&head);
 	free(ps);
-	//skip_heredoc(&head);
 	expand(&head, env);
 	return (head);
 }
