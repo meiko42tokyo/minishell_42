@@ -97,7 +97,7 @@ pid_t	start_command(t_cmd *c, int ispipe, int haspipe, int lastpipe[2]);
 int		ispipe(t_cmd *c);
 char	**make_split_path(char **environ);
 char	*make_path(char *input, char **split_path, int i);
-int	do_execve(char *input, char **argv);
+int		do_execve(char *input, char **argv);
 
 /*
 **lstUtils.c
@@ -144,9 +144,9 @@ char	*make_line(char *line, int c_int);
 **termcap_utils2.c
 */
 char	*history_out(t_line **cur_node, int c);
-int	update_and_make_newnode(t_line **head, t_line **cur_node, char *line);
-int	update_and_make_empty_node(void);
-int	new_line(void);
+int		update_and_make_newnode(t_line **head, t_line **cur_node, char *line);
+int		update_and_make_empty_node(void);
+int		new_line(void);
 
 /*
 **syntax_error.c
@@ -157,7 +157,7 @@ int		syntax_error(char **input);
 **heredoc.c
 */
 int		heredoc(char **input);
-void		skip_heredoc(t_cmd **head);
+void	skip_heredoc(t_cmd **head);
 
 /*
 **token_util.c
@@ -187,6 +187,32 @@ char	**get_argv(char *input);
 t_cmd	*make_cmdlist(char *input, t_env *env);
 
 /*
+**parse_utils.c
+*/
+void	append_str(t_cmd **head, int left, t_parse *ps);
+void	word_start_space(t_cmd **head, t_parse *ps);
+void	start_br(t_cmd **head, t_cmd **cmd, char *input, t_parse *ps);
+void	find_redirect(t_cmd **head, t_cmd **cmd, t_parse *ps);
+
+/*
+**parse_utils2.c
+*/
+void	free_argv(char **argv);
+char	**copy_argvs(char *argv[], char **old_argv, size_t len, int token);
+int		append_arg(char *argv[], t_cmd **head);
+char	**get_latestargv(t_cmd **head);
+int		is_allspace(char *s);
+
+/*
+**parse_utils3.c
+*/
+char	**get_argv(char *input);
+void	get_token(char *new_pos, int *token);
+size_t	op_size(int index);
+char	*ft_min_strchr(char *input, int *token);
+size_t	ft_strplen(char *argv[]);
+
+/*
 **expand.c
 */
 void	expand(t_cmd **head, t_env *env);
@@ -202,13 +228,14 @@ int		strnshift(char *word, int dis, char *head);
 int		is_escape(char c);
 
 /*
-**expand_utils.c
+**expand_utils2.c
 */
 void	br(int *state, char **word);
 char	*set_env_ops(void);
 char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word);
 void	find_min_dis(int *dis, char **word);
 char	*get_exit_status(void);
+int		expand_env(char **word, t_env *env, t_cmd *node, int arg_i);
 
 /*
 **buildin.c

@@ -36,6 +36,15 @@ static void	make_command_run(t_env *env)
 	return ;
 }
 
+static void	ret_set(int *ret)
+{
+	*ret = 0;
+	ft_putstr_fd("minishell> ", 0);
+	while (*ret == 0)
+		*ret = get_line();
+	return ;
+}
+
 int	main(int argc, char **argv)
 {
 	t_env	*env;
@@ -52,10 +61,7 @@ int	main(int argc, char **argv)
 	{
 		signal(SIGINT, (void *)signal_handler);
 		signal(SIGQUIT, (void *)signal_handler);
-		ret = 0;
-		ft_putstr_fd("minishell> ", 0);
-		while (ret == 0)
-			ret = get_line();
+		ret_set(&ret);
 		if (ret == 1)
 			break ;
 		make_command_run(env);

@@ -28,9 +28,13 @@ SRCS = shell.c\
 	token_classify_utils.c\
 	state_manage.c\
 	parse.c\
+	parse_utils.c\
+	parse_utils2.c\
+	parse_utils3.c\
 	expand.c\
 	expand_utils.c\
 	expand_utils2.c\
+	expand_utils3.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\
