@@ -82,10 +82,10 @@ static int	value_judge(char *command, t_env *env, char *ptr)
 
 int	ft_export(char **command, t_env *env)
 {
-	char		*ptr;
-	int			i;
-	int			r_status;
-	int			error_status;
+	int		i;
+	char	*ptr;
+	int		r_status;
+	int		error_status;
 
 	if (command[0] == NULL)
 		return (export_env(env));
@@ -99,7 +99,8 @@ int	ft_export(char **command, t_env *env)
 		if (error_status < 0)
 			continue ;
 		ptr = ft_strchr(command[i], '=');
-		value_judge(command[i++], env, ptr);
+		value_judge(command[i], env, ptr);
+		i++;
 	}
 	if (r_status < 0)
 		return (1);
