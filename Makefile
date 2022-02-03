@@ -54,6 +54,7 @@ SRCS = shell.c\
 	doubly_lstUtils.c\
 	doubly_lstutils2.c\
 	signal.c\
+	close_utility.c\
 
 B_SRCS = $(SRCS)
 

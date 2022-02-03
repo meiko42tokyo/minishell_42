@@ -303,4 +303,9 @@ void	signal_handler_child(int signo);
 int		ft_errno(int num);
 int		ft_error_str(char *str);
 
+/*
+**close_utility.c
+*/
+void    multi_close(int *fd1, int *fd2, int *fd3, int *fd4);
+
 #endif
