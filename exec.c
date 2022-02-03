@@ -23,10 +23,12 @@ void	start_command_child(t_cmd *c, int haspipe, int lastpipe[2])
 	}
 }
 
-void	start_command_after(int ispipe, int haspipe, int lastpipe[2], int newpipe[2])
+void	start_command_after(int ispipe, int haspipe, \
+		int lastpipe[2], int newpipe[2])
 {
 	if (g_shell->heredoc_fd[0] > 0)
-		multi_close(&g_shell->heredoc_fd[0], &g_shell->heredoc_fd[1], NULL, NULL);
+		multi_close(&g_shell->heredoc_fd[0], \
+				&g_shell->heredoc_fd[1], NULL, NULL);
 	signal(SIGINT, signal_handler_child);
 	signal(SIGQUIT, signal_handler_child);
 	if (haspipe)
