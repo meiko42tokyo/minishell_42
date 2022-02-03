@@ -19,7 +19,7 @@ int	heredoc_exist(char *input, int *times)
 char	*expand_identifier(char *id)
 {
 	char	*identifier;
-	int	state;
+	int		state;
 
 	state = NOT_Q;
 	identifier = id;
@@ -39,7 +39,7 @@ char	*expand_identifier(char *id)
 
 char	*get_identifier(char *input)
 {
-	int	len;
+	int		len;
 	char	*id;
 
 	input += 2;
@@ -83,7 +83,7 @@ void	store_line(char *identifier)
 void	skip_heredoc(t_cmd **head)
 {
 	t_cmd	*cmd;
-	int	arg_i;
+	int		arg_i;
 
 	cmd = *head;
 	while (cmd)
@@ -107,20 +107,10 @@ void	skip_heredoc(t_cmd **head)
 int	heredoc(char **input)
 {
 	char	*identifier;
-	
+
 	reset_termcap();
 	identifier = get_identifier(*input);
 	store_line(identifier);
-	//ret = remove_heredoc(*input);
-	//if (ft_strchr(*input, ' '))
-	//{
-	//	len = ft_strchr(*input, ' ') - *input;
-	//}
-	// count number of identifier?
-		// num until <<
-		// num until ' '
-		// num until all
-	// remove << and aaa from argv
 	set_termcap();
 	return (0);
 }
