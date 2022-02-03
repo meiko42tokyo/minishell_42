@@ -24,6 +24,7 @@ SRCS = shell.c\
 	lstutils2.c\
 	syntax_error.c\
 	heredoc.c\
+	heredoc_utils.c\
 	token_util.c\
 	token_classify_utils.c\
 	state_manage.c\

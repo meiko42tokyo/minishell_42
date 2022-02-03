@@ -33,9 +33,8 @@ int	include_redir(char **command)
 	{
 		if (ft_strcmp(command[i], ">") == 0 || \
 				ft_strcmp(command[i], ">>") == 0 \
-				|| ft_strcmp(command[i], "<") == 0\
+				|| ft_strcmp(command[i], "<") == 0 \
 				|| ft_strcmp(command[i], "<<") == 0)
-
 			return (1);
 		i++;
 	}

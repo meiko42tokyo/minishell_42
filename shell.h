@@ -72,7 +72,7 @@ typedef struct s_shell
 	int				status;
 	char			*line;
 	char			*save_heredoc;
-	int			heredoc_fd[2];
+	int				heredoc_fd[2];
 	t_line			*dhead;
 	t_line			*cur_node;
 	struct termios	term;
@@ -160,8 +160,9 @@ int		syntax_error(char **input);
 */
 int		heredoc(char *input);
 void	skip_heredoc(t_cmd **head);
+int		heredoc_exist(char *input, int *times);
 
-/*
+	/*
 **token_util.c
 */
 char	**set_ops(void);
@@ -179,7 +180,7 @@ int		is_token_br(int token);
 /*
 **redirect.c
 */
-int	redirect(int fd, int stdfd, int *in_out);
+int		redirect(int fd, int stdfd, int *in_out);
 void	heredoc_kota(int n);
 
 /*
@@ -306,6 +307,6 @@ int		ft_error_str(char *str);
 /*
 **close_utility.c
 */
-void    multi_close(int *fd1, int *fd2, int *fd3, int *fd4);
+void	multi_close(int *fd1, int *fd2, int *fd3, int *fd4);
 
 #endif

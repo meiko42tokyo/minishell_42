@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		redirect(int fd, int stdfd, int *in_out)
+int	redirect(int fd, int stdfd, int *in_out)
 {
 	if (fd == -1)
 	{
