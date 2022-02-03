@@ -9,6 +9,7 @@ static void	init_g(t_shell *shell)
 	g_shell->line = NULL;
 	g_shell->dhead = NULL;
 	g_shell->cur_node = NULL;
+	g_shell->save_heredoc = NULL;
 	return ;
 }
 
@@ -49,16 +50,18 @@ int	main(int argc, char **argv)
 {
 	t_env	*env;
 	int		ret;
-	t_shell	shell;
 
 	argc = 1;
 	argv = NULL;
-	ft_bzero(&shell, sizeof(t_shell));
-	init_g(&shell);
+	g_shell = malloc(sizeof(t_shell));
+	ft_bzero(g_shell, sizeof(t_shell));
+	init_g(g_shell);
 	init_termcap();
 	env = init_env();
 	while (1)
 	{
+		g_shell->heredoc_fd[0] = -1;
+		g_shell->heredoc_fd[1] = -1;
 		signal(SIGINT, (void *)signal_handler);
 		signal(SIGQUIT, (void *)signal_handler);
 		ret_set(&ret);

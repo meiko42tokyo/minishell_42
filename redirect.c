@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static int	redirect(int fd, int stdfd, int *in_out)
+int		redirect(int fd, int stdfd, int *in_out)
 {
 	if (fd == -1)
 	{
@@ -26,6 +26,11 @@ static char	**redirect_free(char **command, int *in, int *out)
 	else if (ft_strcmp(command[0], ">>") == 0)
 		fd = redirect(open(command[1], O_WRONLY \
 				| O_CREAT | O_APPEND, 0666), 1, out);
+	else if (ft_strcmp(command[0], "<<") == 0)
+	{
+		fd = redirect(g_shell->heredoc_fd[0], 0, in);
+		close(g_shell->heredoc_fd[1]);
+	}
 	else if (ft_strcmp(command[0], "<") == 0)
 		fd = redirect(open(command[1], O_RDONLY), 0, in);
 	free(command[0]);
@@ -51,7 +56,8 @@ char	**return_free(char **command)
 int	is_redir(char *command)
 {
 	if (ft_strcmp(command, ">") == 0 || ft_strcmp(command, ">>") \
-		   	 == 0 || ft_strcmp(command, "<") == 0)
+		   	 == 0 || ft_strcmp(command, "<") == 0 \
+			|| ft_strcmp(command, "<<") == 0)
 		return (1);
 	return (0);
 }
