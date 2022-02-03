@@ -367,7 +367,9 @@ t_cmd	*make_cmdlist(char *input, t_env *env)
 	ps->new_pos = ft_min_strchr(input, &ps->token);
 	ps->word = ft_strndup(input, ps->new_pos - input + (ps->new_pos == input));
 	head = set_cmdlist(input, head, ps);
+	ft_print_cmdlist(&head);
 	free(ps);
+	skip_heredoc(&head);
 	expand(&head, env);
 	return (head);
 }

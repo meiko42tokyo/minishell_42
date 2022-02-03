@@ -27,6 +27,7 @@ void	strpshift(char **argv, int arg_i)
 	while (argv[arg_i++])
 		len++;
 	free(cur_arg);
+	cur_arg = NULL;
 	ft_mempshift(argv + cur_i, argv + cur_i + 1, len - 1);
 	argv[cur_i + len - 1] = NULL;
 }
