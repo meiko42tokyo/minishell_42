@@ -34,6 +34,7 @@ SRCS = shell.c\
 	expand.c\
 	expand_utils.c\
 	expand_utils2.c\
+	expand_utils3.c\
 	buildin.c\
 	ft_cd.c\
 	ft_pwd.c\

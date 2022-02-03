@@ -228,13 +228,14 @@ int		strnshift(char *word, int dis, char *head);
 int		is_escape(char c);
 
 /*
-**expand_utils.c
+**expand_utils2.c
 */
 void	br(int *state, char **word);
 char	*set_env_ops(void);
 char	*set_new_arg(char *head, int cur_pos, char *env_val, char *left_word);
 void	find_min_dis(int *dis, char **word);
 char	*get_exit_status(void);
+int		expand_env(char **word, t_env *env, t_cmd *node, int arg_i);
 
 /*
 **buildin.c
