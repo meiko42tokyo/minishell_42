@@ -51,7 +51,7 @@ void	store_line(char *identifier)
 	write(1, "> ", 2);
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		if (ft_strncmp(line, identifier, ft_strlen(identifier)) == 0)
+		if (ft_strcmp(line, identifier) == 0)
 			break ;
 		else
 			write(1, "> ", 2);
