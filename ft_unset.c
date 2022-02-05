@@ -70,14 +70,14 @@ int	ft_unset(char **command, t_env *env)
 	tmp = env;
 	if (!command[1] || env == NULL)
 		return (0);
-	re_error = ft_strcmp(command[1], "_");
-	if (re_error == 0)
-		return (0);
 	i = 1;
 	re_error = 0;
 	while (command[i])
 	{
-		error = command_er_check(command[i], &re_error, &i);
+		error = ft_strcmp(command[i++], "_");
+		if (error == 0)
+			continue ;
+		error = command_er_check(command[--i], &re_error, &i);
 		if (error == -1)
 			continue ;
 		ft_env_unset(&env, command[i++]);

@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libft/libft.h"
 
 int	redirect(int fd, int stdfd, int *in_out)
 {
@@ -65,22 +66,17 @@ int	is_redir(char *command)
 char	**ft_redirect(char **command, int *in, int *out)
 {
 	int	i;
-	int	j;
 
 	if (!command)
 		return (NULL);
 	i = 0;
-	while (command[i])
-		i++;
-	i = 0;
-	j = 0;
 	while (command[i])
 	{
 		if (!is_redir(command[i]))
 			i++;
 		else
 		{
-			if (!(redirect_free(command + i, in, out)))
+			if (!(redirect_free((command + i), in, out)))
 				return (NULL);
 			i += 2;
 		}
